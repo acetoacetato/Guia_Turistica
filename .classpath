@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="lib/google-maps-services-java-0.2.7-SNAPSHOT-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/google-maps-services-java-0.2.7-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="lib/google-maps-services-java-0.2.7-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/joda-time-2.9.9(1).jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.46-bin.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.46.jar"/>
+	<classpathentry kind="lib" path="lib/okhttp-3.10.0.jar"/>
+	<classpathentry kind="lib" path="lib/okio-1.14.0.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-1.7.25/slf4j-api-1.7.25-sources.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-1.7.25/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-1.7.25/slf4j-simple-1.7.25-sources.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-1.7.25/slf4j-simple-1.7.25.jar"/>
+	<classpathentry kind="lib" path="miglayout15-swing.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
