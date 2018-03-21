@@ -23,12 +23,12 @@ public class DbHandler {
 	
 	public DbHandler() throws SQLException {
 		dbLugares = new MysqlDataSource();
-		dbLugares.setUser("sql10226436");
-		dbLugares.setPassword("SS1Yd6sPyi");
-		dbLugares.setServerName("sql10.freemysqlhosting.net");
+		dbLugares.setUser("maestro");
+		dbLugares.setPassword("%4c3t04c3t4t0%");
+		dbLugares.setServerName("guiaturistica.cxdybqqakuce.sa-east-1.rds.amazonaws.com");
 		coneccion = dbLugares.getConnection();
 		stmt = coneccion.createStatement();
-		stmt.executeQuery("use sql10226436"); 
+		stmt.executeQuery("use Guia_Turistica"); 
 	}
 	
 	

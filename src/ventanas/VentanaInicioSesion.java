@@ -26,6 +26,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
+
+
+
+/*
+ * 
+ * 
+ * 		Cuentas básicas
+ * 	
+ * 	Admin : user: acetoacetato
+ * 			pass: cBc5536652
+ * 
+ * 	Usuario mortal:
+ * 			user: mortal
+ * 			pass: anal
+ * 
+ * 
+ * 
+ * */
+
+
 public class VentanaInicioSesion extends JFrame {
 
 	private JPanel contentPane;
