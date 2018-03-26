@@ -76,7 +76,6 @@ public class VentanaAdmin extends JFrame {
 				setVisible(false);
 				VentanaInicioSesion ventanaInicio = new VentanaInicioSesion(db);
 				ventanaInicio.setVisible(true);
-				destroy();
 				
 			}
 		});
@@ -85,10 +84,5 @@ public class VentanaAdmin extends JFrame {
 	}
 
 
-	public void destroy() {
-		contentPane = null;
-		db = null;
-		usr.destroy();
-		usr = null;
-	}
+
 }

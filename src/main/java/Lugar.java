@@ -9,12 +9,14 @@ import javax.swing.ImageIcon;
 public class Lugar {
 
 	private String id;
+	private String nombre;
 	private Direccion dir;
 	private double lat;
 	private double lng;
 	private ImageIcon local;
 	float puntuacion;
 	private String categoria;
+	private String descripcion;
 	
 	//lista de comentarios al lugar
 	private ArrayList<Comentario> comentarios;
@@ -57,18 +59,22 @@ public class Lugar {
 	}
 	
 	public Lugar(String id,
+				 String name,
 				 String dir, 
 				 String comuna,
 				 String region,
 				 String pais,
 				 double lat,
 				 double lng,
-				 String categoria) {
+				 String categoria,
+				 String desc) {
 		this.id = id;
+		this.nombre = name;
 		this.dir = new Direccion(dir, comuna, region, pais);
 		this.lat = lat;
 		this.lng = lng;		
 		this.puntuacion = 0f;
+		this.descripcion = desc;
 		
 		comentarios = new ArrayList<Comentario>();		
 	}

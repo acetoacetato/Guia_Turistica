@@ -23,8 +23,8 @@ public class DbHandler {
 	
 	public DbHandler() throws SQLException {
 		dbLugares = new MysqlDataSource();
-		dbLugares.setUser("maestro");
-		dbLugares.setPassword("%4c3t04c3t4t0%");
+		dbLugares.setUser("cubiUsuario");
+		dbLugares.setPassword("c5536652c");
 		dbLugares.setServerName("guiaturistica.cxdybqqakuce.sa-east-1.rds.amazonaws.com");
 		coneccion = dbLugares.getConnection();
 		stmt = coneccion.createStatement();
@@ -71,7 +71,7 @@ public class DbHandler {
 		Statement stmt;
 		try {
 			stmt = coneccion.createStatement();
-			String query = "insert into Usuario (id, pass, adm) values" +
+			String query = "insert into Usuario (id, pass, admin) values" +
 					"('" + usr 
 					+ "','"+ pass + "', false);";
 			System.out.println(query);
@@ -117,6 +117,11 @@ public class DbHandler {
 	public ResultSet buscarComentarios(String id) throws SQLException {
 		Statement stmt = coneccion.createStatement();
 		return stmt.executeQuery("select * from Comentario where idLugar = '" +  id + "';");
+	}
+	
+	public ResultSet cargaLugares() throws SQLException {
+		Statement stmt = coneccion.createStatement();
+		return stmt.executeQuery("select * from Lugar;");
 	}
 	
 	public void destroy() {

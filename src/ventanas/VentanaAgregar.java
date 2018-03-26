@@ -141,6 +141,11 @@ public class VentanaAgregar extends JFrame {
 		contentPane.add(txtLongitud);
 		txtLongitud.setColumns(10);
 		
+		JTextPane txtpnDescripcion = new JTextPane();
+		txtpnDescripcion.setText("Descripci\u00F3n");
+		txtpnDescripcion.setBounds(596, 58, 326, 417);
+		contentPane.add(txtpnDescripcion);
+		
 		JComboBox<String> catComboBox = new JComboBox<String>();
 		catComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"categor\u00EDa", "comida", "dormir", "vida_nocturna", "atracciones"}));
 		
@@ -164,8 +169,10 @@ public class VentanaAgregar extends JFrame {
 					dir[3].equals("") || dir[3].equals("pais") ||
 					txtLatitud.getText().equals("") ||
 					txtLongitud.getText().equals("") ||
-					catComboBox.getSelectedItem().equals("Categoría")
-						) {
+					catComboBox.getSelectedItem().equals("Categoría") || 
+					txtpnDescripcion.getText().equals("") ||
+					txtpnDescripcion.getText().equals("Descripci\\u00F3n")					
+					) {
 					JOptionPane.showMessageDialog(null, "Llene todos los campos porfavor.", 
 							"No se pudo ingresar a la base de datos",
                             JOptionPane.ERROR_MESSAGE);
@@ -183,7 +190,6 @@ public class VentanaAgregar extends JFrame {
                             JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				System.out.println(catComboBox.getSelectedItem().toString());
 				
 				Lugar l = new Lugar(txtId.getText(),
 							dir,
@@ -232,6 +238,7 @@ public class VentanaAgregar extends JFrame {
 		});
 		btnVolver.setBounds(864, 555, 115, 29);
 		contentPane.add(btnVolver);
+
 
 		
 
