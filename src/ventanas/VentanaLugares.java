@@ -46,7 +46,6 @@ public class VentanaLugares extends JFrame {
 		int  x = 20, y = 20;
 		
 		for(int i = 0 ; i < 5 ; i++) {
-			System.out.println("actual = " + act + " ; size = " + lugarcitos.size());
 			if(act == lugarcitos.size()) {
 				existeNext = false;
 				act--;
