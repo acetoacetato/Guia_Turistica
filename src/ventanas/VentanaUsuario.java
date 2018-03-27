@@ -75,7 +75,7 @@ public class VentanaUsuario extends JFrame {
 		boton4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaVidaNoc ventanaNoc = new VentanaVidaNoc();
+				VentanaLugares ventanaNoc = new VentanaLugares("Vida nocturna");
 				ventanaNoc.setVisible(true);
 				
 			}
@@ -132,7 +132,7 @@ public class VentanaUsuario extends JFrame {
 	    contentPane.add(boton1);
 		contentPane.add(boton2);
 		contentPane.add(boton3);
-	    //contentPane.add(boton4);
+	    contentPane.add(boton4);
 		
 		JLabel lblDasd = new JLabel("Bienvenido " + cta.getNombreUsuario());
 		lblDasd.setForeground(new Color(255, 0, 255));

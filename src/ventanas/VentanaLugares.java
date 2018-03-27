@@ -6,8 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -43,7 +45,9 @@ public class VentanaLugares extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		itememes = new Item[5];
-		int  x = 20, y = 20;
+		int  x = 40, y = 20, z = 0;
+		
+		
 		
 		for(int i = 0 ; i < 5 ; i++) {
 			if(act == lugarcitos.size()) {
@@ -51,17 +55,26 @@ public class VentanaLugares extends JFrame {
 				act--;
 				break;
 			}
-			itememes[i] = new Item(lugarcitos.get(act), x, y, usuario);
-			y+=15;
+			
+			
+			itememes[i] = new Item(lugarcitos.get(act), x, y, z, usuario);
+			y+=40;
+			z+=41;
 			contentPane.add(itememes[i].getNombreLocal());
 			contentPane.add(itememes[i].getRating());
 			contentPane.add(itememes[i].getBtnLugar());
+			
+			contentPane.add(itememes[i].getFondo());
+			
 			act++;
+			
+			
+			
 		}
 		
 		if(existeNext) {
 			JButton btnNext = new JButton();
-			btnNext.setBounds(100, 50, 20, 10);
+			btnNext.setBounds(370, 220, 45, 20);
 			
 			btnNext.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -75,7 +88,7 @@ public class VentanaLugares extends JFrame {
 		
 		if(act>9) {
 			JButton btnNext = new JButton();
-			btnNext.setBounds(200, 50, 20, 10);
+			btnNext.setBounds(19, 220, 45, 20);
 			
 			btnNext.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -87,7 +100,7 @@ public class VentanaLugares extends JFrame {
 			contentPane.add(btnNext);
 		}
 		
-		
+		//
 		
 	}
 

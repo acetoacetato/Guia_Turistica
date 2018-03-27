@@ -1,8 +1,11 @@
 package ventanas;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
@@ -11,12 +14,24 @@ import main.java.Lugar;
 import main.java.Usuario;
 
 public class Item {
-
+	
+	private Icon icon1;
+	private JLabel fondo;
+	private ImageIcon imgn;
 	private JLabel nombreLocal;
 	private JLabel rating;
 	private JButton btnLugar;
 	private int corX;
 	private int corY;
+	private int corZ;
+	public JLabel getFondo() {
+		return fondo;
+	}
+	
+	public void setFondo(JLabel fondo) {
+		this.fondo = fondo;
+	}
+	
 	public JLabel getNombreLocal() {
 		return nombreLocal;
 	}
@@ -44,7 +59,7 @@ public class Item {
 	private Lugar place;
 	private CuentaUsuario usrAccnt;
 	
-	public Item (Lugar lugar, int X, int Y, CuentaUsuario usr){
+	public Item (Lugar lugar, int X, int Y, int Z, CuentaUsuario usr){
 		
 		nombreLocal = new JLabel(lugar.getNombreLocal());
 		rating = new JLabel( Integer.toString(lugar.getPuntuacion()) );
@@ -58,15 +73,26 @@ public class Item {
 				vtnLugar.setVisible(true);
 			}
 		});
+		btnLugar.setBounds(X+300, Y, 30, 30);
+		
+		imgn = new ImageIcon(Item.class.getResource("/Imagenes/lupa.jpg"));
+	    icon1 = new ImageIcon(imgn.getImage().getScaledInstance(btnLugar.getWidth(), btnLugar.getHeight(), Image.SCALE_DEFAULT));
+		
+		btnLugar.setIcon(icon1);
+		
+		fondo = new JLabel("");
+		fondo.setIcon(new ImageIcon(Item.class.getResource("/Imagenes/fondo2.png")));
+		//getContentPane().add(fondo);
 		
 		
 		this.corX = X;
 		this.corY = Y;
+		this.corZ = Z;
 		
-		nombreLocal.setBounds(X, Y, 40, 10);
-		rating.setBounds(X+50, Y, 20, 10);
-		btnLugar.setBounds(X+100, Y, 10, 10);
+		nombreLocal.setBounds(X, Y, 40, 30);
+		rating.setBounds(X+150, Y, 20, 30);
 		
+		fondo.setBounds(5, Z, 450, 65);
 	}
 	
 	
