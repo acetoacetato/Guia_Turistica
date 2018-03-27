@@ -9,13 +9,54 @@ import javax.swing.ImageIcon;
 public class Lugar {
 
 	private String id;
+	private String nombreLocal;
 	private Direccion dir;
 	private double lat;
 	private double lng;
 	private ImageIcon local;
-	float puntuacion;
+	private int puntuacion;
 	private String categoria;
+	private String descripcion;
 	
+	public String getNombreLocal() {
+		return nombreLocal;
+	}
+
+
+	public void setNombreLocal(String nombreLocal) {
+		this.nombreLocal = nombreLocal;
+	}
+
+
+	public int getPuntuacion() {
+		return puntuacion;
+	}
+
+
+	public void setPuntuacion(int puntuacion) {
+		this.puntuacion = puntuacion;
+	}
+
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+
+	public ArrayList<Comentario> getComentarios() {
+		return comentarios;
+	}
+
+
+	public void setComentarios(ArrayList<Comentario> comentarios) {
+		this.comentarios = comentarios;
+	}
+
 	//lista de comentarios al lugar
 	private ArrayList<Comentario> comentarios;
 	
@@ -60,6 +101,8 @@ public class Lugar {
 				 String dir, 
 				 String comuna,
 				 String region,
+				 String nombre,
+				 String descripcion,
 				 String pais,
 				 double lat,
 				 double lng,
@@ -67,8 +110,10 @@ public class Lugar {
 		this.id = id;
 		this.dir = new Direccion(dir, comuna, region, pais);
 		this.lat = lat;
-		this.lng = lng;		
-		this.puntuacion = 0f;
+		this.lng = lng;
+		this.nombreLocal = nombre;
+		this.descripcion = descripcion;
+		this.puntuacion = 0;
 		
 		comentarios = new ArrayList<Comentario>();		
 	}
@@ -80,7 +125,7 @@ public class Lugar {
 		this.lat = lat;
 		this.lng = lng;		
 		this.categoria = categoria;
-		this.puntuacion = 0f;
+		this.puntuacion = 0;
 		
 		comentarios = new ArrayList<Comentario>();
 		

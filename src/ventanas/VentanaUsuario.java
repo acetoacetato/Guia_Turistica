@@ -21,7 +21,7 @@ public class VentanaUsuario extends JFrame {
 	
 	public VentanaUsuario(DbHandler database, CuentaUsuario cta) {
 		
-		setTitle(" ");
+		setTitle("main user");
 		db = database;
 		usr = cta;
 		
@@ -37,7 +37,7 @@ public class VentanaUsuario extends JFrame {
 		boton1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaAtracciones ventanaAtrac = new VentanaAtracciones();
+				VentanaLugares ventanaAtrac = new VentanaLugares("Atracciones");
 				ventanaAtrac.setVisible(true);
 				
 			}
@@ -49,7 +49,7 @@ public class VentanaUsuario extends JFrame {
 		boton2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaHoteles ventanaHot = new VentanaHoteles();
+				VentanaLugares ventanaHot = new VentanaLugares("Hoteles");
 				ventanaHot.setVisible(true);
 				
 			}
@@ -60,23 +60,27 @@ public class VentanaUsuario extends JFrame {
 		boton3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaVidaNoc ventanaVida = new VentanaVidaNoc();
-				ventanaVida.setVisible(true);
-				
-			}
-		});
-		boton3.setBounds(380, 110, 60, 60);
-		
-		JButton boton4 = new JButton();
-		boton1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-				VentanaRestaurant ventanaRest = new VentanaRestaurant();
+				VentanaLugares ventanaRest = new VentanaLugares("Restaurantes");
 				ventanaRest.setVisible(true);
 				
 			}
 		});
-		boton4.setBounds(270, 110, 60, 60);
+		boton3.setBounds(270, 110, 60, 60);
+		
+		JButton boton4 = new JButton();
+		boton4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		boton4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				VentanaVidaNoc ventanaNoc = new VentanaVidaNoc();
+				ventanaNoc.setVisible(true);
+				
+			}
+		});
+		boton4.setBounds(380, 110, 60, 60);
 		
 		//Busca las imagenes respectivas para las categorias
 		ImageIcon imagen = new ImageIcon(VentanaUsuario.class.getResource("/Imagenes/Atracciones.png"));
@@ -113,12 +117,12 @@ public class VentanaUsuario extends JFrame {
 		
 		JLabel lblVidaNocturna = new JLabel("Vida Nocturna");
 		lblVidaNocturna.setForeground(new Color(153, 51, 153));
-		lblVidaNocturna.setBounds(250, 180, 108, 14);
+		lblVidaNocturna.setBounds(360, 180, 108, 14);
 		lblVidaNocturna.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
 		
 		JLabel lblRestaurantes = new JLabel("Restaurantes");
 		lblRestaurantes.setForeground(new Color(153, 51, 153));
-		lblRestaurantes.setBounds(370, 180, 87, 14);
+		lblRestaurantes.setBounds(255, 180, 100, 14);
 		lblRestaurantes.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
 		
 		
@@ -128,7 +132,7 @@ public class VentanaUsuario extends JFrame {
 	    contentPane.add(boton1);
 		contentPane.add(boton2);
 		contentPane.add(boton3);
-	    contentPane.add(boton4);
+	    //contentPane.add(boton4);
 		
 		JLabel lblDasd = new JLabel("Bienvenido " + cta.getNombreUsuario());
 		lblDasd.setForeground(new Color(255, 0, 255));

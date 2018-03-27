@@ -21,7 +21,7 @@ public class VentanaAtracciones extends JFrame {
 
 	VentanaAtracciones(){
 		
-		setTitle("CoDejaVu : JScrollPane");
+		setTitle("atracciones");
 		setSize(521, 283);
 		//pone la ventana en el Centro de la pantalla;
 		setLocationRelativeTo(null);
@@ -42,7 +42,7 @@ public class VentanaAtracciones extends JFrame {
 		labelTitulo.setBounds(128, 49, 85, 68);
 
 		
-		contentPane.setPreferredSize(new Dimension (350, 150));
+		contentPane.setPreferredSize(new Dimension (500, 240));
 		
 		scrollPane.setViewportView(contentPane);
 		

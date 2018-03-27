@@ -69,10 +69,9 @@ public class VentanaInicioSesion extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
+
 	public VentanaInicioSesion() {
+		
 		try {
 			db = new DbHandler();
 		} catch (SQLException e1) {
@@ -140,7 +139,7 @@ public class VentanaInicioSesion extends JFrame {
 					ResultSet rs = db.iniciarSesion(usr, pass);
 					//creamos la cuenta de usuario con usr, pass y el booleano de si es usuario o administrador
 					
-					CuentaUsuario cta = crearUsuario(usr, pass, rs.getBoolean("adm"));
+					CuentaUsuario cta = crearUsuario(usr, pass, rs.getBoolean("admin"));
 					
 					//si es admin, entonces se carga la ventana principal de admin
 					if(cta.tipoCuenta().equals("Administrador")) {

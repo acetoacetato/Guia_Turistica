@@ -23,8 +23,8 @@ public class DbHandler {
 	
 	public DbHandler() throws SQLException {
 		dbLugares = new MysqlDataSource();
-		dbLugares.setUser("maestro");
-		dbLugares.setPassword("%4c3t04c3t4t0%");
+		dbLugares.setUser("cubiUsuario");
+		dbLugares.setPassword("c5536652c");
 		dbLugares.setServerName("guiaturistica.cxdybqqakuce.sa-east-1.rds.amazonaws.com");
 		coneccion = dbLugares.getConnection();
 		stmt = coneccion.createStatement();
@@ -58,12 +58,12 @@ public class DbHandler {
 		
 	}
 	
-	public float puntuacionLugar(String id) throws SQLException {
-		ResultSet rs = stmt.executeQuery("select avg(puntuacion) from Comentario where id = '" + id + "';");
+	public int puntuacionLugar(String id) throws SQLException {
+		ResultSet rs = stmt.executeQuery("select sum(puntuacion) from Comentario where id = '" + id + "';");
 		if(rs.next()) {
-			return rs.getFloat("avg(puntuacion)");
+			return rs.getInt("sum(puntuacion)");
 		}else 
-			return 0f;
+			return 0;
 	}
 	
 	public void registrarUsuario(String usr, String pass) {
@@ -71,7 +71,7 @@ public class DbHandler {
 		Statement stmt;
 		try {
 			stmt = coneccion.createStatement();
-			String query = "insert into Usuario (id, pass, adm) values" +
+			String query = "insert into Usuario (id, pass, admin) values" +
 					"('" + usr 
 					+ "','"+ pass + "', false);";
 			System.out.println(query);
