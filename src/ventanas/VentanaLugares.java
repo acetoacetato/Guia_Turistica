@@ -14,12 +14,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import main.java.CuentaUsuario;
+import main.java.ItemLugar;
 import main.java.Lugar;
 
 public class VentanaLugares extends JFrame {
 
 	private JPanel contentPane;
-	private Item[] itememes;
+	private ItemLugar[] itememes;
 	private ArrayList<Lugar> lugarcitos;
 	private CuentaUsuario usuario;
 	private boolean existeNext;
@@ -27,10 +28,7 @@ public class VentanaLugares extends JFrame {
 	private int act;
 	
 	
-	//TODO: borrar esto y morir
-	public VentanaLugares(String t) {
-		
-	}
+
 	
 	public VentanaLugares(String titulo, ArrayList<Lugar> listaLugares, CuentaUsuario usr, int actual) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,7 +42,7 @@ public class VentanaLugares extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		itememes = new Item[5];
+		itememes = new ItemLugar[5];
 		int  x = 40, y = 20, z = 0;
 		
 		
@@ -57,7 +55,7 @@ public class VentanaLugares extends JFrame {
 			}
 			
 			
-			itememes[i] = new Item(lugarcitos.get(act), x, y, z, usuario);
+			itememes[i] = new ItemLugar(lugarcitos.get(act), x, y, z, usuario);
 			y+=40;
 			z+=41;
 			contentPane.add(itememes[i].getNombreLocal());
@@ -86,18 +84,22 @@ public class VentanaLugares extends JFrame {
 			contentPane.add(btnNext);
 		}
 		
+		JButton btnVolverMenu = new JButton("Volver al menu anterior.");
+		btnVolverMenu.setBounds(10, 210, 100, 40);
+		contentPane.add(btnVolverMenu);
+		
 		if(act>9) {
-			JButton btnNext = new JButton();
-			btnNext.setBounds(19, 220, 45, 20);
+			JButton btnBack = new JButton();
+			btnBack.setBounds(19, 220, 45, 20);
 			
-			btnNext.addActionListener(new ActionListener() {
+			btnBack.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					VentanaLugares vtnLugar = new VentanaLugares(titulo, lugarcitos, usr, act-10);
 					vtnLugar.setVisible(true);
 				}
 			});
 			
-			contentPane.add(btnNext);
+			contentPane.add(btnBack);
 		}
 		
 		//

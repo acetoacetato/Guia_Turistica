@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import com.google.maps.errors.ApiException;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
@@ -125,10 +126,7 @@ public class DbHandler {
 				+ "WHERE id = '" + l.getId() + "'");
 	}
 	
-	public void borrarLugar(String id) throws SQLException {
-		Statement stmt = coneccion.createStatement();
-		stmt.executeUpdate("SELETE FROM Lugar WHERE id = '" + id + "';");
-	}
+
 	
 	
 	
@@ -157,6 +155,21 @@ public class DbHandler {
 
 	}
 	
+	public ArrayList<Lugar> buscarLugar(String cat, String ubic) throws SQLException {
+		Statement stmt = coneccion.createStatement();
+		String query = "SELECT * FROM Lugar WHERE categoria = '"
+				 + cat + "' AND comuna = '" + ubic + "';";
+		ResultSet rs = stmt.executeQuery( query );
+		ArrayList <Lugar> li = new ArrayList<Lugar>();
+		while(rs.next()) {
+			Lugar l = new Lugar(rs);
+			int pt = obtenerPuntuacion(l.getId());
+			l.setPuntuacion( pt );
+			li.add( l );
+		}
+		return li;
+	}
+	
 	
 	public Lugar autoCompletaLugar(String busqueda) throws SQLException, ApiException, InterruptedException, IOException {
 		MapApi mapita = new MapApi();
@@ -177,6 +190,17 @@ public class DbHandler {
 		
 		
 	}
+	
+	public ArrayList<ArrayList <Lugar>> cargaLugares(String ubicacion) throws SQLException {
+		ArrayList<ArrayList<Lugar>> listilla = new ArrayList<ArrayList<Lugar>>();
+		Statement stmt = coneccion.createStatement();
+		String[] categorias = { "atraccion", "dormir", "comida", "vida_nocturna" };
+		for(String i : categorias) {
+			listilla.add( buscarLugar(i, ubicacion) );
+		}
+		return listilla;
+	}
+	
 	public Object buscar(Lugar l) throws SQLException {
 		Statement stmt = coneccion.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM Lugar WHERE id = '" + l.getId() + "'");
@@ -201,6 +225,15 @@ public class DbHandler {
 	public ResultSet buscarComentarios(String id) throws SQLException {
 		Statement stmt = coneccion.createStatement();
 		return stmt.executeQuery("select * from Comentario where idLugar = '" +  id + "';");
+	}
+	
+	public int obtenerPuntuacion(String id) throws SQLException {
+		Statement stmt = coneccion.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT SUM(puntuacion) FROM Comentario WHERE id_lugar = '" + id + "';");
+		if(rs.next()) 
+			return rs.getInt("SUM(puntuacion)");
+		else 
+			return 0;
 	}
 	
 	public void destroy() {
