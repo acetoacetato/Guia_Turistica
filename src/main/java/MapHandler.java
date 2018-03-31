@@ -35,9 +35,15 @@ public class MapHandler {
 	public MapHandler(String direccion) throws IOException {
 		 dir = dirIn
 			   + "&center=" 
-			   + direccion.replaceAll(" ", "+");
+			   + direccion.replaceAll(" ", "+")
+			   			  .replaceAll("á", "a")
+			   			  .replaceAll("é", "e")
+			   			  .replaceAll("í", "i")
+			   			  .replaceAll("ó", "o")
+			   			  .replaceAll("ú", "u");
 		URL url;
     	url = new URL(dir);
+    	System.out.println(url);
 		map = new ImageIcon( ImageIO.read(url) );
 	}
 	

@@ -38,7 +38,7 @@ public class VentanaUsuario extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblBienvenida = new JLabel("Bienvenido, nombre!");
+		JLabel lblBienvenida = new JLabel("Bienvenido, " + cta.getNombreUsuario() + "!");
 		lblBienvenida.setBounds(15, 16, 170, 20);
 		contentPane.add(lblBienvenida);
 		

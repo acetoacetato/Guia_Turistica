@@ -2,6 +2,7 @@ package ventanas;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,23 +10,26 @@ import javax.swing.border.EmptyBorder;
 
 import main.java.CuentaUsuario;
 import main.java.Lugar;
+import main.java.MapHandler;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
-public class VentanaLugar extends JFrame {
+public class VentanaLugar extends JFrame implements Runnable {
 
 	private JPanel contentPane;
 	private JTextField txtNombre;
 	private JTextField txtDireccion;
 	private JTextField txtRating;
-
+	private Lugar l;
 
 	/**
 	 * Create the frame.
 	 */
 	public VentanaLugar(Lugar l, CuentaUsuario usr) {
+		this.l = l;
 		setBounds(100, 100, 800, 601);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
@@ -33,9 +37,10 @@ public class VentanaLugar extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Mapa");
-		lblNewLabel.setBounds(579, 37, 159, 137);
-		contentPane.add(lblNewLabel);
+		
+		
+		Thread t = new Thread(this);
+		t.start();
 		
 		JLabel lblDireccion = new JLabel("Direccion:");
 		lblDireccion.setBounds(22, 71, 90, 14);
@@ -86,5 +91,24 @@ public class VentanaLugar extends JFrame {
 		
 		
 		
+	}
+	
+	public void run() {
+		MapHandler mapita;
+		try {
+			JLabel cargando = new JLabel("Cargando mapa...");
+			cargando.setBounds(353, 134, 410, 297);
+			contentPane.add(cargando);
+			
+			mapita = new MapHandler(l.getDireccionPpal() + ", " + l.getComuna());
+			JLabel lblNewLabel = new JLabel(mapita.getMapa());
+			lblNewLabel.setBounds(353, 134, 410, 297);
+			contentPane.remove(cargando);
+			contentPane.add(lblNewLabel);
+			repaint();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
