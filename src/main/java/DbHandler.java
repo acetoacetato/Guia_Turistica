@@ -1,10 +1,12 @@
 package main.java;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.google.maps.errors.ApiException;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import excepciones.PlaceAlreadyTakenException;
@@ -41,16 +43,18 @@ public class DbHandler {
 		if(rs.next()) throw new PlaceAlreadyTakenException();
 		
 		rs = null;		
-		stmt.executeUpdate("Insert into Lugar (id, categoria, casa, comuna, region, pais, latitud, longitud)"
+		stmt.executeUpdate("Insert into Lugar (id, nombre, casa, comuna, region, pais, latitud, longitud, categoria, descripcion)"
 				+ "values ('"
 				+ l.getId() + "','"
-				+ l.getCategoria() + "','"
+				+ l.getNombreLocal() + "','"
 				+ l.getDireccionPpal() + "','"
 				+ l.getComuna() + "','"
 				+ l.getRegion() + "','"
 				+ l.getPais() + "',"
 				+ String.valueOf( l.getLat() ) + ", "
-				+ String.valueOf( l.getLng() ) + ");"
+				+ String.valueOf( l.getLng() ) + ", '"
+				+ l.getCategoria() + "','"
+				+ l.getDescripcion() + "');"
 				);
 		
 		return true;
@@ -106,12 +110,92 @@ public class DbHandler {
 	}
 	
 	
-	//se busca un lugar por su id
-	public ResultSet buscarLugar(String id) throws SQLException {
+	public void actualizarLugar(Lugar l) throws SQLException {
 		Statement stmt = coneccion.createStatement();
-		return stmt.executeQuery("select * from Lugar where id = '" + id + "';");
+		stmt.executeUpdate("UPDATE Lugar "
+				+ "SET nombre = '" + l.getNombreLocal() + "'"
+				+ ", casa = '" + l.getDireccionPpal() + "'"
+				+ ", comuna = '" + l.getComuna() + "'"
+				+ ", region = '" + l.getRegion() + "'"
+				+ ", pais = '" + l.getPais() + "'"
+				+ ", latitud =" + l.getLat()
+				+ ", longitud =" + l.getLng()
+				+ ", categoria = '" + l.getCategoria() + "'"
+				+ ", descripcion = '" + l.getDescripcion() + "'"
+				+ "WHERE id = '" + l.getId() + "'");
+	}
+	
+	public void borrarLugar(String id) throws SQLException {
+		Statement stmt = coneccion.createStatement();
+		stmt.executeUpdate("SELETE FROM Lugar WHERE id = '" + id + "';");
+	}
+	
+	
+	
+	//se busca un lugar por su id
+	/*public Lugar buscarLugar(String id) throws SQLException {
+		Statement stmt = coneccion.createStatement();
+		String query = "select * from Lugar where id = '" + id + "';";
+		System.out.println(query);
+		ResultSet rs = stmt.executeQuery("select * from Lugar where id = '" + id + "';");
+		if(rs.next())
+			return new Lugar(rs);
+		
+		else return null;
+
+	}*/
+	
+	//Se busca un lugar por el nombre del local
+	public Lugar buscarLugar(String name) throws SQLException{
+		Statement stmt = coneccion.createStatement();
+		ResultSet rs = stmt.executeQuery("select * from Lugar where nombre = '" + name + "';");
+		
+		if(rs.next())
+			return new Lugar(rs);
+		
+		else return null;
 
 	}
+	
+	
+	public Lugar autoCompletaLugar(String busqueda) throws SQLException, ApiException, InterruptedException, IOException {
+		MapApi mapita = new MapApi();
+		Lugar l;
+
+			l = mapita.buscaLugar(busqueda);
+			String id = l.getId();
+			Statement stmt = coneccion.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Lugar where id = '" + id + "';");
+			if(rs.next()) {
+				return new Lugar(rs);
+			}
+			
+			else
+				return l;
+
+		
+		
+		
+	}
+	public Object buscar(Lugar l) throws SQLException {
+		Statement stmt = coneccion.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM Lugar WHERE id = '" + l.getId() + "'");
+		if(rs.next()) 
+			return new Lugar(rs);
+		else return null;
+	}
+	
+	
+	//TODO: agregar busqueda de usuarios y comentarios 
+	public Object buscar(Usuario usr) {
+		return null;
+	}
+	
+	public void eliminar(Lugar l) throws SQLException{
+		Statement stmt = coneccion.createStatement();
+		stmt.executeUpdate("DELETE FROM Lugar WHERE id = '" + l.getId() + "'");
+	}
+	
 	
 	//se busca un comentario por su id
 	public ResultSet buscarComentarios(String id) throws SQLException {

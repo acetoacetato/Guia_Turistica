@@ -50,8 +50,9 @@ public class VentanaLugar extends JFrame {
 		scrollPane.setBounds(22, 173, 253, 77);
 		contentPane.add(scrollPane);
 		
-		JTextPane txtpnDasssssssssssssssss = new JTextPane();
-		scrollPane.setViewportView(txtpnDasssssssssssssssss);
+		JTextPane txtpnDescripcion = new JTextPane();
+		txtpnDescripcion.setEditable(false);
+		scrollPane.setViewportView(txtpnDescripcion);
 		
 		JLabel lblNewLabel_1 = new JLabel("Rating:");
 		lblNewLabel_1.setBounds(22, 111, 46, 14);
@@ -61,13 +62,13 @@ public class VentanaLugar extends JFrame {
 		lblNewLabel_2.setBounds(80, 39, 205, 14);
 		contentPane.add(lblNewLabel_2);
 		
-		JLabel label = new JLabel("Pene");
-		label.setBounds(80, 71, 205, 14);
-		contentPane.add(label);
+		JLabel lblDir = new JLabel("direccion");
+		lblDir.setBounds(80, 71, 192, 14);
+		contentPane.add(lblDir);
 		
-		JLabel label_1 = new JLabel("Pene");
-		label_1.setBounds(80, 111, 205, 14);
-		contentPane.add(label_1);
+		JLabel lbRating= new JLabel("0");
+		lbRating.setBounds(80, 111, 70, 14);
+		contentPane.add(lbRating);
 		
 		
 	}

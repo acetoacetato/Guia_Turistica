@@ -61,6 +61,8 @@ public class MapApi{
 		return this.lugar;
 	}
 	
+	
+	
 	/*
 	
 	public static void main(String[] args) throws ApiException, InterruptedException, IOException, SQLException {

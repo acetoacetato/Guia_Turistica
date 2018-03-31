@@ -14,6 +14,7 @@ public class Lugar {
 	private double lat;
 	private double lng;
 	private ImageIcon local;
+	private ImageIcon mapa;
 	private int puntuacion;
 	private String categoria;
 	private String descripcion;
@@ -69,7 +70,7 @@ public class Lugar {
 		categoria = "default";
 	}
 	
-	
+	/*
 	public Lugar(String id) {
 		ResultSet rs;
 		DbHandler db;
@@ -95,17 +96,21 @@ public class Lugar {
 		}		
 		
 		
-	}
+	}*/
+	
+	/*
+	 * Sobrecarga para cargar de la DB, la usa DbHandler
+	 * */
 	
 	public Lugar(String id,
 				 String dir, 
 				 String comuna,
 				 String region,
-				 String nombre,
-				 String descripcion,
 				 String pais,
 				 double lat,
 				 double lng,
+				 String nombre,
+				 String descripcion,
 				 String categoria) {
 		this.id = id;
 		this.dir = new Direccion(dir, comuna, region, pais);
@@ -114,21 +119,40 @@ public class Lugar {
 		this.nombreLocal = nombre;
 		this.descripcion = descripcion;
 		this.puntuacion = 0;
+		this.categoria = categoria;
 		
 		comentarios = new ArrayList<Comentario>();		
 	}
 	
-	
-	public Lugar(String id, String[] dir, String categoria, double lat, double lng) {
+	/*
+	 * Sobrecarga para agregar a la DB, la usa VentanaAgregar
+	 * 
+	 * */
+	public Lugar(String id, String name, String[] dir, String categoria, double lat, double lng, String desc) {
 		this.id = id;
 		this.dir = new Direccion(dir);
 		this.lat = lat;
 		this.lng = lng;		
+		this.nombreLocal = name;
 		this.categoria = categoria;
 		this.puntuacion = 0;
-		
+		this.descripcion = desc;
 		comentarios = new ArrayList<Comentario>();
 		
+	}
+	
+	public Lugar(ResultSet rs) throws SQLException {
+		this.id = rs.getString("id");
+		this.dir = new Direccion(rs.getString("casa"),
+								rs.getString("comuna"),
+								rs.getString("region"),
+								rs.getString("pais")
+								);
+		this.lat = rs.getFloat("latitud");
+		this.lng = rs.getFloat("longitud");
+		this.nombreLocal = rs.getString("nombre");
+		this.descripcion = rs.getString("descripcion");
+		this.categoria = rs.getString("categoria");
 	}
 	
 

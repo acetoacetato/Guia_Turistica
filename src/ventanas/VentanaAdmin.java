@@ -47,25 +47,22 @@ public class VentanaAdmin extends JFrame {
 		lblNewLabel.setBounds(5, 5, 282, 20);
 		contentPane.add(lblNewLabel);
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Administrar Lugares");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				setVisible(false);
-				VentanaAgregar ventanaAgrega = new VentanaAgregar(db, usr);
-				ventanaAgrega.setVisible(true);
+				VentanaAdminLugares ventanaAdmL = new VentanaAdminLugares(db, usr);
+				ventanaAdmL.setVisible(true);
 				
-			}
+			} 
 		});
-		btnAgregar.setBounds(15, 84, 115, 29);
+		btnAgregar.setBounds(15, 84, 186, 29);
 		contentPane.add(btnAgregar);
 		
-		JButton btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(298, 84, 115, 29);
-		contentPane.add(btnModificar);
-		
-		JButton btnQuitar = new JButton("Quitar");
-		btnQuitar.setBounds(156, 84, 115, 29);
+		JButton btnQuitar = new JButton("Administrar usuarios");
+		btnQuitar.setToolTipText("");
+		btnQuitar.setBounds(216, 84, 197, 29);
 		contentPane.add(btnQuitar);
 		
 		JButton btnCerrarSesin = new JButton("Cerrar Sesi\u00F3n");
