@@ -8,10 +8,24 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+
+/*
+ * Clase que maneja el icono del mapa, crea la url con los parámetros necesarios y guarda la imágen generada
+ * 
+ * 		Utiliza la api de mapas estáticos de google:
+ * 
+ * 			https://developers.google.com/maps/documentation/static-maps/intro
+ * 
+ * */
 public class MapHandler {
 
+	//key de api, necesaria para poder usar la api de mapas estáticos de google
 	private static String apiKey = "AIzaSyC4ClGpPgudrfyIWrO528j9DxXLiLQ3KlU";
-	private static String size = "410x297" ;//412x299
+	
+	//el tamaño de la imágen generada
+	private static String size = "410x297" ;
+	
+	//genera la url inicial, con la key de la api y el tamaño
 	private String dirIn = "https://maps.googleapis.com/maps/api/staticmap?key=" 
 						   + apiKey 
 						   + "&size=" 
@@ -23,16 +37,25 @@ public class MapHandler {
 	private ImageIcon map;
 	
 	
-	
+	//constructor de pruebas, centrado en el ibc
 	public MapHandler() throws IOException {
 			dir = dirIn
 				  + "center=IBC,+valparaiso";
 		URL url;
+		
+		//se crea una url con la direccion completa
     	url = new URL(dir);
+    	
+    	//se lee la imagen que entrega la url y se crea el ícono con esta
 		map = new ImageIcon( ImageIO.read(url) );
 	}
 	
+	
+	//constructor con un string de direccion determinado, se asume que es info suficiente para que se genere el mapa
 	public MapHandler(String direccion) throws IOException {
+		
+		//se genera la url, que no puede contener espacios(se reemplazan con +)
+		//ni acentos, que se reemplazan por sus homólogos sin ellos ni ñ que se remplaza por n
 		 dir = dirIn
 			   + "&center=" 
 			   + direccion.replaceAll(" ", "+")
@@ -40,10 +63,14 @@ public class MapHandler {
 			   			  .replaceAll("é", "e")
 			   			  .replaceAll("í", "i")
 			   			  .replaceAll("ó", "o")
-			   			  .replaceAll("ú", "u");
+			   			  .replaceAll("ú", "u")
+			   			  .replaceAll("ñ", "n");
 		URL url;
+		
+		//se genera la url con la direccion 
     	url = new URL(dir);
-    	System.out.println(url);
+    	
+    	//se obtiene la imágen que entrega la url y se guarda en map
 		map = new ImageIcon( ImageIO.read(url) );
 	}
 	
@@ -58,15 +85,6 @@ public class MapHandler {
 	public String getUrl() {
 		return this.dir;
 	}
-	
-	public void setMapa(String dir) throws IOException {
-		dir = dirIn+dir.replaceAll(" ","+");
-		URL url = new URL(dir);
-		map = new ImageIcon(ImageIO.read(url));
-	}
-	
-	
-	
 	
 }
 

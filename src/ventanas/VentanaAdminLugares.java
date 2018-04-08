@@ -21,6 +21,7 @@ import main.java.CuentaUsuario;
 import main.java.DbHandler;
 import main.java.Lugar;
 import main.java.MapApi;
+import main.java.VentanaCampos;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -32,7 +33,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 
-public class VentanaAdminLugares extends JFrame {
+public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 
 	private JPanel contentPane;
 	private JTextField txtBuscar;
@@ -45,14 +46,18 @@ public class VentanaAdminLugares extends JFrame {
 	private JTextField txtId;
 	private JTextField txtCategoria;
 	private JButton btnVolver;
-	DbHandler db;
-	CuentaUsuario usr;
 	private JTextField txtNombre;
 	private JButton btnEliminarLugar;
 	private JTextField txtDB;
 	private JTextPane txtpnDescripcion;
 	private JComboBox<String> catComboBox;
-
+	
+	
+	private DbHandler db;
+	private CuentaUsuario usr;
+	
+	
+	
 	/**
 	 * Create the frame.
 	 */
@@ -60,6 +65,7 @@ public class VentanaAdminLugares extends JFrame {
 		
 		db = database;
 		usr = cta;
+		
 		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -130,7 +136,7 @@ public class VentanaAdminLugares extends JFrame {
 				try {
 					l = obtenerCampos();
 				}catch(FieldCheckException e) {
-					JOptionPane.showMessageDialog(null, e.toString(), 
+					JOptionPane.showMessageDialog(null, e.getMessage(), 
 							"No se pudo ingresar a la base de datos",
                             JOptionPane.ERROR_MESSAGE);
 					return;
@@ -141,13 +147,13 @@ public class VentanaAdminLugares extends JFrame {
 				try {
 					db.ingresarLugar(l);
 				} catch (SQLException  e) {
-					JOptionPane.showMessageDialog(null, e.toString(), 
+					JOptionPane.showMessageDialog(null, e.getMessage(), 
 							"No se pudo ingresar a la base de datos",
                             JOptionPane.ERROR_MESSAGE);
 					return;
 					
 				} catch(PlaceAlreadyTakenException e) {
-					JOptionPane.showMessageDialog(null, e.toString(), 
+					JOptionPane.showMessageDialog(null, e.getMessage(), 
 							"No se pudo ingresar a la base de datos",
                             JOptionPane.ERROR_MESSAGE);
 					return;
@@ -174,8 +180,9 @@ public class VentanaAdminLugares extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				setVisible(false);
-				VentanaAdmin ventanaAdm = new VentanaAdmin(db, cta);
-				ventanaAdm.setVisible(true);
+				VentanaInicioSesion ventanaInicio = new VentanaInicioSesion(db);
+				ventanaInicio.setVisible(true);
+				
 			}
 		});
 		btnVolver.setBounds(864, 555, 115, 29);
@@ -341,6 +348,10 @@ public class VentanaAdminLugares extends JFrame {
 	
 	
 	private Lugar obtenerCampos() throws FieldCheckException{
+		
+		if(!verificarCampos()) 
+			throw new FieldCheckException("No se han llenado todos los campos, presione botón autocompletar.");
+		
 		String[] dir = new String[4];
 		dir[0] = txtDireccion.getText().trim().toLowerCase();
 		dir[1] = txtComuna.getText().trim().toLowerCase();
@@ -351,26 +362,17 @@ public class VentanaAdminLugares extends JFrame {
 		String cat = (String) catComboBox.getSelectedItem();
 		String desc = txtpnDescripcion.getText();
 		String id = txtId.getText();
-		Float lat = 0f, lng = 0f;
 		
-		try {
-			lat = Float.parseFloat(txtLatitud.getText());
-			lng = Float.parseFloat(txtLatitud.getText());
-		}catch(NullPointerException e) {
-			throw new FieldCheckException("Presione el botón 'autocompletar'.");
-		}
-		if(nombre.equals("")) throw new FieldCheckException("No se han llenado todos los campos.");
-		if(desc.equals("")) desc = "No se ha proporcionado descripción.";
-		if(cat.equals("categoría")) throw new FieldCheckException("no se han llenado todos los campos.");
-		for(String i : dir) {
-			System.out.println(i);
-			if(i.equalsIgnoreCase("")) throw new FieldCheckException("no se han llenado los campos.");
-		}
+		float lat = Float.parseFloat(txtLatitud.getText());
+		float lng = Float.parseFloat(txtLatitud.getText());
+		
+		
+		
 		return new Lugar(id,nombre, dir, cat, lat, lng, desc);
 		
 	}
 	
-	private void limpiarCampos() {
+	public void limpiarCampos() {
 		txtDireccion.setText("");
 		txtNombre.setText("");
 		txtComuna.setText("");
@@ -384,8 +386,23 @@ public class VentanaAdminLugares extends JFrame {
 		txtDB.setText("");
 	}
 	
-	private boolean validarCampos() {
-		return false;
+	public boolean verificarCampos(){
+		try {
+		if( txtDireccion.getText().trim().equals("") ||  
+			txtNombre.getText().trim().equals("") ||
+			txtComuna.getText().trim().equals("") ||
+			txtRegion.getText().trim().equals("") ||
+			txtPais.getText().trim().equals("") ||
+			txtLatitud.getText().equals("") ||
+			txtLongitud.getText().equals("") ||
+			txtId.getText().equals("") ||
+			txtpnDescripcion.getText().trim().equals("") ||
+			catComboBox.getSelectedIndex() == 0
+			)	return false;
+		}catch(Exception e) {
+			System.out.println("anal " + e.getMessage());
+		}
+		return true;
 	}
 	
 }

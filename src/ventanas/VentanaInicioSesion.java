@@ -12,6 +12,7 @@ import main.java.Administrador;
 import main.java.CuentaUsuario;
 import main.java.DbHandler;
 import main.java.Usuario;
+import main.java.VentanaCampos;
 
 import javax.swing.JButton;
 import java.awt.Color;
@@ -30,7 +31,7 @@ import java.awt.event.ActionEvent;
 
 
 /*
- * 
+ * 		OJO: NO SE PUEDE CONECTAR A LA BASE DE DATOS DESDE PUCV-PRO porque puertos bloqueados
  * 
  * 		Cuentas básicas
  * 	
@@ -38,21 +39,20 @@ import java.awt.event.ActionEvent;
  * 			pass: cBc5536652
  * 
  * 	Usuario mortal:
- * 			user: mortal
- * 			pass: anal
+ * 			user: marcelo
+ * 			pass: marcelo1
  * 
  * 
  * 
  * */
 
 
-public class VentanaInicioSesion extends JFrame {
+public class VentanaInicioSesion extends JFrame implements VentanaCampos {
 
 	private JPanel contentPane;
 	private JPasswordField campoPass;
 	private JTextField campoUsuario;
 	private DbHandler db;
-
 	/**
 	 * Launch the application.
 	 */
@@ -70,12 +70,16 @@ public class VentanaInicioSesion extends JFrame {
 	}
 
 
+	
+	//constructor que se llama al inicio de la aplicación
 	public VentanaInicioSesion() {
-		
 		try {
+			//establecemos conexión con la base de datos
 			db = new DbHandler();
 		} catch (SQLException e1) {
-			JOptionPane.showMessageDialog(null, "Error al conectarse a la base de datos. Intente más tarde", 
+			
+			//si no se puede conectar, entonces no se puede iniciar la aplicación
+			JOptionPane.showMessageDialog(null, "Error al conectarse a la base de datos. Verifique que tiene una conexión a internet distinta y que el puerto 3306 esté abierto", 
 					"No se pudo ingresar a la base de datos",
                     JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
@@ -84,6 +88,7 @@ public class VentanaInicioSesion extends JFrame {
 		ventanita();
 	}
 	
+	//constructor que se llama al volver de los menus de usuario
 	public VentanaInicioSesion(DbHandler database) {
 		db = database;
 		
@@ -118,10 +123,6 @@ public class VentanaInicioSesion extends JFrame {
 		contentPane.add(button);
 		/*
 		 * Botón para iniciar sesión
-		 * 
-		 * 
-		 * 
-		 * 
 		 * */
 		JButton button_1 = new JButton("Ingresar");
 		button_1.addActionListener(new ActionListener() {
@@ -130,10 +131,15 @@ public class VentanaInicioSesion extends JFrame {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
 				
-				
+				if(!verificarCampos()) {
+					JOptionPane.showMessageDialog(null, "Nombre de usuario y/o contraseña vacíos o contienen carácteres \' o \"", 
+							"Error en inicio",
+                            JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				//se obtienen los datos de los campos de texto y contraseña
-				String usr = campoUsuario.getText();
-				String pass = campoPass.getText();
+				String usr = campoUsuario.getText().trim();
+				String pass = campoPass.getText().trim();
 				
 				try {
 					ResultSet rs = db.iniciarSesion(usr, pass);
@@ -144,6 +150,7 @@ public class VentanaInicioSesion extends JFrame {
 					//si es admin, entonces se carga la ventana principal de admin
 					if(cta.tipoCuenta().equals("Administrador")) {
 						setVisible(false);
+						limpiarCampos();
 						VentanaAdmin ventanaAdm = new VentanaAdmin(db, cta);
 						ventanaAdm.setVisible(true);
 						return;
@@ -151,6 +158,7 @@ public class VentanaInicioSesion extends JFrame {
 						//en caso contrario, se carga la del usuario
 					}else {
 						setVisible(false);
+						limpiarCampos();
 						VentanaUsuario ventanaUsr = new VentanaUsuario(db, cta);
 						ventanaUsr.setVisible(true);
 						return;
@@ -165,8 +173,7 @@ public class VentanaInicioSesion extends JFrame {
 			
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					System.out.println("tu mama");
-					e.printStackTrace();
+                    e.printStackTrace();
 				}
 				
 			}
@@ -204,6 +211,23 @@ public class VentanaInicioSesion extends JFrame {
 		 }
 		 
 	}
+	 
+	 //verifica que los campos no contienen ' ni " ni están vacios
+	 public boolean verificarCampos() {
+		 String usr = campoUsuario.getText().trim();
+		 @SuppressWarnings("deprecation")
+		 String pass = campoPass.getText().trim();
+		 if( usr.contains("\'\"") || usr.equals("") || pass.contains("\'\"") || usr.equals(""))
+			 return false;
+		 return true;
+	 }
+	 
+	 
+	 //limpia los campos
+	 public void limpiarCampos() {
+		 campoUsuario.setText("");
+		 campoPass.setText("");
+	 }
 
 }
 

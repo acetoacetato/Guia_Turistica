@@ -17,6 +17,8 @@ import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
+
+//implementa Runnnable para usar threads
 public class VentanaLugar extends JFrame implements Runnable {
 
 	private JPanel contentPane;
@@ -24,12 +26,14 @@ public class VentanaLugar extends JFrame implements Runnable {
 	private JTextField txtDireccion;
 	private JTextField txtRating;
 	private Lugar l;
+	private CuentaUsuario cta;
 
-	/**
-	 * Create the frame.
-	 */
+	
 	public VentanaLugar(Lugar l, CuentaUsuario usr) {
+		
+		//se guarda referencia al lugar a mostrar
 		this.l = l;
+		cta = usr;
 		setBounds(100, 100, 800, 601);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
@@ -38,7 +42,7 @@ public class VentanaLugar extends JFrame implements Runnable {
 		contentPane.setLayout(null);
 		
 		
-		
+		//se crea e inicia el hilo que carga el mapa
 		Thread t = new Thread(this);
 		t.start();
 		
@@ -93,18 +97,33 @@ public class VentanaLugar extends JFrame implements Runnable {
 		
 	}
 	
+	
+	/*
+	 * Método que carga el mapa en un hilo diferente
+	 * 
+	 * */
 	public void run() {
+		
+		
 		MapHandler mapita;
 		try {
+			//se deja un aviso de cargando mapa
 			JLabel cargando = new JLabel("Cargando mapa...");
-			cargando.setBounds(353, 134, 410, 297);
+			cargando.setBounds(453, 134, 410, 297);
 			contentPane.add(cargando);
 			
+			//se crea un MapHandler con la dirección del lugar, más la gomuna, para una búsqueda efectiva
 			mapita = new MapHandler(l.getDireccionPpal() + ", " + l.getComuna());
-			JLabel lblNewLabel = new JLabel(mapita.getMapa());
-			lblNewLabel.setBounds(353, 134, 410, 297);
+			
+			//se crea un label con el ImageIcon del mapa
+			JLabel lblMapa = new JLabel(mapita.getMapa());
+			lblMapa.setBounds(353, 134, 410, 297);
+			
+			//se quita el label de cargando y se agrega el del mapa
 			contentPane.remove(cargando);
-			contentPane.add(lblNewLabel);
+			contentPane.add(lblMapa);
+			
+			//se manda a re pintar el JFrame
 			repaint();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

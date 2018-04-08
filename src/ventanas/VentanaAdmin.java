@@ -26,14 +26,13 @@ public class VentanaAdmin extends JFrame {
 	private CuentaUsuario usr;
 
 
+
 	/**
 	 * Create the frame.
 	 */
 	public VentanaAdmin(DbHandler database, CuentaUsuario cta) {
 		setTitle("Admin");
 		
-
-
 		db = database;
 		usr = cta;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -73,7 +72,7 @@ public class VentanaAdmin extends JFrame {
 				setVisible(false);
 				VentanaInicioSesion ventanaInicio = new VentanaInicioSesion(db);
 				ventanaInicio.setVisible(true);
-				destroy();
+				
 				
 			}
 		});
@@ -81,11 +80,7 @@ public class VentanaAdmin extends JFrame {
 		contentPane.add(btnCerrarSesin);
 	}
 
+	
 
-	public void destroy() {
-		contentPane = null;
-		db = null;
-		usr.destroy();
-		usr = null;
-	}
+	
 }

@@ -19,44 +19,45 @@ public class ItemLugar {
 	private JLabel nombreLocal;
 	private JLabel rating;
 	private JButton btnLugar;
-	private int corX;
-	private int corY;
-	private int corZ;
-	
 
 	private Lugar place;
 	private CuentaUsuario usrAccnt;
 	
 	public ItemLugar (Lugar lugar, int X, int Y, int Z, CuentaUsuario usr){
 		
+		// se crea el label del lugar con el nombre del local/lugar de interés
 		nombreLocal = new JLabel(lugar.getNombreLocal());
-		rating = new JLabel( Integer.toString(lugar.getPuntuacion()) );
-		place = lugar;
-		usrAccnt = usr;
-		btnLugar = new JButton ();
 		
+		//se crea un label con el rating del lugar
+		rating = new JLabel( Integer.toString(lugar.getPuntuacion()) );
+		
+		//se guarda referencia al lugar
+		place = lugar;
+		
+		//se guarda referencia al usuario actual
+		usrAccnt = usr;
+		
+		//se crea el botón para ver el lugar con más detalle
+		btnLugar = new JButton ();		
 		btnLugar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VentanaLugar vtnLugar = new VentanaLugar(place, usrAccnt);
 				vtnLugar.setVisible(true);
 			}
 		});
-		btnLugar.setBounds(X+300, Y, 30, 30);
 		
+		//se le pone el icono a botón para ver lugar en detalle
 		imgn = new ImageIcon(ItemLugar.class.getResource("/Imagenes/lupa.jpg"));
 	    icon1 = new ImageIcon(imgn.getImage().getScaledInstance(btnLugar.getWidth(), btnLugar.getHeight(), Image.SCALE_DEFAULT));
 		
 		btnLugar.setIcon(icon1);
 		
+		//se crea un icono para el fondo
 		fondo = new JLabel("");
 		fondo.setIcon(new ImageIcon(ItemLugar.class.getResource("/Imagenes/fondo2.png")));
-		//getContentPane().add(fondo);
 		
-		
-		this.corX = X;
-		this.corY = Y;
-		this.corZ = Z;
-		
+		//se le dan las coordenadas al botón y labels correspondientes
+		btnLugar.setBounds(X+300, Y, 30, 30);
 		nombreLocal.setBounds(X, Y, 80, 30);
 		rating.setBounds(X+150, Y, 20, 30);
 		

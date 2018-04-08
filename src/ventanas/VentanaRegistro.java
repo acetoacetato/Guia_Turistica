@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import excepciones.UserRegisterFailureException;
 import main.java.DbHandler;
+import main.java.VentanaCampos;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -20,7 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
-public class VentanaRegistro extends JFrame {
+public class VentanaRegistro extends JFrame implements VentanaCampos {
 
 	private JPanel contentPane;
 	private JTextField campoUsr;
@@ -31,6 +32,8 @@ public class VentanaRegistro extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaRegistro(DbHandler database) {
+		
+		//se guarda la referencia al DbHandler
 		db = database;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		setBounds(100, 100, 450, 300);
@@ -38,6 +41,7 @@ public class VentanaRegistro extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
 		
 		JLabel user = new JLabel("Usuario");
 		user.setBounds(15, 39, 95, 20);
@@ -56,43 +60,38 @@ public class VentanaRegistro extends JFrame {
 		campoPass.setBounds(115, 72, 146, 26);
 		contentPane.add(campoPass);
 		
+		//botón para ingresar al nuevo usuario a la base de datos
 		JButton btnRegistrarse = new JButton("Registrarse");
 		btnRegistrarse.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
+				
+				//si los campos contienen ' o ", o bien están vacíos, se manda error 
+				if(!verificarCampos()) {
+					JOptionPane.showMessageDialog(null, "Porfavor, ingrese usuario y contraseña, no pueden contener \" ni \'", 
+							"Error al registrar",
+                            JOptionPane.OK_OPTION);
+					return;
+				}
+				
 				String usr = campoUsr.getText().trim();
 				String pass = campoPass.getText().trim();
-				if(usr.equals("") ||
-					pass.equals("")) {
-					JOptionPane.showMessageDialog(null, "Porfavor, ingrese usuario y contraseña", 
-							"Error al registrar",
-                            JOptionPane.OK_OPTION);
-					return;
-				}
-				
-				if(pass.indexOf('\'') != -1 || usr.indexOf('\'') != -1 ) {
-					JOptionPane.showMessageDialog(null, "Ni usuario ni contraseña pueden contener el caracter  ' .", 
-							"Error al registrar",
-                            JOptionPane.OK_OPTION);
-					return;
-				}
-				
 
 				try {
-					ResultSet rs = db.verificarRegistro(usr);
+					
+					// se verifica que el usuario no está registrado
 					db.registrarUsuario(usr, pass);
 					JOptionPane.showMessageDialog (null, "Se ha registrado al nuevo usuario.", 
 							"Registro completo",
                             JOptionPane.OK_OPTION);
 					
-					//TODO: retornar a la pantalla de inicio de sesión
+					//retornar a la pantalla de inicio de sesión
 					setVisible(false);
 					VentanaInicioSesion ventanaInicio = new VentanaInicioSesion(db);
 					ventanaInicio.setVisible(true);
 					return;
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					
+					//en caso de que falle el registro se lanza el aviso
 				} catch (UserRegisterFailureException e2) {
 					JOptionPane.showMessageDialog(null, e2.getMessage(), 
 							"Registro incompleto",
@@ -110,6 +109,23 @@ public class VentanaRegistro extends JFrame {
 		});
 		btnRegistrarse.setBounds(133, 157, 115, 20);
 		contentPane.add(btnRegistrarse);
+	}
+	
+	
+	public boolean verificarCampos() {
+		String usr = campoUsr.getText();
+		String pass = campoPass.getText();
+		
+		if(usr.equals("") || usr.contains("\"\'") ||
+				pass.equals("") || usr.contains("\'\"")) 
+			return false;
+		
+		return true;
+	}
+	
+	public void limpiarCampos() {
+		campoUsr.setText("");
+		campoPass.setText("");
 	}
 
 }

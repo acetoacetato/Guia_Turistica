@@ -70,33 +70,6 @@ public class Lugar {
 		categoria = "default";
 	}
 	
-	/*
-	public Lugar(String id) {
-		ResultSet rs;
-		DbHandler db;
-		
-		//se busca el lugar en la db por id
-		try {
-			db = new DbHandler();
-			rs = db.buscarLugar(id);
-			id = rs.getString("id");
-			dir = new Direccion(rs.getString("casa"),
-								rs.getString("comuna"),
-								rs.getString("region"),
-								rs.getString("pais"));
-			lat = rs.getFloat("latitud");
-			lng = rs.getFloat("longitud");
-			categoria = rs.getString("categoria");
-			puntuacion = db.puntuacionLugar(id);
-			comentarios = new ArrayList<Comentario>();
-			
-		} catch (SQLException e) {
-			
-			this.id = "NO_EXISTE";	
-		}		
-		
-		
-	}*/
 	
 	/*
 	 * Sobrecarga para cargar de la DB, la usa DbHandler
@@ -141,6 +114,10 @@ public class Lugar {
 		
 	}
 	
+	
+	/*
+	 * Sobrecarga para crear un lugar a partir de un ResulSet, asume que está en posición
+	 * */
 	public Lugar(ResultSet rs) throws SQLException {
 		this.id = rs.getString("id");
 		this.dir = new Direccion(rs.getString("casa"),
@@ -156,7 +133,7 @@ public class Lugar {
 	}
 	
 
-	
+	//carga los comentarios desde un lugar
 	private void cargarComentarios() {
 		
 		try {

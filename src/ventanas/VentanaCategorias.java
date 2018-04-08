@@ -19,6 +19,8 @@ public class VentanaCategorias extends JFrame {
 	private JPanel contentPane;
 	private DbHandler db;
 	private CuentaUsuario usr;
+	private JFrame ventanaAnterior;
+	private JFrame estaVentana;
 	
 	
 	public VentanaCategorias(DbHandler database, CuentaUsuario cta, ArrayList<ArrayList<Lugar>> l) {
@@ -27,62 +29,75 @@ public class VentanaCategorias extends JFrame {
 		db = database;
 		usr = cta;
 		
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 521, 283);
 				
 		Container contentPane = getContentPane();
 		this.setVisible(true);
 		
+		/*
+		 * los index del Arraylist por categoría son
+		 * 
+		 * 		0 = Atracciones varias
+		 * 		1 = Dónde dormir
+		 * 		2 = Locales de comida
+		 * 		3 = Vida Nocturna
+		 * 
+		 * */
 		
 		//Los respectivos botones con su posición en x,y y tamaño respectivamente
-		JButton boton1 = new JButton();
-		boton1.addActionListener(new ActionListener() {
+		JButton botonAtracciones = new JButton();
+		botonAtracciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaLugares ventanaAtrac = new VentanaLugares("Atracciones", l.get(0), cta, 0);
+				//se abre una ventana con el título de atracciones, la lista de lugares, la cuenta de usuario,
+				//el index de inicio donde comienza a mostrar los lugares (siempre en un principio 0)
+				//el index de la categoría de la ventana y la base de datos para volver de ahí
+				VentanaLugares ventanaAtrac = new VentanaLugares("Atracciones", l, cta, 0, 0, db);
 				ventanaAtrac.setVisible(true);
 				
 			}
 		});
 		
-		boton1.setBounds(50, 110, 60, 60);
+		botonAtracciones.setBounds(50, 110, 60, 60);
 		
-		JButton boton2 = new JButton();
-		boton2.addActionListener(new ActionListener() {
+		JButton botonDormir = new JButton();
+		botonDormir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaLugares ventanaHot = new VentanaLugares("Hoteles", l.get(1), cta, 0);
+				//se abre una ventana con el título de "Dónde dormir", la lista de lugares, la cuenta de usuario,
+				//el index de inicio donde comienza a mostrar los lugares (siempre en un principio 0)
+				//el index de la categoría de la ventana y la base de datos para volver de ahí
+				VentanaLugares ventanaHot = new VentanaLugares("¿Dónde dormir?", l, cta, 0, 1, db);
 				ventanaHot.setVisible(true);
 				
 			}
 		});
-		boton2.setBounds(160, 110, 60, 60);
+		botonDormir.setBounds(160, 110, 60, 60);
 		
-		JButton boton3 = new JButton();
-		boton3.addActionListener(new ActionListener() {
+		
+		JButton botonComida = new JButton();
+		botonComida.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaLugares ventanaRest = new VentanaLugares("Restaurantes", l.get(2), cta, 0);
+				VentanaLugares ventanaRest = new VentanaLugares("¿Dónde comer?", l, cta, 0, 2, db);
 				ventanaRest.setVisible(true);
 				
 			}
 		});
-		boton3.setBounds(270, 110, 60, 60);
+		botonComida.setBounds(270, 110, 60, 60);
 		
-		JButton boton4 = new JButton();
-		boton4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		boton4.addActionListener(new ActionListener() {
+		JButton botonVidaNoc = new JButton();
+		botonVidaNoc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaLugares ventanaNoc = new VentanaLugares("Vida nocturna", l.get(3), cta, 0);
+				VentanaLugares ventanaNoc = new VentanaLugares("Vida nocturna", l, cta, 0, 3, db);
 				ventanaNoc.setVisible(true);
 				
 			}
 		});
-		boton4.setBounds(380, 110, 60, 60);
+		botonVidaNoc.setBounds(380, 110, 60, 60);
 		
 		//Busca las imagenes respectivas para las categorias
 		ImageIcon imagen = new ImageIcon(VentanaUsuario.class.getResource("/Imagenes/Atracciones.png"));
@@ -91,21 +106,21 @@ public class VentanaCategorias extends JFrame {
 		ImageIcon imagen4 = new ImageIcon(VentanaUsuario.class.getResource("/Imagenes/Vida_Nocturna.png"));
 		
 		//Setea las imagenes en las dimesiones del botón
-		Icon icon1 = new ImageIcon(imagen.getImage().getScaledInstance(boton1.getWidth(), boton1.getHeight(), Image.SCALE_DEFAULT));
-		Icon icon2 = new ImageIcon(imagen2.getImage().getScaledInstance(boton2.getWidth(), boton2.getHeight(), Image.SCALE_DEFAULT));
-		Icon icon3 = new ImageIcon(imagen3.getImage().getScaledInstance(boton3.getWidth(), boton3.getHeight(), Image.SCALE_DEFAULT));
-		Icon icon4 = new ImageIcon(imagen4.getImage().getScaledInstance(boton4.getWidth(), boton4.getHeight(), Image.SCALE_DEFAULT));
+		Icon icon1 = new ImageIcon(imagen.getImage().getScaledInstance(botonAtracciones.getWidth(), botonAtracciones.getHeight(), Image.SCALE_DEFAULT));
+		Icon icon2 = new ImageIcon(imagen2.getImage().getScaledInstance(botonDormir.getWidth(), botonDormir.getHeight(), Image.SCALE_DEFAULT));
+		Icon icon3 = new ImageIcon(imagen3.getImage().getScaledInstance(botonComida.getWidth(), botonComida.getHeight(), Image.SCALE_DEFAULT));
+		Icon icon4 = new ImageIcon(imagen4.getImage().getScaledInstance(botonVidaNoc.getWidth(), botonVidaNoc.getHeight(), Image.SCALE_DEFAULT));
 		
 		//Setea un icono al botón
-		boton1.setIcon(icon1);
-		boton2.setIcon(icon2);
-		boton3.setIcon(icon3);
-		boton4.setIcon(icon4);
+		botonAtracciones.setIcon(icon1);
+		botonDormir.setIcon(icon2);
+		botonComida.setIcon(icon3);
+		botonVidaNoc.setIcon(icon4);
 		
-		JLabel lblNewLabel = new JLabel(" \u00BFQu\u00E9 deseas hacer hoy?");
-		lblNewLabel.setForeground(new Color(255, 0, 255));
-		lblNewLabel.setBounds(91, 42, 299, 31);
-		lblNewLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 25));
+		JLabel lblPregunta = new JLabel(" \u00BFQu\u00E9 deseas hacer hoy?");
+		lblPregunta.setForeground(new Color(255, 0, 255));
+		lblPregunta.setBounds(91, 42, 299, 31);
+		lblPregunta.setFont(new Font("Comic Sans MS", Font.BOLD, 25));
 		
 		JLabel lblAtracciones = new JLabel("Atracciones");
 		lblAtracciones.setForeground(new Color(153, 51, 153));
@@ -128,31 +143,37 @@ public class VentanaCategorias extends JFrame {
 		lblRestaurantes.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
 		
 		
-		contentPane.setLayout(null);
-		contentPane.add(lblNewLabel);
 		
-	    contentPane.add(boton1);
-		contentPane.add(boton2);
-		contentPane.add(boton3);
-	    contentPane.add(boton4);
 		
-		JLabel lblDasd = new JLabel("Bienvenido " + cta.getNombreUsuario());
-		lblDasd.setForeground(new Color(255, 0, 255));
-		lblDasd.setBounds(10, 11, 360, 31);
-		lblDasd.setFont(new Font("Comic Sans MS", Font.BOLD, 25));
+	    //se crea el mensaje de bienvenida al usuario
+		JLabel lblBienvenida = new JLabel("Bienvenido " + cta.getNombreUsuario());
+		lblBienvenida.setForeground(new Color(255, 0, 255));
+		lblBienvenida.setBounds(10, 11, 360, 31);
+		lblBienvenida.setFont(new Font("Comic Sans MS", Font.BOLD, 25));
 		
-		contentPane.add(lblDasd);
-
 		
+		//se agregan los labels 
+		contentPane.add(lblBienvenida);
 		contentPane.add(lblAtracciones);
 		contentPane.add(lblHoteles);
 		contentPane.add(lblVidaNocturna);
 		contentPane.add(lblRestaurantes);
+		contentPane.add(lblPregunta);
 		
-		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon(VentanaUsuario.class.getResource("/Imagenes/fondo1.png")));
-		lblNewLabel_1.setBounds(0, 0, 505, 245);
-		getContentPane().add(lblNewLabel_1);
+		//se setea un layout vacío
+		contentPane.setLayout(null);
+		
+		//se agregan los botones
+	    contentPane.add(botonAtracciones);
+		contentPane.add(botonDormir);
+		contentPane.add(botonComida);
+	    contentPane.add(botonVidaNoc);
+		
+		//se crea y agrega el fondo 
+		JLabel lblFondo = new JLabel("");
+		lblFondo.setIcon(new ImageIcon(VentanaUsuario.class.getResource("/Imagenes/fondo1.png")));
+		lblFondo.setBounds(0, 0, 505, 245);
+		getContentPane().add(lblFondo);
 		
 		
 		
