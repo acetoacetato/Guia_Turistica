@@ -19,6 +19,7 @@ public class Lugar {
 	private String categoria;
 	private String descripcion;
 	
+	
 	public String getNombreLocal() {
 		return nombreLocal;
 	}
@@ -134,7 +135,7 @@ public class Lugar {
 	
 
 	//carga los comentarios desde un lugar
-	private void cargarComentarios() {
+	public void cargarComentarios() {
 		
 		try {
 			DbHandler db = new DbHandler();

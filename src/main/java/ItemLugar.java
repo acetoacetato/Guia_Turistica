@@ -46,10 +46,6 @@ public class ItemLugar {
 			}
 		});
 		
-		
-		
-		
-		
 		//se crea un icono para el fondo
 		fondo = new JLabel("");
 		fondo.setIcon(new ImageIcon(ItemLugar.class.getResource("/Imagenes/fondo2.png")));

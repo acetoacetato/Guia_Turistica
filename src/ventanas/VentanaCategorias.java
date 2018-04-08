@@ -119,7 +119,7 @@ public class VentanaCategorias extends JFrame {
 		
 		JLabel lblPregunta = new JLabel(" \u00BFQu\u00E9 deseas hacer hoy?");
 		lblPregunta.setForeground(new Color(255, 0, 255));
-		lblPregunta.setBounds(91, 42, 299, 31);
+		lblPregunta.setBounds(50, 42, 320, 31);
 		lblPregunta.setFont(new Font("Comic Sans MS", Font.BOLD, 25));
 		
 		JLabel lblAtracciones = new JLabel("Atracciones");
@@ -146,7 +146,7 @@ public class VentanaCategorias extends JFrame {
 		
 		
 	    //se crea el mensaje de bienvenida al usuario
-		JLabel lblBienvenida = new JLabel("Bienvenido " + cta.getNombreUsuario());
+		JLabel lblBienvenida = new JLabel(cta.getNombreUsuario() + ",");
 		lblBienvenida.setForeground(new Color(255, 0, 255));
 		lblBienvenida.setBounds(10, 11, 360, 31);
 		lblBienvenida.setFont(new Font("Comic Sans MS", Font.BOLD, 25));

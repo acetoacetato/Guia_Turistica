@@ -4,11 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.io.IOException;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import main.java.CuentaUsuario;
+import main.java.DbHandler;
 import main.java.Lugar;
 import main.java.MapHandler;
 
@@ -16,6 +18,11 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
+import javax.swing.JEditorPane;
 
 
 //implementa Runnnable para usar threads
@@ -25,9 +32,10 @@ public class VentanaLugar extends JFrame implements Runnable {
 	private JTextField txtNombre;
 	private JTextField txtDireccion;
 	private JTextField txtRating;
+	private JButton comentario;
 	private Lugar l;
 	private CuentaUsuario cta;
-
+	private DbHandler db;
 	
 	public VentanaLugar(Lugar l, CuentaUsuario usr) {
 		
@@ -59,16 +67,31 @@ public class VentanaLugar extends JFrame implements Runnable {
 		contentPane.add(lblDescripcion);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(40, 172, 253, 131);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setBounds(22, 172, 300, 131);
 		contentPane.add(scrollPane);
 		
 		JTextPane txtpnDescripcion = new JTextPane();
 		txtpnDescripcion.setEditable(false);
 		scrollPane.setViewportView(txtpnDescripcion);
 		
-		JLabel lblNewLabel_1 = new JLabel("Rating:");
-		lblNewLabel_1.setBounds(32, 106, 90, 26);
-		contentPane.add(lblNewLabel_1);
+		JLabel lblRating = new JLabel("Rating:");
+		lblRating.setBounds(22, 102, 90, 26);
+		contentPane.add(lblRating);
+		
+		comentario = new JButton("\u00A1Revisa los comentarios de nuestros usuarios!");
+		comentario.setHorizontalTextPosition(SwingConstants.CENTER);
+		comentario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				//se abre una ventana con el título de "Comentarios", la lista de comentarios, la cuenta de usuario
+				//y la base de datos
+				VentanaComentarios ventanaCom = new VentanaComentarios("Comentarios", l, cta, db );
+				ventanaCom.setVisible(true);
+			}
+		});
+		comentario.setBounds( 22, 331, 300, 44);
+		contentPane.add(comentario);
 		
 		txtNombre = new JTextField();
 		txtNombre.setEditable(false);
@@ -79,14 +102,14 @@ public class VentanaLugar extends JFrame implements Runnable {
 		
 		txtDireccion = new JTextField();
 		txtDireccion.setEditable(false);
-		txtDireccion.setBounds(104, 65, 375, 26);
+		txtDireccion.setBounds(94, 65, 375, 26);
 		contentPane.add(txtDireccion);
 		txtDireccion.setColumns(10);
 		txtDireccion.setText(l.getDireccionPpal() + ", " + l.getComuna());
 		
 		txtRating = new JTextField();
 		txtRating.setEditable(false);
-		txtRating.setBounds(94, 105, 146, 26);
+		txtRating.setBounds(94, 102, 146, 26);
 		contentPane.add(txtRating);
 		txtRating.setColumns(10);
 		txtRating.setText( Integer.toString( l.getPuntuacion() ) );
