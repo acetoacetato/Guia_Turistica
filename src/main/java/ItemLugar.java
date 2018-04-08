@@ -46,11 +46,9 @@ public class ItemLugar {
 			}
 		});
 		
-		//se le pone el icono a botón para ver lugar en detalle
-		imgn = new ImageIcon(ItemLugar.class.getResource("/Imagenes/lupa.jpg"));
-	    icon1 = new ImageIcon(imgn.getImage().getScaledInstance(btnLugar.getWidth(), btnLugar.getHeight(), Image.SCALE_DEFAULT));
 		
-		btnLugar.setIcon(icon1);
+		
+		
 		
 		//se crea un icono para el fondo
 		fondo = new JLabel("");
@@ -62,6 +60,12 @@ public class ItemLugar {
 		rating.setBounds(X+150, Y, 20, 30);
 		
 		fondo.setBounds(5, Z, 450, 65);
+		
+		//se le pone el icono a botón para ver lugar en detalle
+		imgn = new ImageIcon(ItemLugar.class.getResource("/Imagenes/lupa.jpg"));
+		icon1 = new ImageIcon(imgn.getImage().getScaledInstance(btnLugar.getWidth(), btnLugar.getHeight(), Image.SCALE_DEFAULT));
+		
+		btnLugar.setIcon(icon1);
 	}
 	
 	
