@@ -90,7 +90,7 @@ public class VentanaLugares extends JFrame {
 		
 		//si existe al menos un lugar más a mostrar, se crea un botón para la sgte página y se adhiere al panel
 		if(existeNext) {
-			JButton btnNext = new JButton();
+			JButton btnNext = new JButton("next");
 			btnNext.setBounds(370, 220, 45, 20);
 			
 			btnNext.addActionListener(new ActionListener() {
