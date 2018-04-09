@@ -23,6 +23,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import javax.swing.JEditorPane;
+import javax.swing.JTextArea;
 
 
 //implementa Runnnable para usar threads
@@ -71,9 +72,11 @@ public class VentanaLugar extends JFrame implements Runnable {
 		scrollPane.setBounds(22, 172, 300, 131);
 		contentPane.add(scrollPane);
 		
-		JTextPane txtpnDescripcion = new JTextPane();
-		txtpnDescripcion.setEditable(false);
-		scrollPane.setViewportView(txtpnDescripcion);
+		JTextArea textArea = new JTextArea();
+		scrollPane.setViewportView(textArea);
+		textArea.setEditable(false);
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
 		
 		JLabel lblRating = new JLabel("Rating:");
 		lblRating.setBounds(22, 102, 90, 26);
@@ -86,7 +89,7 @@ public class VentanaLugar extends JFrame implements Runnable {
 				setVisible(false);
 				//se abre una ventana con el título de "Comentarios", la lista de comentarios, la cuenta de usuario
 				//y la base de datos
-				VentanaComentarios ventanaCom = new VentanaComentarios("Comentarios", l, cta, db );
+				VentanaComentarios ventanaCom = new VentanaComentarios("Comentarios", l, cta, db, 0 );
 				ventanaCom.setVisible(true);
 			}
 		});
@@ -114,8 +117,7 @@ public class VentanaLugar extends JFrame implements Runnable {
 		txtRating.setColumns(10);
 		txtRating.setText( Integer.toString( l.getPuntuacion() ) );
 		
-		txtpnDescripcion.setText(l.getDescripcion());
-		
+		textArea.setText( l.getDescripcion());
 		
 		
 	}

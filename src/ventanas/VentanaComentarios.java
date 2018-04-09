@@ -35,9 +35,15 @@ public class VentanaComentarios extends JFrame {
 	
 	
 	
-	public VentanaComentarios( String titulo, Lugar l, CuentaUsuario usr, DbHandler baseDatos) {
+	public VentanaComentarios( String titulo, Lugar l, CuentaUsuario usr, DbHandler baseDatos, int actual) {
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 800, 601);
+		setTitle(titulo);
+		
 		existeNext = true;
 		db = baseDatos;
+		act = actual;
 		usuario = usr;
 		lugar = l;
 		lugar.cargarComentarios();
@@ -52,23 +58,22 @@ public class VentanaComentarios extends JFrame {
 		
 		for (int i = 0 ; i < 5 ; i++) {
 			
-			/*
+			
 			if(act == lugar.getComentarios().size()) {
 				existeNext = false;
 				act--;
 				break;
 			}
-			*/
-			System.out.println("caca");
+			
 			itemCom[i] = new ItemComentario( lugar.getComentarios().get(i) , usuario, x, y);
-			y+=40;
+			y+=100;
 			
 			contentPane.add(itemCom[i].getUser());
 			contentPane.add(itemCom[i].getScroll1());
-			contentPane.add(itemCom[i].getComentarios());
+			//contentPane.add(itemCom[i].getComentarios());
 			contentPane.add(itemCom[i].getScroll2());
-			contentPane.add(itemCom[i].getTuComen());
-			
+			//contentPane.add(itemCom[i].getTuComen());
+			contentPane.add(itemCom[i].getPuntuacion());
 			act++;
 		}
 		
