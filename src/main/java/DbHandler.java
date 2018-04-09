@@ -272,7 +272,7 @@ public class DbHandler {
 	//se busca un comentario por su id
 	public ResultSet buscarComentarios(String id) throws SQLException {
 		Statement stmt = coneccion.createStatement();
-		return stmt.executeQuery("select * from Comentario where idLugar = '" +  id + "';");
+		return stmt.executeQuery("select * from Comentario where id_lugar = '" +  id + "';");
 	}
 	
 	

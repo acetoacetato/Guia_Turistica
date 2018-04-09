@@ -122,15 +122,16 @@ public class Lugar {
 	public Lugar(ResultSet rs) throws SQLException {
 		this.id = rs.getString("id");
 		this.dir = new Direccion(rs.getString("casa"),
-								rs.getString("comuna"),
-								rs.getString("region"),
-								rs.getString("pais")
+								 rs.getString("comuna"),
+								 rs.getString("region"),
+								 rs.getString("pais")
 								);
 		this.lat = rs.getFloat("latitud");
 		this.lng = rs.getFloat("longitud");
 		this.nombreLocal = rs.getString("nombre");
 		this.descripcion = rs.getString("descripcion");
 		this.categoria = rs.getString("categoria");
+		comentarios = new ArrayList<Comentario>();
 	}
 	
 
@@ -143,7 +144,7 @@ public class Lugar {
 			rs = db.buscarComentarios(id);
 			Comentario com;
 			while(rs.next()) {
-				com = new Comentario( rs.getString("idUsuario"),
+				com = new Comentario( rs.getString("id_usuario"),
 									  rs.getString("comentario"),
 									  rs.getFloat("puntuacion")
 									  );
