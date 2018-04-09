@@ -106,7 +106,7 @@ public class VentanaLugares extends JFrame {
 		}
 		
 		//botón para volver al menú de categorías
-		JButton btnVolverMenu = new JButton("Volver a categorías");
+		JButton btnVolverMenu = new JButton("Volver");
 		btnVolverMenu.setBounds(10, 210, 100, 40);
 		contentPane.add(btnVolverMenu);
 		btnVolverMenu.addActionListener(new ActionListener() {

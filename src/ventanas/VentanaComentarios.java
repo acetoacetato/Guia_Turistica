@@ -1,7 +1,10 @@
 package ventanas;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -30,7 +33,7 @@ public class VentanaComentarios extends JFrame {
 	private int act;
 	private int coment;
 		
-	
+	private String t;
 	
 	
 	
@@ -41,6 +44,7 @@ public class VentanaComentarios extends JFrame {
 		setBounds(100, 100, 800, 601);
 		setTitle(titulo);
 		
+		t = titulo;
 		existeNext = true;
 		db = baseDatos;
 		act = actual;
@@ -56,7 +60,7 @@ public class VentanaComentarios extends JFrame {
 		
 		
 		
-		for (int i = 0 ; i < 5 ; i++) {
+		for (int i = 0 ; i < 3 ; i++) {
 			
 			
 			if(act == lugar.getComentarios().size()) {
@@ -66,17 +70,72 @@ public class VentanaComentarios extends JFrame {
 			}
 			
 			itemCom[i] = new ItemComentario( lugar.getComentarios().get(i) , usuario, x, y);
-			y+=100;
+			y+=150;
 			
 			contentPane.add(itemCom[i].getUser());
 			contentPane.add(itemCom[i].getScroll1());
 			//contentPane.add(itemCom[i].getComentarios());
-			contentPane.add(itemCom[i].getScroll2());
+			//contentPane.add(itemCom[i].getScroll2());
 			//contentPane.add(itemCom[i].getTuComen());
 			contentPane.add(itemCom[i].getPuntuacion());
 			act++;
 		}
 		
-	}
+		
+		if(existeNext) {
+			JButton btnNext = new JButton("Siguiente");
+			btnNext.setBounds(650, 490, 150, 20);
+			
+			btnNext.addActionListener(new ActionListener() {
+				//al presionarse, se crea un ventanaLugares con los parámetros actuales
+				public void actionPerformed(ActionEvent e) {
+					setVisible(false);
+					VentanaComentarios vtnCom = new VentanaComentarios(titulo, l, usr, db, act);
+					vtnCom.setVisible(true);
+				}
+			});
+			
+			contentPane.add(btnNext);
+		}
+		
+		//botón para volver al menú de categorías
+		JButton btnVolverLugar = new JButton("Volver");
+		btnVolverLugar.setBounds(300, 480, 100, 40);
+		contentPane.add(btnVolverLugar);
+		btnVolverLugar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				VentanaLugar ventanaCat = new VentanaLugar(lugar, usuario);
+				ventanaCat.setVisible(true);
+				try {
+					finalize();
+				} catch (Throwable e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+		});
+		
+//si el actual es mayor a 5, entonces se puede volver una página atrás
+		if(act>5) {
+					
+			//se crea el botón atrás y se lo agrega al panel
+			JButton btnBack = new JButton("Atrás");
+			btnBack.setBounds(19, 490, 150, 20);
+					
+			//al presionarse el botón, se crea una ventanaComentarios con actual-6, que sería el actual de la página anterior
+			btnBack.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					setVisible(false);
+					VentanaComentarios vtnComentario = new VentanaComentarios(t, lugar, usuario, db, act-6);
+					vtnComentario.setVisible(true);
+							
+						}
+					});
+					
+					contentPane.add(btnBack);
+				}		
 
+	}
 }

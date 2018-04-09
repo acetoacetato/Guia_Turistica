@@ -28,7 +28,7 @@ public class ItemComentario {
 		//se crea un scroll negando el horizontal para que baje la ventana en caso de sobrepasar
 		//los limites del campo de texto vertical.
 		scroll1 = new JScrollPane();
-		scroll1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		
 		
 		//se crea un textPane donde recibe el comentario del usuario X
 		//se le niega que el usuario que esté logueado pueda editar los comentarios de otros usuarios
@@ -38,9 +38,12 @@ public class ItemComentario {
 		comentarios.setWrapStyleWord(true);
 		comentarios.setEditable(false);
 		
-		//scroll1.setViewportView(comentarios);
+		
 		comentarios.setText(comentario.getCom());
 		
+		
+		scroll1.setViewportView(comentarios);
+		//scroll1.add(comentarios);
 		//lo mismo que el scroll1
 		scroll2 = new JScrollPane();
 		scroll2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -56,12 +59,12 @@ public class ItemComentario {
 		
 		
 		//se le dan las coordenadas a los labels, y los textpane correspondientes
-		user.setBounds(X, Y, 50, 30);
-		puntuacion.setBounds(X+50, Y, 30, 30);
-		comentarios.setBounds(X+60,Y,100,100);
-		tuComen.setBounds(X+200, Y, 100, 100);
-		scroll1.setBounds(X, Y, 250, 100);
-		scroll2.setBounds(X+300, Y, 250, 100);
+		user.setBounds(X+25, Y, 250, 30);
+		puntuacion.setBounds(X, Y, 30, 30);
+		//comentarios.setBounds(X,Y+50, 250,100);
+		//tuComen.setBounds(X+200, Y, 100, 100);
+		scroll1.setBounds(X, Y+50, 250, 100);
+		//scroll2.setBounds(X+300, Y, 250, 100);
 	}
 	
 
