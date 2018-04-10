@@ -69,7 +69,7 @@ public class VentanaLugares extends JFrame {
 			}
 			
 			//se crea un item con el lugar, las coordenadas donde debe crearse  y una referencia al usuario, para pasarlo en caso de que se vean los comentarios del lugar
-			itememes[i] = new ItemLugar(lugarcitos.get(act), x, y, z, usuario);
+			itememes[i] = new ItemLugar(lugarcitos.get(act), x, y, z, usuario, db);
 			
 			//se cambian las coordenadas para el sgte item a generar
 			y+=40;

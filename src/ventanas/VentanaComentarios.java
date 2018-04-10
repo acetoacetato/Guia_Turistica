@@ -9,9 +9,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import main.java.Comentario;
 import main.java.CuentaUsuario;
 import main.java.DbHandler;
 import main.java.ItemComentario;
+import main.java.ItemComentarioUsuarioActual;
 import main.java.ItemLugar;
 import main.java.Lugar;
 
@@ -35,10 +37,12 @@ public class VentanaComentarios extends JFrame {
 		
 	private String t;
 	
+	private ItemComentarioUsuarioActual comUsr;
 	
 	
 	
-	public VentanaComentarios( String titulo, Lugar l, CuentaUsuario usr, DbHandler baseDatos, int actual) {
+	
+	public VentanaComentarios( String titulo, Lugar l, CuentaUsuario usr, DbHandler baseDatos, int actual, ItemComentarioUsuarioActual usrC) {
 		
 		t = titulo;
 		existeNext = true;
@@ -46,6 +50,7 @@ public class VentanaComentarios extends JFrame {
 		act = actual;
 		usuario = usr;
 		lugar = l;
+		comUsr = usrC;
 		cargarVentana();
 		
 
@@ -59,11 +64,27 @@ public class VentanaComentarios extends JFrame {
 		usuario = usr;
 		lugar = l;
 		lugar.cargarComentarios();
+		
+		
+		for (int i = 0 ; i < l.getComentarios().size() ; i++) {
+			
+			Comentario c = l.getComentarios().get(i);
+			if(c.getUsr().equals(usuario.getNombreUsuario())) {
+				comUsr = new ItemComentarioUsuarioActual(c, 500, 150, db,lugar);
+				l.getComentarios().remove(i);
+				cargarVentana();
+				return;
+			}
+			
+		}
+		comUsr =new ItemComentarioUsuarioActual(new Comentario(usuario.getNombreUsuario()), 500, 150, db,lugar);
 		cargarVentana();
+		
 	}
 
 private void cargarVentana() {
-	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	
+	
 	setBounds(100, 100, 800, 601);
 	setTitle(t);
 	
@@ -72,10 +93,14 @@ private void cargarVentana() {
 	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 	setContentPane(contentPane);
 	contentPane.setLayout(null);
-	itemCom = new ItemComentario[5];
+	itemCom = new ItemComentario[3];
 	int  x = 40, y = 20;
-	
-	System.out.println(act);
+	contentPane.add(comUsr.getUser());
+	contentPane.add(comUsr.getScroll1());
+	contentPane.add(comUsr.getPuntuacion());
+	contentPane.add(comUsr.getBttonActualizar());
+	contentPane.add(comUsr.getBttonComentDown());
+	contentPane.add(comUsr.getBttonComentUp());
 	for (int i = 0 ; i < 3 ; i++) {
 		
 		if(act == lugar.getComentarios().size()) {
@@ -83,10 +108,9 @@ private void cargarVentana() {
 			
 			break;
 		}
-		
-		itemCom[i] = new ItemComentario( lugar.getComentarios().get(act) , usuario, x, y);
+
+		itemCom[i] = new ItemComentario( lugar.getComentarios().get(act) , x, y);
 		y+=150;
-		System.out.print(itemCom[i].getUser());
 		contentPane.add(itemCom[i].getUser());
 		contentPane.add(itemCom[i].getScroll1());
 		//contentPane.add(itemCom[i].getComentarios());
@@ -105,7 +129,7 @@ private void cargarVentana() {
 			//al presionarse, se crea un ventanaLugares con los parámetros actuales
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaComentarios vtnCom = new VentanaComentarios(t, lugar, usuario, db, act);
+				VentanaComentarios vtnCom = new VentanaComentarios(t, lugar, usuario, db, act, comUsr);
 				vtnCom.setVisible(true);
 			}
 		});
@@ -120,7 +144,7 @@ private void cargarVentana() {
 	btnVolverLugar.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			setVisible(false);
-			VentanaLugar ventanaCat = new VentanaLugar(lugar, usuario);
+			VentanaLugar ventanaCat = new VentanaLugar(lugar, usuario, db);
 			ventanaCat.setVisible(true);
 			try {
 				finalize();
@@ -143,7 +167,7 @@ private void cargarVentana() {
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaComentarios vtnComentario = new VentanaComentarios(t, lugar, usuario, db, act-6);
+				VentanaComentarios vtnComentario = new VentanaComentarios(t, lugar, usuario, db, act-6, comUsr);
 				vtnComentario.setVisible(true);
 						
 					}

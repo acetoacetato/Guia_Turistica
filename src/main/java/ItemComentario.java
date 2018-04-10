@@ -11,19 +11,21 @@ import javax.swing.ScrollPaneConstants;
 
 public class ItemComentario {
 	
-	private JLabel user;
-	private JTextArea comentarios;
-	private JTextArea tuComen;
-	private JScrollPane scroll1;
-	private JScrollPane scroll2;
-	private JLabel puntuacion;
+	protected JLabel user;
+	protected JTextPane comentarios;
+	protected JScrollPane scroll1;
+	protected JScrollPane scroll2;
+	protected JTextField puntuacion;
 	
-	public ItemComentario(Comentario comentario, CuentaUsuario usr, int X, int Y) {
+	
+
+	
+	public ItemComentario(Comentario comentario,  int X, int Y) {
 		
 		// se crea el label del comentario con el nombre del usuario.
 		user = new JLabel(comentario.getUsr() + ":");
 		
-		puntuacion = new JLabel(Float.toString(comentario.getPt()));
+		puntuacion = new JTextField(""+comentario.getPt());
 		
 		//se crea un scroll negando el horizontal para que baje la ventana en caso de sobrepasar
 		//los limites del campo de texto vertical.
@@ -33,14 +35,14 @@ public class ItemComentario {
 		//se crea un textPane donde recibe el comentario del usuario X
 		//se le niega que el usuario que esté logueado pueda editar los comentarios de otros usuarios
 		//se le setea el scroll1 a comentarios para el tema de la barra
-		comentarios = new JTextArea();
-		comentarios.setLineWrap(true);
-		comentarios.setWrapStyleWord(true);
+		comentarios = new JTextPane();
+		//comentarios.setLineWrap(true);
+		//comentarios.setWrapStyleWord(true);
 		comentarios.setEditable(false);
 		
 		
 		comentarios.setText(comentario.getCom());
-		
+		puntuacion.setEditable(false);
 		
 		scroll1.setViewportView(comentarios);
 		//scroll1.add(comentarios);
@@ -49,13 +51,7 @@ public class ItemComentario {
 		scroll2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		
-		//lo mismo que el campo de texto "comentarios", la diferencia, este si se puede editar
-		//pues es el comentario del usuario logueado en ese momento
-		//se le setea el scroll2
-		tuComen = new JTextArea();
-		tuComen.setLineWrap(true);
-		tuComen.setWrapStyleWord(true);
-		scroll2.setViewportView(tuComen);
+		
 		
 		
 		//se le dan las coordenadas a los labels, y los textpane correspondientes
@@ -70,11 +66,11 @@ public class ItemComentario {
 
 
 
-	public JLabel getPuntuacion() {
+	public JTextField getPuntuacion() {
 		return puntuacion;
 	}
 
-	public void setPuntuacion(JLabel puntuacion) {
+	public void setPuntuacion(JTextField puntuacion) {
 		this.puntuacion = puntuacion;
 	}
 
@@ -86,21 +82,15 @@ public class ItemComentario {
 		this.user = user;
 	}
 
-	public JTextArea getComentarios() {
+	public JTextPane getComentarios() {
 		return comentarios;
 	}
 
-	public void setComentarios(JTextArea comentarios) {
+	public void setComentarios(JTextPane comentarios) {
 		this.comentarios = comentarios;
 	}
 
-	public JTextArea getTuComen() {
-		return tuComen;
-	}
 
-	public void setTuComen(JTextArea tuComen) {
-		this.tuComen = tuComen;
-	}
 
 	public JScrollPane getScroll1() {
 		return scroll1;

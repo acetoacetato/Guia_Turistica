@@ -38,8 +38,10 @@ public class VentanaLugar extends JFrame implements Runnable {
 	private CuentaUsuario cta;
 	private DbHandler db;
 	
-	public VentanaLugar(Lugar l, CuentaUsuario usr) {
+	public VentanaLugar(Lugar l, CuentaUsuario usr, DbHandler baseDatos) {
 		
+		
+		db = baseDatos;
 		//se guarda referencia al lugar a mostrar
 		this.l = l;
 		cta = usr;

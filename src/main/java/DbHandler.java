@@ -275,6 +275,11 @@ public class DbHandler {
 		return stmt.executeQuery("select * from Comentario where id_lugar = '" +  id + "';");
 	}
 	
+	public boolean buscarComentario(String idUsr, String idLugar) throws SQLException{
+		Statement stmt = coneccion.createStatement();
+		ResultSet rs = stmt.executeQuery("Select * from Comentario where id_lugar = '" + idLugar + "' and id_usuario ='" + idUsr + "';");
+		return rs.next();
+	}
 	
 	//calcula la puntuación de un lugar, recibe el id de lugar 
 	public int obtenerPuntuacion(String id) throws SQLException {
@@ -284,6 +289,24 @@ public class DbHandler {
 			return rs.getInt("SUM(puntuacion)");
 		else 
 			return 0;
+	}
+	
+	public void modificarComentario(String coment, Comentario c, Lugar l, String p) throws SQLException {
+		System.out.println("\n tu mamá es homnbre jaja salu2\n ");
+		Statement stmt = coneccion.createStatement();
+		String query;
+		if(buscarComentario(c.getUsr(), l.getId())) {
+			query = "Update Comentario set comentario ='" + coment + "', puntuacion=" + p + " where id_usuario='" + c.getUsr() + "' and id_lugar='" + l.getId() + "';";
+			
+		}
+		else {
+			query = "Insert into Comentario (id_usuario, id_lugar, comentario, puntuacion) values( '" + c.getUsr() + "', '" + l.getId() + "', '" + coment + "', " + p+");";
+			
+		}
+		System.out.println(query);
+		
+		stmt.executeUpdate(query);
+		
 	}
 	
 	

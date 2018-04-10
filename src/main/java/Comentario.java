@@ -2,13 +2,16 @@ package main.java;
 
 public class Comentario {
 	private String userId;
+	private String placeId;
 	private String comentario;
 	private float puntuacion;
 	
 	
+	
+	
 	public Comentario(String usr) {
 		userId = usr;
-		comentario = "Aún no comenta este lugar";
+		comentario = "Aún no comentas este lugar";
 		puntuacion = 0.0f;
 	}
 	
