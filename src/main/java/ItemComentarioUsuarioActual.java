@@ -41,8 +41,8 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 			}
 		});
 		
-		bttonActualizar.setBounds(500, 300, 60, 60);
-		bttonActualizar.setText("Aceptar");
+		bttonActualizar.setBounds(500, 300, 95, 20);
+		bttonActualizar.setText("Comentar");
 		
 		bttonComentUp = new JButton();
 		bttonComentUp.addActionListener(new ActionListener() {
@@ -51,7 +51,7 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 			}
 		});
 		
-		bttonComentUp.setBounds(600, 300, 60, 60);
+		bttonComentUp.setBounds(450, 150, 50, 20);
 		bttonComentUp.setText("^");
 		
 		bttonComentDown = new JButton();
@@ -61,7 +61,7 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 			}
 		});
 		
-		bttonComentDown.setBounds(650, 300, 60, 60);
+		bttonComentDown.setBounds(450, 170, 50, 20);
 		bttonComentDown.setText("v");
 	
 		
