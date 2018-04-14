@@ -53,6 +53,7 @@ public class VentanaReporte extends JFrame {
 		contentPane.setLayout(null);
 		
 		textPane = new JTextPane();
+		textPane.setEditable(false);
 		textPane.setBounds(5, 5, 549, 409);
 		
 		//Se establece el formato de la fecha que se escribirá en el documento

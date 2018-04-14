@@ -56,13 +56,8 @@ public class VentanaAdmin extends JFrame {
 				
 			} 
 		});
-		btnAgregar.setBounds(15, 84, 186, 29);
+		btnAgregar.setBounds(124, 111, 186, 29);
 		contentPane.add(btnAgregar);
-		
-		JButton btnQuitar = new JButton("Administrar usuarios");
-		btnQuitar.setToolTipText("");
-		btnQuitar.setBounds(216, 84, 197, 29);
-		contentPane.add(btnQuitar);
 		
 		JButton btnCerrarSesin = new JButton("Cerrar Sesi\u00F3n");
 		btnCerrarSesin.addActionListener(new ActionListener() {

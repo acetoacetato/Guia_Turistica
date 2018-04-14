@@ -36,7 +36,7 @@ public class VentanaComentarios extends JFrame {
 	private boolean existeNext;
 	private int act;
 	private int coment;
-		
+	private boolean existeComUsr;
 	private String t;
 	
 	private ItemComentarioUsuarioActual comUsr;
@@ -69,24 +69,19 @@ public class VentanaComentarios extends JFrame {
 		lugar.cargarComentarios();
 		listaComentarios = lugar.getListaComentarios();
 		
-		Comentario com = l.getComentarios().get(usr.getNombreUsuario());
 		
-		if(com == null) 
-			com = new Comentario(usuario.getNombreUsuario());
+		for (int i = 0 ; i < l.getComentarios().size() ; i++) {
 			
-		System.out.println(com.getCom());
-		/*for (int i = 0 ; i < l.getComentarios().size() ; i++) {
-			
-			Comentario c = l.getComentarios().get(i);
+			Comentario c = listaComentarios.get(i);
 			if(c.getUsr().equals(usuario.getNombreUsuario())) {
 				comUsr = new ItemComentarioUsuarioActual(c, 500, 150, db,lugar);
-				l.getComentarios().remove(i);
+				listaComentarios.remove(i);
 				cargarVentana();
 				return;
 			}
 			
-		}*/
-		comUsr =new ItemComentarioUsuarioActual(com, 500, 150, db,lugar);
+		}
+		comUsr =new ItemComentarioUsuarioActual(new Comentario(usuario.getNombreUsuario()), 500, 150, db,lugar);
 		cargarVentana();
 		
 	}
@@ -110,9 +105,9 @@ private void cargarVentana() {
 	contentPane.add(comUsr.getBttonActualizar());
 	contentPane.add(comUsr.getBttonComentDown());
 	contentPane.add(comUsr.getBttonComentUp());
+	int i=0;
 	
-	
-	for (int i = 0 ; i < 3 ; i++) {
+	for (i = 0 ; i < 3 ; i++) {
 		
 		if(act == listaComentarios.size()) {
 			existeNext = false;
@@ -164,28 +159,23 @@ private void cargarVentana() {
 			setVisible(false);
 			VentanaLugar ventanaCat = new VentanaLugar(lugar, usuario, db);
 			ventanaCat.setVisible(true);
-			try {
-				finalize();
-			} catch (Throwable e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			
 		}
 		
 	});
 	
 //si el actual es mayor a 5, entonces se puede volver una página atrás
-	if(act>5) {
-				
+	if(act>3) {
+
 		//se crea el botón atrás y se lo agrega al panel
 		JButton btnBack = new JButton("Atrás");
 		btnBack.setBounds(19, 490, 150, 20);
-				
+		int nuevoAct = act - (i+1) - (act - (i+1)) %3;
 		//al presionarse el botón, se crea una ventanaComentarios con actual-6, que sería el actual de la página anterior
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaComentarios vtnComentario = new VentanaComentarios(t, lugar, usuario, db, act-6, comUsr, listaComentarios);
+				VentanaComentarios vtnComentario = new VentanaComentarios(t, lugar, usuario, db, nuevoAct, comUsr, listaComentarios);
 				vtnComentario.setVisible(true);
 						
 					}

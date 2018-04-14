@@ -34,13 +34,14 @@ public class VentanaLugares extends JFrame {
 	private int act;
 	private int categoria;
 	private DbHandler db;
-	
+	private int i;
 
 	
 	public VentanaLugares(String titulo, ArrayList<ArrayList<Lugar>> listaLugares, CuentaUsuario usr, int actual, int cat, DbHandler baseDatos) {
 		
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 320);
 		setTitle(titulo);
 		
 		//se guardan las referencias necesarias
@@ -56,10 +57,11 @@ public class VentanaLugares extends JFrame {
 		contentPane.setLayout(null);
 		itememes = new ItemLugar[5];
 		int  x = 40, y = 20, z = 0;
-		
+		System.out.println(act);
+		i=0;
 		
 		//se crean 5 items y se agregan al panel
-		for(int i = 0 ; i < 5 ; i++) {
+		for(i = 0 ; i < 5 ; i++) {
 			
 			//se verifica que quede un lugar o más, si no es así se avisa que no existe sgte página y se dejan de crear items
 			if(act == lugarcitos.size()) {
@@ -89,7 +91,7 @@ public class VentanaLugares extends JFrame {
 		}
 		
 		JButton btnReporte = new JButton("Generar Reporte");
-		btnReporte.setBounds(150, 220, 150, 20);
+		btnReporte.setBounds(100, 230, 180, 15);
 		btnReporte.addActionListener(new ActionListener() {
 		
 				public void actionPerformed(ActionEvent e) {
@@ -106,8 +108,8 @@ public class VentanaLugares extends JFrame {
 		
 		//si existe al menos un lugar más a mostrar, se crea un botón para la sgte página y se adhiere al panel
 		if(existeNext) {
-			JButton btnNext = new JButton("next");
-			btnNext.setBounds(370, 220, 45, 20);
+			JButton btnNext = new JButton("siguiente");
+			btnNext.setBounds(330, 240, 90, 20);
 			
 			btnNext.addActionListener(new ActionListener() {
 				//al presionarse, se crea un ventanaLugares con los parámetros actuales
@@ -122,37 +124,37 @@ public class VentanaLugares extends JFrame {
 		}
 		
 		//botón para volver al menú de categorías
-		JButton btnVolverMenu = new JButton("Volver");
-		btnVolverMenu.setBounds(10, 210, 100, 40);
+		JButton btnVolverMenu = new JButton("Volver a categorias");
+		btnVolverMenu.setBounds(100, 260, 180, 15);
 		contentPane.add(btnVolverMenu);
 		btnVolverMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				VentanaCategorias ventanaCat = new VentanaCategorias(db, usuario, listaLugares);
-				try {
-					finalize();
-				} catch (Throwable e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				ventanaCat.setVisible(true);
+				
 			}
 			
 			
 			
 		});
 		
+		System.out.println("act antes de comprobacion = " + act);
 		//si el actual es mayor a 9, entonces se puede volver una página atrás
-		if(act>9) {
+		if(act>5) {
 			
 			//se crea el botón atrás y se lo agrega al panel
-			JButton btnBack = new JButton();
-			btnBack.setBounds(19, 220, 45, 20);
+			JButton btnBack = new JButton("atrás");
+			btnBack.setBounds(19, 240, 70, 20);
 			
 			//al presionarse el botón, se crea una ventanaLugares con actual-10, que sería el actual de la página anterior
 			btnBack.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+
 					setVisible(false);
-					VentanaLugares vtnLugar = new VentanaLugares(titulo, listaLugares, usr, act-10, categoria, db);
+					
+					int nuevoAct = act - (i+1) - (act - (i+1)) %5;
+					VentanaLugares vtnLugar = new VentanaLugares(titulo, listaLugares, usr, nuevoAct, categoria, db);
 					vtnLugar.setVisible(true);
 					
 				}

@@ -19,8 +19,7 @@ public class VentanaCategorias extends JFrame {
 	private JPanel contentPane;
 	private DbHandler db;
 	private CuentaUsuario usr;
-	private JFrame ventanaAnterior;
-	private JFrame estaVentana;
+
 	
 	
 	public VentanaCategorias(DbHandler database, CuentaUsuario cta, ArrayList<ArrayList<Lugar>> l) {
@@ -96,8 +95,10 @@ public class VentanaCategorias extends JFrame {
 				ventanaNoc.setVisible(true);
 				
 			}
-		});
+		});		
 		botonVidaNoc.setBounds(380, 110, 60, 60);
+		
+		
 		
 		//Busca las imagenes respectivas para las categorias
 		ImageIcon imagen = new ImageIcon(VentanaUsuario.class.getResource("/Imagenes/Atracciones.png"));
@@ -141,6 +142,17 @@ public class VentanaCategorias extends JFrame {
 		lblRestaurantes.setForeground(new Color(153, 51, 153));
 		lblRestaurantes.setBounds(255, 180, 100, 14);
 		lblRestaurantes.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				VentanaUsuario ventanaUsr = new VentanaUsuario(db, usr);
+				setVisible(false);
+				ventanaUsr.setVisible(true);
+			}
+		});
+		btnVolver.setBounds(406, 210, 89, 23);
+		getContentPane().add(btnVolver);
 		
 		
 		
