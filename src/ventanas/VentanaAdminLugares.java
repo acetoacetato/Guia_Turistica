@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Hashtable;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -51,6 +52,7 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 	private JTextField txtDB;
 	private JTextPane txtpnDescripcion;
 	private JComboBox<String> catComboBox;
+	
 	
 	
 	private DbHandler db;

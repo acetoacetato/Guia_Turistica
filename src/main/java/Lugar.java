@@ -3,8 +3,14 @@ package main.java;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.ImageIcon;
+
+
 
 public class Lugar {
 
@@ -18,6 +24,8 @@ public class Lugar {
 	private int puntuacion;
 	private String categoria;
 	private String descripcion;
+	
+	private Hashtable<String, Comentario> comentariosMap;
 	
 	
 	public String getNombreLocal() {
@@ -50,8 +58,8 @@ public class Lugar {
 	}
 
 
-	public ArrayList<Comentario> getComentarios() {
-		return comentarios;
+	public Hashtable<String, Comentario> getComentarios() {
+		return comentariosMap;
 	}
 
 
@@ -67,7 +75,7 @@ public class Lugar {
 		dir = new Direccion();
 		lat = -33.5641197;
 		lng = -70.5575697;
-		comentarios = new ArrayList<Comentario>();
+		comentariosMap = new Hashtable<String, Comentario>();
 		categoria = "default";
 	}
 	
@@ -95,7 +103,7 @@ public class Lugar {
 		this.puntuacion = 0;
 		this.categoria = categoria;
 		
-		comentarios = new ArrayList<Comentario>();		
+		comentariosMap = new Hashtable<String, Comentario>();
 	}
 	
 	/*
@@ -111,7 +119,8 @@ public class Lugar {
 		this.categoria = categoria;
 		this.puntuacion = 0;
 		this.descripcion = desc;
-		comentarios = new ArrayList<Comentario>();
+		comentariosMap = new Hashtable<String, Comentario>();
+		
 		
 	}
 	
@@ -120,6 +129,7 @@ public class Lugar {
 	 * Sobrecarga para crear un lugar a partir de un ResulSet, asume que está en posición
 	 * */
 	public Lugar(ResultSet rs) throws SQLException {
+		
 		this.id = rs.getString("id");
 		this.dir = new Direccion(rs.getString("casa"),
 								 rs.getString("comuna"),
@@ -131,7 +141,7 @@ public class Lugar {
 		this.nombreLocal = rs.getString("nombre");
 		this.descripcion = rs.getString("descripcion");
 		this.categoria = rs.getString("categoria");
-		comentarios = new ArrayList<Comentario>();
+		comentariosMap = new Hashtable<String, Comentario>();
 	}
 	
 
@@ -144,15 +154,21 @@ public class Lugar {
 			rs = db.buscarComentarios(id);
 			Comentario com;
 			while(rs.next()) {
-				com = new Comentario( rs.getString("id_usuario"),
+				com = new Comentario( rs.getInt("id"),
+									  rs.getString("id_usuario"),
 									  rs.getString("comentario"),
 									  rs.getFloat("puntuacion")
 									  );
-				comentarios.add(com);
+				if(comentariosMap == null)
+					System.out.println("tu papá es hombre");
+				comentariosMap.put(com.getUsr(), com);
 			}
 		} catch (SQLException e) {
 			return;
 		}
+		
+		
+		
 	}
 	
 	
@@ -197,6 +213,9 @@ public class Lugar {
 		return categoria;
 	}
 	
+	public ArrayList<Comentario> getListaComentarios(){
+		return new ArrayList<Comentario>(comentariosMap.values());
+	}
 	/*
 	 * Setters
 	 * */
@@ -243,3 +262,6 @@ public class Lugar {
 	
 	
 }
+
+
+

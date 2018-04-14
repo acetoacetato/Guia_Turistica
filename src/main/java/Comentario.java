@@ -1,6 +1,7 @@
 package main.java;
 
 public class Comentario {
+	private int id;
 	private String userId;
 	private String placeId;
 	private String comentario;
@@ -11,11 +12,13 @@ public class Comentario {
 	
 	public Comentario(String usr) {
 		userId = usr;
+		id = -20;
 		comentario = "Aún no comentas este lugar";
 		puntuacion = 0.0f;
 	}
 	
-	public Comentario(String usr, String com, float pt) {
+	public Comentario(int idCom, String usr, String com, float pt) {
+		id = idCom;
 		userId = usr;
 		comentario = com;
 		puntuacion = pt;
@@ -35,6 +38,9 @@ public class Comentario {
 		return puntuacion;
 	}
 	
+	public int getId() {
+		return id;
+	}
 	
 	public void setUsr(String usr) {
 		userId = usr;
