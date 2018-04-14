@@ -88,6 +88,22 @@ public class VentanaLugares extends JFrame {
 			
 		}
 		
+		JButton btnReporte = new JButton("Generar Reporte");
+		btnReporte.setBounds(150, 220, 150, 20);
+		btnReporte.addActionListener(new ActionListener() {
+		
+				public void actionPerformed(ActionEvent e) {
+					VentanaReporte ventanitaR = new VentanaReporte(lugarcitos, usuario);
+					ventanitaR.setVisible(true);
+					
+				}
+			
+		});
+		
+		
+		
+		contentPane.add(btnReporte);
+		
 		//si existe al menos un lugar más a mostrar, se crea un botón para la sgte página y se adhiere al panel
 		if(existeNext) {
 			JButton btnNext = new JButton("next");

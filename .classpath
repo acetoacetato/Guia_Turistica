@@ -16,5 +16,6 @@
 	<classpathentry kind="lib" path="lib/slf4j-1.7.25/slf4j-simple-1.7.25-sources.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-1.7.25/slf4j-simple-1.7.25.jar"/>
 	<classpathentry kind="lib" path="miglayout15-swing.jar"/>
+	<classpathentry kind="lib" path="lib/iText-5.0.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
