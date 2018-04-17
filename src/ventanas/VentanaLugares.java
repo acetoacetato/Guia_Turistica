@@ -17,6 +17,7 @@ import main.java.CuentaUsuario;
 import main.java.DbHandler;
 import main.java.ItemLugar;
 import main.java.Lugar;
+import main.java.SistemaMapa;
 
 public class VentanaLugares extends JFrame {
 
@@ -27,42 +28,54 @@ public class VentanaLugares extends JFrame {
 	
 	//el arrayList de lugares a mostrar
 	private ArrayList<Lugar> lugarcitos;
-	private CuentaUsuario usuario;
 	
 	//en caso que exista al menos un lugar para hacer la página sgte, existeNext es true
 	private boolean existeNext;
-	private int act;
-	private int categoria;
-	private DbHandler db;
+	private int act;	
 	private int i;
-
+	private String categoria;
+	private SistemaMapa sistema;
 	
-	public VentanaLugares(String titulo, ArrayList<ArrayList<Lugar>> listaLugares, CuentaUsuario usr, int actual, int cat, DbHandler baseDatos) {
+	
+	public VentanaLugares(String cat, SistemaMapa sis) {
+		sistema = sis;
+		categoria = cat;
+		act = 0;
+	}
+	
+	
+	public VentanaLugares(String cat, SistemaMapa sis, int actual) {
 		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 320);
-		setTitle(titulo);
+		setTitle(cat);
 		
 		//se guardan las referencias necesarias
 		existeNext = true;
-		db = baseDatos;
-		usuario = usr;
+		sistema = sis;
 		act = actual;
 		categoria = cat;
-		lugarcitos = listaLugares.get(categoria);
+		lugarcitos = sis.obtenerLugares(cat);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		itememes = new ItemLugar[5];
 		int  x = 40, y = 20, z = 0;
-		System.out.println(act);
 		i=0;
+		
 		
 		//se crean 5 items y se agregan al panel
 		for(i = 0 ; i < 5 ; i++) {
-			
+			if(lugarcitos==null || lugarcitos.isEmpty()) {
+				JLabel lblVacio = new JLabel("no hay lugares en esta categoría. :c");
+				lblVacio.setBounds(80, 40, 500, 100);
+				contentPane.add(lblVacio);
+				volverMenu();
+				return;
+				
+			}
 			//se verifica que quede un lugar o más, si no es así se avisa que no existe sgte página y se dejan de crear items
 			if(act == lugarcitos.size()) {
 				existeNext = false;
@@ -71,7 +84,7 @@ public class VentanaLugares extends JFrame {
 			}
 			
 			//se crea un item con el lugar, las coordenadas donde debe crearse  y una referencia al usuario, para pasarlo en caso de que se vean los comentarios del lugar
-			itememes[i] = new ItemLugar(lugarcitos.get(act), x, y, z, usuario, db);
+			itememes[i] = new ItemLugar(lugarcitos.get(act), x, y, z, sistema);
 			
 			//se cambian las coordenadas para el sgte item a generar
 			y+=40;
@@ -95,7 +108,7 @@ public class VentanaLugares extends JFrame {
 		btnReporte.addActionListener(new ActionListener() {
 		
 				public void actionPerformed(ActionEvent e) {
-					VentanaReporte ventanitaR = new VentanaReporte(lugarcitos, usuario);
+					VentanaReporte ventanitaR = new VentanaReporte(lugarcitos, sistema);
 					ventanitaR.setVisible(true);
 					
 				}
@@ -115,31 +128,16 @@ public class VentanaLugares extends JFrame {
 				//al presionarse, se crea un ventanaLugares con los parámetros actuales
 				public void actionPerformed(ActionEvent e) {
 					setVisible(false);
-					VentanaLugares vtnLugar = new VentanaLugares(titulo, listaLugares, usr, act, categoria, db);
+					VentanaLugares vtnLugar = new VentanaLugares(categoria, sistema, act);
 					vtnLugar.setVisible(true);
 				}
 			});
 			
 			contentPane.add(btnNext);
 		}
+		volverMenu();
 		
-		//botón para volver al menú de categorías
-		JButton btnVolverMenu = new JButton("Volver a categorias");
-		btnVolverMenu.setBounds(100, 260, 180, 15);
-		contentPane.add(btnVolverMenu);
-		btnVolverMenu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-				VentanaCategorias ventanaCat = new VentanaCategorias(db, usuario, listaLugares);
-				ventanaCat.setVisible(true);
-				
-			}
-			
-			
-			
-		});
 		
-		System.out.println("act antes de comprobacion = " + act);
 		//si el actual es mayor a 9, entonces se puede volver una página atrás
 		if(act>5) {
 			
@@ -154,7 +152,7 @@ public class VentanaLugares extends JFrame {
 					setVisible(false);
 					
 					int nuevoAct = act - (i+1) - (act - (i+1)) %5;
-					VentanaLugares vtnLugar = new VentanaLugares(titulo, listaLugares, usr, nuevoAct, categoria, db);
+					VentanaLugares vtnLugar = new VentanaLugares(categoria, sistema, nuevoAct);
 					vtnLugar.setVisible(true);
 					
 				}
@@ -165,6 +163,25 @@ public class VentanaLugares extends JFrame {
 		
 		//
 		
+	}
+	
+	
+	private void volverMenu() {
+		//botón para volver al menú de categorías
+				JButton btnVolverMenu = new JButton("Volver a categorias");
+				btnVolverMenu.setBounds(100, 260, 180, 15);
+				contentPane.add(btnVolverMenu);
+				btnVolverMenu.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						setVisible(false);
+						VentanaCategorias ventanaCat = new VentanaCategorias(sistema);
+						ventanaCat.setVisible(true);
+						
+					}
+					
+					
+					
+				});
 	}
 
 }

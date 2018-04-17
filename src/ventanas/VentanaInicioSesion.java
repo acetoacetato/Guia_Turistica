@@ -11,6 +11,7 @@ import excepciones.UserCheckException;
 import main.java.Administrador;
 import main.java.CuentaUsuario;
 import main.java.DbHandler;
+import main.java.SistemaMapa;
 import main.java.Usuario;
 import main.java.VentanaCampos;
 
@@ -53,6 +54,7 @@ public class VentanaInicioSesion extends JFrame implements VentanaCampos {
 	private JPasswordField campoPass;
 	private JTextField campoUsuario;
 	private DbHandler db;
+	private SistemaMapa sistema;
 	/**
 	 * Launch the application.
 	 */
@@ -74,6 +76,7 @@ public class VentanaInicioSesion extends JFrame implements VentanaCampos {
 	//constructor que se llama al inicio de la aplicación
 	public VentanaInicioSesion() {
 		try {
+			sistema = new SistemaMapa();
 			//establecemos conexión con la base de datos
 			db = new DbHandler();
 		} catch (SQLException e1) {
@@ -87,13 +90,7 @@ public class VentanaInicioSesion extends JFrame implements VentanaCampos {
 		}
 		ventanita();
 	}
-	
-	//constructor que se llama al volver de los menus de usuario
-	public VentanaInicioSesion(DbHandler database) {
-		db = database;
-		
-		ventanita();
-	}
+
 	
 	
 	public void ventanita() {
@@ -110,7 +107,7 @@ public class VentanaInicioSesion extends JFrame implements VentanaCampos {
 			public void actionPerformed(ActionEvent e) {
 				
 				setVisible(false);
-				VentanaRegistro ventanaReg = new VentanaRegistro(db);
+				VentanaRegistro ventanaReg = new VentanaRegistro(sistema);
 				ventanaReg.setVisible(true);
 				
 			}
@@ -142,16 +139,18 @@ public class VentanaInicioSesion extends JFrame implements VentanaCampos {
 				String pass = campoPass.getText().trim();
 				
 				try {
-					ResultSet rs = db.iniciarSesion(usr, pass);
+					//ResultSet rs = db.iniciarSesion(usr, pass);
 					//creamos la cuenta de usuario con usr, pass y el booleano de si es usuario o administrador
 					
-					CuentaUsuario cta = crearUsuario(usr, pass, rs.getBoolean("admin"));
+					//CuentaUsuario cta = crearUsuario(usr, pass, rs.getBoolean("admin"));
+					
+					sistema.iniciarSesion(usr, pass);
 					
 					//si es admin, entonces se carga la ventana principal de admin
-					if(cta.tipoCuenta().equals("Administrador")) {
+					if(sistema.getAdmin()){
 						setVisible(false);
 						limpiarCampos();
-						VentanaAdmin ventanaAdm = new VentanaAdmin(db, cta);
+						VentanaAdmin ventanaAdm = new VentanaAdmin(sistema);
 						ventanaAdm.setVisible(true);
 						return;
 						
@@ -159,13 +158,13 @@ public class VentanaInicioSesion extends JFrame implements VentanaCampos {
 					}else {
 						setVisible(false);
 						limpiarCampos();
-						VentanaUsuario ventanaUsr = new VentanaUsuario(db, cta);
+						VentanaUsuario ventanaUsr = new VentanaUsuario(sistema);
 						ventanaUsr.setVisible(true);
 						return;
 						
 					}
 						
-					}catch (UserCheckException e) {
+				}catch (UserCheckException e) {
 					// TODO Auto-generated catch block
 						JOptionPane.showMessageDialog(null, e.getMessage(), 
 								"Error en inicio",
@@ -173,7 +172,9 @@ public class VentanaInicioSesion extends JFrame implements VentanaCampos {
 			
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-                    e.printStackTrace();
+					JOptionPane.showMessageDialog(null, e.getMessage(), 
+							"Error en inicio",
+                            JOptionPane.ERROR_MESSAGE);
 				}
 				
 			}
@@ -202,15 +203,7 @@ public class VentanaInicioSesion extends JFrame implements VentanaCampos {
 		contentPane.add(lblContrasea);
 	}
 	
-	 CuentaUsuario crearUsuario(String usr, String pass, boolean adm) {
-		
-		 if(adm) {
-			 return new Administrador(usr, pass);
-		 }else {
-			 return new Usuario(usr, pass);
-		 }
-		 
-	}
+	
 	 
 	 //verifica que los campos no contienen ' ni " ni están vacios
 	 public boolean verificarCampos() {

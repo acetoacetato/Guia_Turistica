@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import excepciones.UserRegisterFailureException;
 import main.java.DbHandler;
+import main.java.SistemaMapa;
 import main.java.VentanaCampos;
 
 import javax.swing.JLabel;
@@ -26,15 +27,15 @@ public class VentanaRegistro extends JFrame implements VentanaCampos {
 	private JPanel contentPane;
 	private JTextField campoUsr;
 	private JPasswordField campoPass;
-	private DbHandler db;
-
+	private	SistemaMapa sistema;
 	/**
 	 * Create the frame.
 	 */
-	public VentanaRegistro(DbHandler database) {
+	public VentanaRegistro(SistemaMapa sis) {
 		
+		sistema = sis;
 		//se guarda la referencia al DbHandler
-		db = database;
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -79,15 +80,15 @@ public class VentanaRegistro extends JFrame implements VentanaCampos {
 
 				try {
 					
+					sistema.registrar(usr, pass);
 					// se verifica que el usuario no está registrado
-					db.registrarUsuario(usr, pass);
 					JOptionPane.showMessageDialog (null, "Se ha registrado al nuevo usuario.", 
 							"Registro completo",
                             JOptionPane.OK_OPTION);
 					
 					//retornar a la pantalla de inicio de sesión
 					setVisible(false);
-					VentanaInicioSesion ventanaInicio = new VentanaInicioSesion(db);
+					VentanaInicioSesion ventanaInicio = new VentanaInicioSesion();
 					ventanaInicio.setVisible(true);
 					return;
 					

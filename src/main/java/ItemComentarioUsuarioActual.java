@@ -13,14 +13,28 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 	private JButton bttonActualizar;
 	private JButton bttonComentUp;
 	private JButton bttonComentDown;
-	private DbHandler db;
+	private SistemaMapa sistema;
 	private Lugar lugar;
 	private Comentario com;
-	public ItemComentarioUsuarioActual(Comentario comentario, int X, int Y,DbHandler dataBase, Lugar l) {
+	
+	public ItemComentarioUsuarioActual(SistemaMapa sis, int X, int Y, Lugar l) {
+		super(new Comentario(sis), X, Y);
+		lugar = l;
+		sistema = sis;
+		item();
+	}
+	
+	public ItemComentarioUsuarioActual(Comentario comentario, int X, int Y,SistemaMapa sis, Lugar l) {
 		super(comentario, X, Y);
 		com = comentario;
 		lugar = l;
-		db = dataBase;
+		sistema = sis;
+		item();
+		
+	}
+	
+	private void item() {
+		
 		this.comentarios.setEditable(true);
 		bttonActualizar = new JButton();
 		bttonActualizar.addActionListener(new ActionListener() {
@@ -29,9 +43,9 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 				String points= puntuacion.getText();
 				try {
 					
-					if(db == null)
+					if(sistema == null)
 						return;
-					db.modificarComentario(comentAct, com, lugar, points);
+					sistema.modificar(comentAct, com, lugar, points);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -64,7 +78,6 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 		bttonComentDown.setBounds(450, 170, 50, 20);
 		bttonComentDown.setText("v");
 	
-		
 	}
 	public JButton getBttonActualizar() {
 		return bttonActualizar;

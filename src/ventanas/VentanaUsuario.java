@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 import main.java.CuentaUsuario;
 import main.java.DbHandler;
 import main.java.Lugar;
+import main.java.SistemaMapa;
 import main.java.Usuario;
 import main.java.VentanaCampos;
 
@@ -27,15 +28,16 @@ public class VentanaUsuario extends JFrame implements VentanaCampos {
 
 	private JPanel contentPane;
 	
-	
+	private SistemaMapa sistema;
 	//comboBox para elegir las zonas a las que ingresar
 	private JComboBox<String> zonaBox;
 
 	/**
 	 * Create the frame.
 	 */
-	public VentanaUsuario(DbHandler db, CuentaUsuario cta) {
-
+	public VentanaUsuario(SistemaMapa sis) {
+		
+		sistema = sis;
 		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,7 +48,7 @@ public class VentanaUsuario extends JFrame implements VentanaCampos {
 		contentPane.setLayout(null);
 		
 		//mensaje de bienvenida al usuario
-		JLabel lblBienvenida = new JLabel("Bienvenido/a, " + cta.getNombreUsuario() + "!");
+		JLabel lblBienvenida = new JLabel("Bienvenido/a, " + sistema.getNombreUsuario() + "!");
 		lblBienvenida.setBounds(15, 16, 170, 20);
 		contentPane.add(lblBienvenida);
 		
@@ -79,17 +81,18 @@ public class VentanaUsuario extends JFrame implements VentanaCampos {
 					 * se crea un ArrayList con las categorías, cada espacio de este es un ArrayList de lugares
 					 */
 					
-					ArrayList<ArrayList <Lugar>> listaCat = db.cargaLugares((String)zonaBox.getSelectedItem());
+					sistema.cargarLugares((String)zonaBox.getSelectedItem());
 					setVisible(false);
 					
 					//se inicia una ventana de categorías
-					VentanaCategorias ventanaCat = new VentanaCategorias(db, cta, listaCat);
+					VentanaCategorias ventanaCat = new VentanaCategorias(sistema);
 					ventanaCat.setVisible(true);
 					
 				} catch (SQLException e) {
 					// En caso que falle la conexión con la base de datos, no hay ucho que hacer
 					System.out.println("no se pudo ejecutar :/");
 					e.printStackTrace();
+					return;
 				}
 				
 			}
@@ -102,7 +105,7 @@ public class VentanaUsuario extends JFrame implements VentanaCampos {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
-				VentanaInicioSesion ventanaInicio = new VentanaInicioSesion(db);
+				VentanaInicioSesion ventanaInicio = new VentanaInicioSesion();
 				ventanaInicio.setVisible(true);
 			}
 		});

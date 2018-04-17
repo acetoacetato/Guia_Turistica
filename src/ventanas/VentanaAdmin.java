@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 
 import main.java.CuentaUsuario;
 import main.java.DbHandler;
+import main.java.SistemaMapa;
 
 import javax.swing.JLabel;
 import javax.swing.Icon;
@@ -24,17 +25,16 @@ public class VentanaAdmin extends JFrame {
 	private JPanel contentPane;
 	private DbHandler db;
 	private CuentaUsuario usr;
-
+	private SistemaMapa sistema;
 
 
 	/**
 	 * Create the frame.
 	 */
-	public VentanaAdmin(DbHandler database, CuentaUsuario cta) {
+	public VentanaAdmin(SistemaMapa sis) {
 		setTitle("Admin");
+		sistema = sis;
 		
-		db = database;
-		usr = cta;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -42,7 +42,7 @@ public class VentanaAdmin extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Bienvenido, " + cta.getNombreUsuario());
+		JLabel lblNewLabel = new JLabel("Bienvenido, " + sis.getNombreUsuario());
 		lblNewLabel.setBounds(5, 5, 282, 20);
 		contentPane.add(lblNewLabel);
 		
@@ -51,7 +51,7 @@ public class VentanaAdmin extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				setVisible(false);
-				VentanaAdminLugares ventanaAdmL = new VentanaAdminLugares(db, usr);
+				VentanaAdminLugares ventanaAdmL = new VentanaAdminLugares(sistema);
 				ventanaAdmL.setVisible(true);
 				
 			} 
@@ -65,7 +65,7 @@ public class VentanaAdmin extends JFrame {
 				
 				usr = null;
 				setVisible(false);
-				VentanaInicioSesion ventanaInicio = new VentanaInicioSesion(db);
+				VentanaInicioSesion ventanaInicio = new VentanaInicioSesion();
 				ventanaInicio.setVisible(true);
 				
 				

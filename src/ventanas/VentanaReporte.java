@@ -23,6 +23,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import main.java.CuentaUsuario;
 import main.java.Lugar;
+import main.java.SistemaMapa;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
@@ -37,12 +39,14 @@ public class VentanaReporte extends JFrame {
 	//path por defecto, queda en la raiz del proyecto
 	private String documentPath = "texto.pdf";
 	private JTextPane textPane;
-
+	private SistemaMapa sistema;
 	/**
 	 * Create the frame.
 	 */
 	
-	public VentanaReporte(ArrayList<Lugar> l, CuentaUsuario usr) {
+	public VentanaReporte(ArrayList<Lugar> l, SistemaMapa sis) {
+		
+		sistema = sis;
 		
 		//se guarda referencia al JFrame para su utilización al guardar el PDF
 		estaVentana = this;
@@ -60,7 +64,7 @@ public class VentanaReporte extends JFrame {
 		DateFormat format = new SimpleDateFormat("dd-MM-yyyy  HH:mm:ss");
 		
 		//se obtiene el usuario que se agregará al documento
-		String nombre = usr.informacionCuenta();
+		String nombre = sistema.getInfoCuenta();
 		
 		//se obtiene el StyledDocument del textPane para agregar cosas
 		StyledDocument document = (StyledDocument) textPane.getDocument();
@@ -80,7 +84,7 @@ public class VentanaReporte extends JFrame {
 			
 			//se insertan todos los lugares encontrados en ese parámetro de busqueda
 			for(Lugar i : l) {
-				document.insertString(document.getLength(), "\n\t" + i.getNombreLocal() + ", " + i.getComuna() + ", " + i.getRegion() + ", " + i.getPais(), null);
+				document.insertString(document.getLength(), "\n\t-" + i.getNombreLocal() + ", " + i.getComuna() + ", " + i.getRegion() + ", " + i.getPais(), null);
 			}
 			
 			

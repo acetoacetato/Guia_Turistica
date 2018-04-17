@@ -12,21 +12,20 @@ import javax.swing.GroupLayout.Alignment;
 import main.java.CuentaUsuario;
 import main.java.DbHandler;
 import main.java.Lugar;
+import main.java.SistemaMapa;
 
 
 public class VentanaCategorias extends JFrame {
 	
 	private JPanel contentPane;
-	private DbHandler db;
-	private CuentaUsuario usr;
+	private SistemaMapa sistema;
 
 	
 	
-	public VentanaCategorias(DbHandler database, CuentaUsuario cta, ArrayList<ArrayList<Lugar>> l) {
+	public VentanaCategorias(SistemaMapa sis) {
 		
 		setTitle("main user");
-		db = database;
-		usr = cta;
+		sistema = sis;
 		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,15 +34,9 @@ public class VentanaCategorias extends JFrame {
 		Container contentPane = getContentPane();
 		this.setVisible(true);
 		
-		/*
-		 * los index del Arraylist por categoría son
-		 * 
-		 * 		0 = Atracciones varias
-		 * 		1 = Dónde dormir
-		 * 		2 = Locales de comida
-		 * 		3 = Vida Nocturna
-		 * 
-		 * */
+	/*
+	 * 	{ "atraccion", "dormir", "comida", "vida_nocturna" }
+	 * */
 		
 		//Los respectivos botones con su posición en x,y y tamaño respectivamente
 		JButton botonAtracciones = new JButton();
@@ -53,7 +46,7 @@ public class VentanaCategorias extends JFrame {
 				//se abre una ventana con el título de atracciones, la lista de lugares, la cuenta de usuario,
 				//el index de inicio donde comienza a mostrar los lugares (siempre en un principio 0)
 				//el index de la categoría de la ventana y la base de datos para volver de ahí
-				VentanaLugares ventanaAtrac = new VentanaLugares("Atracciones", l, cta, 0, 0, db);
+				VentanaLugares ventanaAtrac = new VentanaLugares( "atraccion", sistema, 0);
 				ventanaAtrac.setVisible(true);
 				
 			}
@@ -68,7 +61,7 @@ public class VentanaCategorias extends JFrame {
 				//se abre una ventana con el título de "Dónde dormir", la lista de lugares, la cuenta de usuario,
 				//el index de inicio donde comienza a mostrar los lugares (siempre en un principio 0)
 				//el index de la categoría de la ventana y la base de datos para volver de ahí
-				VentanaLugares ventanaHot = new VentanaLugares("¿Dónde dormir?", l, cta, 0, 1, db);
+				VentanaLugares ventanaHot = new VentanaLugares("domir", sistema, 0);
 				ventanaHot.setVisible(true);
 				
 			}
@@ -80,7 +73,7 @@ public class VentanaCategorias extends JFrame {
 		botonComida.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaLugares ventanaRest = new VentanaLugares("¿Dónde comer?", l, cta, 0, 2, db);
+				VentanaLugares ventanaRest = new VentanaLugares("comida", sistema, 0);
 				ventanaRest.setVisible(true);
 				
 			}
@@ -91,7 +84,7 @@ public class VentanaCategorias extends JFrame {
 		botonVidaNoc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaLugares ventanaNoc = new VentanaLugares("Vida nocturna", l, cta, 0, 3, db);
+				VentanaLugares ventanaNoc = new VentanaLugares("vida_nocturna", sistema, 0);
 				ventanaNoc.setVisible(true);
 				
 			}
@@ -146,7 +139,7 @@ public class VentanaCategorias extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				VentanaUsuario ventanaUsr = new VentanaUsuario(db, usr);
+				VentanaUsuario ventanaUsr = new VentanaUsuario(sistema);
 				setVisible(false);
 				ventanaUsr.setVisible(true);
 			}
@@ -158,7 +151,7 @@ public class VentanaCategorias extends JFrame {
 		
 		
 	    //se crea el mensaje de bienvenida al usuario
-		JLabel lblBienvenida = new JLabel(cta.getNombreUsuario() + ",");
+		JLabel lblBienvenida = new JLabel(sistema.getNombreUsuario() + ",");
 		lblBienvenida.setForeground(new Color(255, 0, 255));
 		lblBienvenida.setBounds(10, 11, 360, 31);
 		lblBienvenida.setFont(new Font("Comic Sans MS", Font.BOLD, 25));

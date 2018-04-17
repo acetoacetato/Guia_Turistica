@@ -18,6 +18,7 @@ import main.java.ItemComentario;
 import main.java.ItemComentarioUsuarioActual;
 import main.java.ItemLugar;
 import main.java.Lugar;
+import main.java.SistemaMapa;
 
 public class VentanaComentarios extends JFrame {
 	
@@ -27,10 +28,8 @@ public class VentanaComentarios extends JFrame {
 	private ItemComentario[] itemCom;
 	
 	//
-	
-	private CuentaUsuario usuario;
+
 	private Lugar lugar;
-	private DbHandler db;
 	
 	//en caso de que existan al menos un comentario para hacer la página sgte, existeNext es true
 	private boolean existeNext;
@@ -41,16 +40,16 @@ public class VentanaComentarios extends JFrame {
 	
 	private ItemComentarioUsuarioActual comUsr;
 	private ArrayList<Comentario> listaComentarios;
+	private SistemaMapa sistema;
 	
 	
 	
-	public VentanaComentarios( String titulo, Lugar l, CuentaUsuario usr, DbHandler baseDatos, int actual, ItemComentarioUsuarioActual usrC, ArrayList<Comentario> comentarios) {
+	public VentanaComentarios( String titulo, Lugar l, SistemaMapa sis, int actual, ItemComentarioUsuarioActual usrC, ArrayList<Comentario> comentarios) {
 		
 		t = titulo;
 		existeNext = true;
-		db = baseDatos;
+		sistema = sis;
 		act = actual;
-		usuario = usr;
 		lugar = l;
 		comUsr = usrC;
 		listaComentarios = comentarios;
@@ -59,12 +58,11 @@ public class VentanaComentarios extends JFrame {
 
 	}
 
-	public VentanaComentarios(String titulo, Lugar l, CuentaUsuario usr, DbHandler baseDatos ) {
+	public VentanaComentarios(String titulo, Lugar l, SistemaMapa sis ) {
 		t = titulo;
 		existeNext = true;
-		db = baseDatos;
+		sistema = sis;
 		act = 0;
-		usuario = usr;
 		lugar = l;
 		lugar.cargarComentarios();
 		listaComentarios = lugar.getListaComentarios();
@@ -73,15 +71,15 @@ public class VentanaComentarios extends JFrame {
 		for (int i = 0 ; i < l.getComentarios().size() ; i++) {
 			
 			Comentario c = listaComentarios.get(i);
-			if(c.getUsr().equals(usuario.getNombreUsuario())) {
-				comUsr = new ItemComentarioUsuarioActual(c, 500, 150, db,lugar);
+			if(c.getUsr().equals(sistema.getNombreUsuario())) {
+				comUsr = new ItemComentarioUsuarioActual(c, 500, 150, sistema, lugar);
 				listaComentarios.remove(i);
 				cargarVentana();
 				return;
 			}
 			
 		}
-		comUsr =new ItemComentarioUsuarioActual(new Comentario(usuario.getNombreUsuario()), 500, 150, db,lugar);
+		comUsr =new ItemComentarioUsuarioActual(sistema, 500, 150, lugar);
 		cargarVentana();
 		
 	}
@@ -115,7 +113,7 @@ private void cargarVentana() {
 			break;
 		}
 		Comentario com = listaComentarios.get(act);
-		if(com.getUsr().equals(usuario.getNombreUsuario())) {
+		if(com.getUsr().equals(sistema.getNombreUsuario())) {
 			act++;
 			i--;
 			continue;
@@ -142,7 +140,7 @@ private void cargarVentana() {
 			//al presionarse, se crea un ventanaLugares con los parámetros actuales
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaComentarios vtnCom = new VentanaComentarios(t, lugar, usuario, db, act, comUsr, listaComentarios);
+				VentanaComentarios vtnCom = new VentanaComentarios(t, lugar, sistema, act, comUsr, listaComentarios);
 				vtnCom.setVisible(true);
 			}
 		});
@@ -157,7 +155,7 @@ private void cargarVentana() {
 	btnVolverLugar.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			setVisible(false);
-			VentanaLugar ventanaCat = new VentanaLugar(lugar, usuario, db);
+			VentanaLugar ventanaCat = new VentanaLugar(lugar, sistema);
 			ventanaCat.setVisible(true);
 			
 		}
@@ -175,7 +173,7 @@ private void cargarVentana() {
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaComentarios vtnComentario = new VentanaComentarios(t, lugar, usuario, db, nuevoAct, comUsr, listaComentarios);
+				VentanaComentarios vtnComentario = new VentanaComentarios(t, lugar, sistema, nuevoAct, comUsr, listaComentarios);
 				vtnComentario.setVisible(true);
 						
 					}

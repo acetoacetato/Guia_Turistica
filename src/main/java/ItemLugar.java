@@ -19,13 +19,13 @@ public class ItemLugar {
 	private JLabel nombreLocal;
 	private JLabel rating;
 	private JButton btnLugar;
-	private DbHandler db;
+	private SistemaMapa sistema;
 	private Lugar place;
 	private CuentaUsuario usrAccnt;
 	
-	public ItemLugar (Lugar lugar, int X, int Y, int Z, CuentaUsuario usr, DbHandler dataBase){
+	public ItemLugar (Lugar lugar, int X, int Y, int Z, SistemaMapa sis){
 		
-		db = dataBase;
+		sistema = sis;
 		// se crea el label del lugar con el nombre del local/lugar de interés
 		nombreLocal = new JLabel(lugar.getNombreLocal());
 		
@@ -34,15 +34,12 @@ public class ItemLugar {
 		
 		//se guarda referencia al lugar
 		place = lugar;
-		
-		//se guarda referencia al usuario actual
-		usrAccnt = usr;
-		
+				
 		//se crea el botón para ver el lugar con más detalle
 		btnLugar = new JButton ();		
 		btnLugar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VentanaLugar vtnLugar = new VentanaLugar(place, usrAccnt, db);
+				VentanaLugar vtnLugar = new VentanaLugar(place, sistema);
 				vtnLugar.setVisible(true);
 			}
 		});

@@ -6,11 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import com.google.maps.errors.ApiException;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import excepciones.PlaceAlreadyTakenException;
+import excepciones.PlaceException;
 import excepciones.UserCheckException;
 import excepciones.UserRegisterFailureException;
 
@@ -109,7 +111,7 @@ public class DbHandler {
 	
 	
 	//busca la cuenta que coincida con el inicio de sesion (usuario y password)
-	public ResultSet iniciarSesion(String usr, String pass) throws SQLException, UserCheckException {
+	public CuentaUsuario iniciarSesion(String usr, String pass) throws SQLException, UserCheckException {
 		
 		//se crea el statement para generar la consulta
 		Statement stmt = coneccion.createStatement();
@@ -122,9 +124,15 @@ public class DbHandler {
 		//se ejecuta la consulta
 		ResultSet rs = stmt.executeQuery(query);
 		
+		if(rs.next()) {
+			if(rs.getBoolean("admin"))
+				return new Administrador(rs.getString("id"), rs.getString("pass"));
+			else
+				return new Usuario(rs.getString("id"), rs.getString("pass"));
+		}
 		//El ResultSet inicia en -1, rs.next() retorna true si existe l menos un resultado coincidente, por lo que si no hay coincidencias, se lanza un UserCheckException
-		if(!rs.next()) throw new UserCheckException("Combinación usuario/contraseña inválida.");
-		return rs;
+		throw new UserCheckException("Combinación usuario/contraseña inválida.");
+		
 	}
 	
 	//verifica si el usuario ya está registrado
@@ -138,9 +146,10 @@ public class DbHandler {
 	
 	
 	//Actualiza la info del lugar
-	public void actualizarLugar(Lugar l) throws SQLException {
+	public void actualizarLugar(Lugar l) throws SQLException, PlaceException {
 		Statement stmt = coneccion.createStatement();
-		
+		if (this.buscar(l) == null)
+			throw new PlaceException("El lugar no existe en la base de datos.");
 		
 		stmt.executeUpdate("UPDATE Lugar "
 				+ "SET nombre = '" + l.getNombreLocal() + "'"
@@ -235,15 +244,15 @@ public class DbHandler {
 	
 	
 	//Crea y retorna un arrayList con los lugares de una ubicación, pasada por parámetro, separados por categoría
-	public ArrayList<ArrayList <Lugar>> cargaLugares(String ubicacion) throws SQLException {
-		ArrayList<ArrayList<Lugar>> listilla = new ArrayList<ArrayList<Lugar>>();
+	public Hashtable<String, ArrayList <Lugar>> cargaLugares(String ubicacion) throws SQLException {
+		Hashtable<String, ArrayList<Lugar>> mapita = new Hashtable<String, ArrayList<Lugar>>();
 		String[] categorias = { "atraccion", "dormir", "comida", "vida_nocturna" };
 		
 		//por cada elemento de categorías, se crea una lista del lugar con la categoría y la ubicación y se agrega a la lista
 		for(String i : categorias) {
-			listilla.add( buscarLugar(i, ubicacion) );
+			mapita.put(i, buscarLugar(i, ubicacion));
 		}
-		return listilla;
+		return mapita;
 	}
 	
 	//busca un lugar en la base de datos

@@ -13,6 +13,7 @@ import main.java.CuentaUsuario;
 import main.java.DbHandler;
 import main.java.Lugar;
 import main.java.MapHandler;
+import main.java.SistemaMapa;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -35,16 +36,12 @@ public class VentanaLugar extends JFrame implements Runnable {
 	private JTextField txtRating;
 	private JButton comentario;
 	private Lugar l;
-	private CuentaUsuario cta;
-	private DbHandler db;
+	private SistemaMapa sistema;
 	
-	public VentanaLugar(Lugar l, CuentaUsuario usr, DbHandler baseDatos) {
-		
-		
-		db = baseDatos;
+	public VentanaLugar(Lugar l, SistemaMapa sis) {
+		sistema = sis;
 		//se guarda referencia al lugar a mostrar
 		this.l = l;
-		cta = usr;
 		setBounds(100, 100, 800, 601);
 		setLocationRelativeTo(null);
 		contentPane = new JPanel();
@@ -91,7 +88,7 @@ public class VentanaLugar extends JFrame implements Runnable {
 				setVisible(false);
 				//se abre una ventana con el título de "Comentarios", la lista de comentarios, la cuenta de usuario
 				//y la base de datos
-				VentanaComentarios ventanaCom = new VentanaComentarios("Comentarios", l, cta, db);
+				VentanaComentarios ventanaCom = new VentanaComentarios("Comentarios", l, sistema);
 				ventanaCom.setVisible(true);
 			}
 		});

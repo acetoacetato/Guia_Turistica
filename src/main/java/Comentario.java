@@ -10,8 +10,8 @@ public class Comentario {
 	
 	
 	
-	public Comentario(String usr) {
-		userId = usr;
+	public Comentario(SistemaMapa sis) {
+		userId = sis.getNombreUsuario();
 		id = -20;
 		comentario = "Aún no comentas este lugar";
 		puntuacion = 0.0f;

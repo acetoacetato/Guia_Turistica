@@ -18,10 +18,12 @@ import com.google.maps.errors.ApiException;
 
 import excepciones.FieldCheckException;
 import excepciones.PlaceAlreadyTakenException;
+import excepciones.PlaceException;
 import main.java.CuentaUsuario;
 import main.java.DbHandler;
 import main.java.Lugar;
 import main.java.MapApi;
+import main.java.SistemaMapa;
 import main.java.VentanaCampos;
 
 import javax.swing.JTextField;
@@ -54,19 +56,18 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 	private JComboBox<String> catComboBox;
 	
 	
-	
-	private DbHandler db;
-	private CuentaUsuario usr;
+	private SistemaMapa sistema;
+	//private DbHandler db;
+	//private CuentaUsuario usr;
 	
 	
 	
 	/**
 	 * Create the frame.
 	 */
-	public VentanaAdminLugares(DbHandler database, CuentaUsuario cta) {
+	public VentanaAdminLugares(SistemaMapa sis) {
 		
-		db = database;
-		usr = cta;
+		sistema = sis;
 		
 		
 		setResizable(false);
@@ -147,7 +148,8 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 				
 				
 				try {
-					db.ingresarLugar(l);
+					sistema.registrar(l);
+					limpiarCampos();
 				} catch (SQLException  e) {
 					JOptionPane.showMessageDialog(null, e.getMessage(), 
 							"No se pudo ingresar a la base de datos",
@@ -182,7 +184,7 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 			public void actionPerformed(ActionEvent e) {
 				
 				setVisible(false);
-				VentanaInicioSesion ventanaInicio = new VentanaInicioSesion(db);
+				VentanaInicioSesion ventanaInicio = new VentanaInicioSesion();
 				ventanaInicio.setVisible(true);
 				
 			}
@@ -204,9 +206,13 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 				
 				try {
 					l = obtenerCampos();
-					if( db.buscar(l) == null) 
+					if( sistema.buscar(l) == null) {
+						JOptionPane.showMessageDialog(null, "No existe el lugar en la base de datos", 
+								"No se pudo eliminar de la base de datos",
+	                            JOptionPane.ERROR_MESSAGE);
 						return;
-					db.eliminar(l);
+					}
+					sistema.eliminar(l);
 					limpiarCampos();
 					JOptionPane.showMessageDialog(null,"Se ha eliminado correctamente el lugar.", 
 							"Eliminado correctamente",
@@ -284,20 +290,24 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 			public void actionPerformed(ActionEvent arg0) {
 				Lugar lugarcito = new Lugar();
 				try {
-					lugarcito = db.autoCompletaLugar(txtBuscar.getText());
+					lugarcito = sistema.obtenerLugar(txtBuscar.getText());
 				} catch (ApiException e) {
 					// TODO Auto-generated catch block
 					System.out.println("Api");
 					e.printStackTrace();
+					return;
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					return;
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					return;
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					return;
 				}
 				
 				if( lugarcito.getNombreLocal() != null && !( lugarcito.getNombreLocal().equals("") ) ) {
@@ -328,17 +338,19 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 		btnAplicarModificacion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				try {
-					db.actualizarLugar(obtenerCampos());
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (FieldCheckException e) {
-					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null, e.toString(), 
-							"No se pudo ingresar a la base de datos",
-                            JOptionPane.ERROR_MESSAGE);
-				}
+				
+					try {
+						sistema.modificar(obtenerCampos());
+					} catch (SQLException | PlaceException | FieldCheckException e) {
+						JOptionPane.showMessageDialog(null,e.getMessage(), 
+								"Fallo al actualizar.",
+		                        JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				
+				JOptionPane.showMessageDialog(null, "se han realizado los cambios correctamente.", 
+						"Cambios aplicados",
+                        JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		btnAplicarModificacion.setBounds(783, 334, 175, 29);
@@ -402,7 +414,7 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 			catComboBox.getSelectedIndex() == 0
 			)	return false;
 		}catch(Exception e) {
-			System.out.println("anal " + e.getMessage());
+			System.out.println("AAAAAAH: " + e.getMessage());
 		}
 		return true;
 	}
