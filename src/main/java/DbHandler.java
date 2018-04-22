@@ -34,18 +34,18 @@ public class DbHandler {
 		dbLugares = new MysqlDataSource();
 		
 		//se setea el usuario y la contraseña para conectarse
-		dbLugares.setUser("cubiUsuario");
-		dbLugares.setPassword("c5536652c");
+		dbLugares.setUser("admin");
+		dbLugares.setPassword("cBc5536652");
 		
 		//se setea la url de la db
-		dbLugares.setServerName("guiaturistica.cxdybqqakuce.sa-east-1.rds.amazonaws.com");
+		dbLugares.setServerName("cubiguiaturistica.cxdybqqakuce.sa-east-1.rds.amazonaws.com");
 		
 		//se conecta a la base de datos
 		coneccion = dbLugares.getConnection();
 		stmt = coneccion.createStatement();
 		
 		//se selecciona la base de datos a usar
-		stmt.executeQuery("use Guia_Turistica"); 
+		stmt.executeQuery("use CubiGuiaTuristica"); 
 	}
 	
 	
@@ -275,6 +275,11 @@ public class DbHandler {
 	public void eliminar(Lugar l) throws SQLException{
 		Statement stmt = coneccion.createStatement();
 		stmt.executeUpdate("DELETE FROM Lugar WHERE id = '" + l.getId() + "'");
+	}
+	
+	public ResultSet obtenerComentarios() throws SQLException {
+		Statement stmt = coneccion.createStatement();
+		return stmt.executeQuery("SELECT * FROM Comentario;");
 	}
 	
 	

@@ -19,6 +19,8 @@ public class SistemaMapa {
 	private DbHandler db;
 	private CuentaUsuario usuario;
 	private boolean admin;
+	private MapaComentarios comentarios;
+	
 	
 	public SistemaMapa() throws SQLException {
 		mapaCatLugares = new Hashtable<String, ArrayList<Lugar>>();

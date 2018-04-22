@@ -1,5 +1,8 @@
 package main.java;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Comentario {
 	private int id;
 	private String userId;
@@ -22,6 +25,14 @@ public class Comentario {
 		userId = usr;
 		comentario = com;
 		puntuacion = pt;
+	}
+	
+	public Comentario(ResultSet rs) throws SQLException {
+		id = rs.getInt("id");
+		userId = rs.getString("id_usuario");
+		placeId = rs.getString("id_lugar");
+		comentario = rs.getString("comentario");
+		puntuacion = rs.getInt("puntuacion");
 	}
 	
 	
