@@ -49,6 +49,18 @@ public class DbHandler {
 	}
 	
 	
+	public ResultSet lugares() throws SQLException {
+		return stmt.executeQuery("SELECT * FROM Lugar;");
+	}
+	
+	public ResultSet comentarios() throws SQLException{
+		return stmt.executeQuery("SELECT * FROM Comentario;");
+	}
+	
+	public ResultSet usuarios() throws SQLException{
+		return stmt.executeQuery("SELECT * FROM Usuario;");
+	}
+	
 	//ingresamos un nuevo lugar a la DB, mySQL verifica si ya se ha ingresado
 	public boolean ingresarLugar(Lugar l) throws SQLException, PlaceAlreadyTakenException{
 		
