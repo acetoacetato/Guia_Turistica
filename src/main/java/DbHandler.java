@@ -1,10 +1,8 @@
 package main.java;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -21,59 +19,93 @@ import excepciones.UserRegisterFailureException;
 public class DbHandler {
 	
 	//variables necesarias para realizar querys a la db
-	MysqlDataSource dbLugares;
-	Connection coneccion;
-	Statement stmt;
-	ResultSet rs;
+	private static Connection conexion = null;
+	private Statement stmt;
+	private ResultSet rs;
 	
 	
 	
-	public DbHandler() throws SQLException {
+	public DbHandler() {
 		
-		//se genera la conexión con una base de datos
-		dbLugares = new MysqlDataSource();
 		
-		//se setea el usuario y la contraseña para conectarse
-		dbLugares.setUser("admin");
-		dbLugares.setPassword("cBc5536652");
+			conexion = Db.getConexion();
 		
-		//se setea la url de la db
-		dbLugares.setServerName("cubiguiaturistica.cxdybqqakuce.sa-east-1.rds.amazonaws.com");
+		if(conexion == null)
+			System.err.println("eerrrrroor");
 		
-		//se conecta a la base de datos
-		coneccion = dbLugares.getConnection();
-		stmt = coneccion.createStatement();
 		
-		//se selecciona la base de datos a usar
-		stmt.executeQuery("use CubiGuiaTuristica"); 
+		
+		
+		
+	}
+	
+	public static Connection getConexion() {
+		return conexion;
+	}
+	
+	public String[] zonas() throws SQLException{
+		CallableStatement cs = conexion.prepareCall("{CALL getZonas()}");
+		ResultSet rs = cs.executeQuery();
+		
+		ArrayList<String> a = new ArrayList<String>();
+		while(rs.next()) {
+			a.add(rs.getString("zona"));
+		}
+		
+		String[] s = new String[a.size()];
+		
+		for(int i=0 ; i < s.length ; i++) {
+			s[i] = (String) a.get(i);
+		}
+		
+		return s;
+	}
+	
+	public ResultSet categorias() throws SQLException {
+		CallableStatement cs = conexion.prepareCall("{CALL getCategorias()}");
+		return cs.executeQuery();
+	
+		
+		
 	}
 	
 	
 	public ResultSet lugares() throws SQLException {
-		return stmt.executeQuery("SELECT * FROM Lugar;");
+		CallableStatement cs = conexion.prepareCall("{CALL getLugares()}");
+		return cs.executeQuery();
 	}
 	
 	public ResultSet comentarios() throws SQLException{
-		return stmt.executeQuery("SELECT * FROM Comentario;");
+		CallableStatement cs = conexion.prepareCall("{CALL getComentarios()}");
+		return cs.executeQuery();
 	}
 	
 	public ResultSet usuarios() throws SQLException{
-		return stmt.executeQuery("SELECT * FROM Usuario;");
+		CallableStatement cs = conexion.prepareCall("{CALL getUsuarios()}");
+		return cs.executeQuery();
 	}
 	
 	//ingresamos un nuevo lugar a la DB, mySQL verifica si ya se ha ingresado
 	public boolean ingresarLugar(Lugar l) throws SQLException, PlaceAlreadyTakenException{
-		
+		Statement stmt = conexion.createStatement();
 		//se ejecuta la consulta
 		ResultSet rs = stmt.executeQuery("select * from Lugar where id = '" +
 							l.getId() + "' or casa = '" +
 							l.getDireccionPpal() + "';");
+		CallableStatement cs = conexion.prepareCall("{CALL agregarLugar(?,?,?,?,?,?,?,?,?,?)}");
+		String[] lugar = l.arreglo();
 		
-		//el ResultSet comienza en -1, por lo que si existe next es porque había al menos un resultado coincidente
-		//por lo que el lugar ya está ingresado y se lanza la excepción
+		for(int i = 0; i< lugar.length ; i++) {
+			cs.setString(i+1, lugar[i]);
+		}
+		
+		return cs.execute();
+		/*
+		//el ResultSet comienza en -1, por lo que si existe next es porque habï¿½a al menos un resultado coincidente
+		//por lo que el lugar ya estï¿½ ingresado y se lanza la excepciï¿½n
 		if(rs.next()) throw new PlaceAlreadyTakenException();
 		
-		//en caso contrario, se ejecuta la inserción del lugar en la base de datos
+		//en caso contrario, se ejecuta la inserciï¿½n del lugar en la base de datos
 		rs = null;		
 		stmt.executeUpdate("Insert into Lugar (id, nombre, casa, comuna, region, pais, latitud, longitud, categoria, descripcion)"
 				+ "values ('"
@@ -90,7 +122,7 @@ public class DbHandler {
 				);
 		
 		return true;
-		
+		*/
 		
 	}
 	
@@ -98,16 +130,16 @@ public class DbHandler {
 	
 	
 	
-	//Registra el usuario en la base de datos, sólo se pueden registrar usuarios normales.
-	//recibe el nombre de usuario y la contraseña
+	//Registra el usuario en la base de datos, sï¿½lo se pueden registrar usuarios normales.
+	//recibe el nombre de usuario y la contraseï¿½a
 	public void registrarUsuario(String usr, String pass) throws UserRegisterFailureException {
 		
 		Statement stmt;
 		try {
 			//se crea un statement para generar la consulta
-			stmt = coneccion.createStatement();
+			stmt = conexion.createStatement();
 			
-			//si el usuario ya está registrado, se lanza la excepción UserRegisterFailureException
+			//si el usuario ya estï¿½ registrado, se lanza la excepciï¿½n UserRegisterFailureException
 			verificarRegistro(usr);
 			String query = "insert into Usuario (id, pass, admin) values" +
 					"('" + usr 
@@ -126,9 +158,9 @@ public class DbHandler {
 	public CuentaUsuario iniciarSesion(String usr, String pass) throws SQLException, UserCheckException {
 		
 		//se crea el statement para generar la consulta
-		Statement stmt = coneccion.createStatement();
+		Statement stmt = conexion.createStatement();
 		
-		//se crea la consulta con el usuario y la contraseña para verificar que el usuario existe
+		//se crea la consulta con el usuario y la contraseï¿½a para verificar que el usuario existe
 		String query = "select * from Usuario where id = '" 
 				+ usr + "' and pass = '"
 				+ pass + "';";
@@ -143,13 +175,13 @@ public class DbHandler {
 				return new Usuario(rs.getString("id"), rs.getString("pass"));
 		}
 		//El ResultSet inicia en -1, rs.next() retorna true si existe l menos un resultado coincidente, por lo que si no hay coincidencias, se lanza un UserCheckException
-		throw new UserCheckException("Combinación usuario/contraseña inválida.");
+		throw new UserCheckException("Combinaciï¿½n usuario/contraseï¿½a invï¿½lida.");
 		
 	}
 	
-	//verifica si el usuario ya está registrado
+	//verifica si el usuario ya estï¿½ registrado
 	public ResultSet verificarRegistro(String usr) throws SQLException, UserRegisterFailureException{
-		Statement stmt = coneccion.createStatement();
+		Statement stmt = conexion.createStatement();
 		
 		ResultSet rs = stmt.executeQuery("Select * from Usuario where id = '" + usr + "';");
 		if(rs.next()) throw new UserRegisterFailureException("Usuario ya registrado.");
@@ -159,7 +191,7 @@ public class DbHandler {
 	
 	//Actualiza la info del lugar
 	public void actualizarLugar(Lugar l) throws SQLException, PlaceException {
-		Statement stmt = coneccion.createStatement();
+		Statement stmt = conexion.createStatement();
 		if (this.buscar(l) == null)
 			throw new PlaceException("El lugar no existe en la base de datos.");
 		
@@ -182,7 +214,7 @@ public class DbHandler {
 	
 	//se busca un lugar por su id
 	/*public Lugar buscarLugar(String id) throws SQLException {
-		Statement stmt = coneccion.createStatement();
+		Statement stmt = conexion.createStatement();
 		String query = "select * from Lugar where id = '" + id + "';";
 		System.out.println(query);
 		ResultSet rs = stmt.executeQuery("select * from Lugar where id = '" + id + "';");
@@ -195,7 +227,7 @@ public class DbHandler {
 	
 	//Se busca un lugar por el nombre del local
 	public Lugar buscarLugar(String name) throws SQLException{
-		Statement stmt = coneccion.createStatement();
+		Statement stmt = conexion.createStatement();
 		ResultSet rs = stmt.executeQuery("select * from Lugar where nombre = '" + name + "';");
 		
 		if(rs.next())
@@ -205,29 +237,29 @@ public class DbHandler {
 
 	}
 	
-	//busca lugares que coincidan con una categoría y ubicación especificada por parámetro
+	//busca lugares que coincidan con una categorï¿½a y ubicaciï¿½n especificada por parï¿½metro
 	//retorna una lista con todas las coincidencias
-	public ArrayList<Lugar> buscarLugar(String cat, String ubic) throws SQLException {
-		Statement stmt = coneccion.createStatement();
+	public ResultSet buscarLugar(String cat, String ubic) throws SQLException {
+		Statement stmt = conexion.createStatement();
 		String query = "SELECT * FROM Lugar WHERE categoria = '"
 				 + cat + "' AND comuna = '" + ubic + "';";
-		ResultSet rs = stmt.executeQuery( query );
-		ArrayList <Lugar> li = new ArrayList<Lugar>();
+		return rs = stmt.executeQuery( query );
+		/*ArrayList <Lugar> li = new ArrayList<Lugar>();
 		
-		//recorre todos los resultados y va construyendo los lugares, además de agregándolos a la lista
+		//recorre todos los resultados y va construyendo los lugares, ademï¿½s de agregï¿½ndolos a la lista
 		while(rs.next()) {
 			Lugar l = new Lugar(rs);
 			
-			//obtiene la puntuación del lugar
+			//obtiene la puntuaciï¿½n del lugar
 			int pt = obtenerPuntuacion(l.getId());
 			
-			//setea la puntuación al lugar
+			//setea la puntuaciï¿½n al lugar
 			l.setPuntuacion( pt );
 			
 			//adhiere el lugar a la lista
 			li.add( l );
 		}
-		return li;
+		return li;*/
 	}
 	
 	
@@ -241,7 +273,7 @@ public class DbHandler {
 		
 		//Se guarda el id para buscar en la base de datos si el lugar ya existe en esta
 		String id = l.getId();
-		Statement stmt = coneccion.createStatement();
+		Statement stmt = conexion.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM Lugar where id = '" + id + "';");
 		
 		//si ya existe, se retornan los datos que hay en la base de datos
@@ -255,21 +287,23 @@ public class DbHandler {
 	}
 	
 	
-	//Crea y retorna un arrayList con los lugares de una ubicación, pasada por parámetro, separados por categoría
+	/*
+	
+	//Crea y retorna un arrayList con los lugares de una ubicaciï¿½n, pasada por parï¿½metro, separados por categorï¿½a
 	public Hashtable<String, ArrayList <Lugar>> cargaLugares(String ubicacion) throws SQLException {
 		Hashtable<String, ArrayList<Lugar>> mapita = new Hashtable<String, ArrayList<Lugar>>();
 		String[] categorias = { "atraccion", "dormir", "comida", "vida_nocturna" };
 		
-		//por cada elemento de categorías, se crea una lista del lugar con la categoría y la ubicación y se agrega a la lista
+		//por cada elemento de categorï¿½as, se crea una lista del lugar con la categorï¿½a y la ubicaciï¿½n y se agrega a la lista
 		for(String i : categorias) {
 			mapita.put(i, buscarLugar(i, ubicacion));
 		}
 		return mapita;
 	}
-	
+	*/
 	//busca un lugar en la base de datos
 	public Lugar buscar(Lugar l) throws SQLException {
-		Statement stmt = coneccion.createStatement();
+		Statement stmt = conexion.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM Lugar WHERE id = '" + l.getId() + "'");
 		if(rs.next()) 
 			return new Lugar(rs);
@@ -277,7 +311,7 @@ public class DbHandler {
 	}
 	
 	
-	//TODO: agregar busqueda de usuarios y comentarios 
+	//TODrO: agregar busqueda de usuarios y comentarios 
 	public Object buscar(Usuario usr) {
 		return null;
 	}
@@ -285,31 +319,46 @@ public class DbHandler {
 	
 	//elimina el lugar de la base de datos
 	public void eliminar(Lugar l) throws SQLException{
-		Statement stmt = coneccion.createStatement();
+		Statement stmt = conexion.createStatement();
 		stmt.executeUpdate("DELETE FROM Lugar WHERE id = '" + l.getId() + "'");
 	}
 	
 	public ResultSet obtenerComentarios() throws SQLException {
-		Statement stmt = coneccion.createStatement();
+		Statement stmt = conexion.createStatement();
 		return stmt.executeQuery("SELECT * FROM Comentario;");
 	}
 	
 	
 	//se busca un comentario por su id
 	public ResultSet buscarComentarios(String id) throws SQLException {
-		Statement stmt = coneccion.createStatement();
+		Statement stmt = conexion.createStatement();
 		return stmt.executeQuery("select * from Comentario where id_lugar = '" +  id + "';");
 	}
 	
 	public boolean buscarComentario(String idUsr, String idLugar) throws SQLException{
-		Statement stmt = coneccion.createStatement();
+		Statement stmt = conexion.createStatement();
 		ResultSet rs = stmt.executeQuery("Select * from Comentario where id_lugar = '" + idLugar + "' and id_usuario ='" + idUsr + "';");
 		return rs.next();
 	}
 	
-	//calcula la puntuación de un lugar, recibe el id de lugar 
+	
+	public ResultSet obtenerLugares() throws SQLException {
+		return stmt.executeQuery("SELECT * FROM Lugar;");
+	}
+	
+	
+	/**
+	 * Calcula y retorna la puntuaciÃ³n actual de un determinado lugar.
+	 * Las posibles puntuaciones de un comentario son 1 y -1,
+	 * y el puntaje se calcula sumando todas las puntuaciones.
+	 * La suma se hace mediante una consulta simple.
+	 * 
+	 * @param id : el id del lugar a calcular la puntuaciÃ³n.
+	 * @return Un entero de la suma de las puntuaciones.
+	 * @throws SQLException
+	 */
 	public int obtenerPuntuacion(String id) throws SQLException {
-		Statement stmt = coneccion.createStatement();
+		Statement stmt = conexion.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT SUM(puntuacion) FROM Comentario WHERE id_lugar = '" + id + "';");
 		if(rs.next()) 
 			return rs.getInt("SUM(puntuacion)");
@@ -318,8 +367,7 @@ public class DbHandler {
 	}
 	
 	public void modificarComentario(String coment, Comentario c, Lugar l, String p) throws SQLException {
-		System.out.println("\n tu mamá es homnbre jaja salu2\n ");
-		Statement stmt = coneccion.createStatement();
+		Statement stmt = conexion.createStatement();
 		String query;
 		if(buscarComentario(c.getUsr(), l.getId())) {
 			query = "Update Comentario set comentario ='" + coment + "', puntuacion=" + p + " where id_usuario='" + c.getUsr() + "' and id_lugar='" + l.getId() + "';";

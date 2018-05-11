@@ -40,6 +40,8 @@ public class VentanaLugar extends JFrame implements Runnable {
 	
 	public VentanaLugar(Lugar l, SistemaMapa sis) {
 		sistema = sis;
+		setResizable(false);
+
 		//se guarda referencia al lugar a mostrar
 		this.l = l;
 		setBounds(100, 100, 800, 601);
@@ -86,7 +88,7 @@ public class VentanaLugar extends JFrame implements Runnable {
 		comentario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				//se abre una ventana con el título de "Comentarios", la lista de comentarios, la cuenta de usuario
+				//se abre una ventana con el tï¿½tulo de "Comentarios", la lista de comentarios, la cuenta de usuario
 				//y la base de datos
 				VentanaComentarios ventanaCom = new VentanaComentarios("Comentarios", l, sistema);
 				ventanaCom.setVisible(true);
@@ -123,7 +125,7 @@ public class VentanaLugar extends JFrame implements Runnable {
 	
 	
 	/*
-	 * Método que carga el mapa en un hilo diferente
+	 * Mï¿½todo que carga el mapa en un hilo diferente
 	 * 
 	 * */
 	public void run() {
@@ -136,7 +138,7 @@ public class VentanaLugar extends JFrame implements Runnable {
 			cargando.setBounds(453, 134, 410, 297);
 			contentPane.add(cargando);
 			
-			//se crea un MapHandler con la dirección del lugar, más la gomuna, para una búsqueda efectiva
+			//se crea un MapHandler con la direcciï¿½n del lugar, mï¿½s la gomuna, para una bï¿½squeda efectiva
 			mapita = new MapHandler(l.getDireccionPpal() + ", " + l.getComuna());
 			
 			//se crea un label con el ImageIcon del mapa

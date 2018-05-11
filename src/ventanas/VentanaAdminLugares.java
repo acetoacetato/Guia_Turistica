@@ -66,6 +66,7 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 	 * Create the frame.
 	 */
 	public VentanaAdminLugares(SistemaMapa sis) {
+		setTitle("AdministraciÃ³n de lugares.");
 		
 		sistema = sis;
 		
@@ -184,7 +185,7 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 			public void actionPerformed(ActionEvent e) {
 				
 				setVisible(false);
-				VentanaInicioSesion ventanaInicio = new VentanaInicioSesion();
+				VentanaInicioSesion ventanaInicio = new VentanaInicioSesion(sistema);
 				ventanaInicio.setVisible(true);
 				
 			}
@@ -364,7 +365,7 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 	private Lugar obtenerCampos() throws FieldCheckException{
 		
 		if(!verificarCampos()) 
-			throw new FieldCheckException("No se han llenado todos los campos, presione botón autocompletar.");
+			throw new FieldCheckException("No se han llenado todos los campos, presione botï¿½n autocompletar.");
 		
 		String[] dir = new String[4];
 		dir[0] = txtDireccion.getText().trim().toLowerCase();

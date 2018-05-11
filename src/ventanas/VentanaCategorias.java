@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -13,24 +14,27 @@ import main.java.CuentaUsuario;
 import main.java.DbHandler;
 import main.java.Lugar;
 import main.java.SistemaMapa;
+import main.java.VentanaCampos;
 
 
-public class VentanaCategorias extends JFrame {
+public class VentanaCategorias extends JFrame implements VentanaCampos{
 	
 	private JPanel contentPane;
 	private SistemaMapa sistema;
-
+	private JComboBox<String> comboBox;
 	
+	private static String[] cat = { "atraccion", "dormir", "comida", "vida_nocturna" };
 	
 	public VentanaCategorias(SistemaMapa sis) {
 		
-		setTitle("main user");
+		setTitle("Seleccione zona y categorÃ­a.");
 		sistema = sis;
 		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 521, 283);
-				
+		setResizable(false);
+		setBounds(100, 100, 505, 265);
+		
 		Container contentPane = getContentPane();
 		this.setVisible(true);
 		
@@ -38,16 +42,15 @@ public class VentanaCategorias extends JFrame {
 	 * 	{ "atraccion", "dormir", "comida", "vida_nocturna" }
 	 * */
 		
-		//Los respectivos botones con su posición en x,y y tamaño respectivamente
+		//Los respectivos botones con su posiciï¿½n en x,y y tamaï¿½o respectivamente
 		JButton botonAtracciones = new JButton();
 		botonAtracciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				//se abre una ventana con el título de atracciones, la lista de lugares, la cuenta de usuario,
+				//se abre una ventana con el tï¿½tulo de atracciones, la lista de lugares, la cuenta de usuario,
 				//el index de inicio donde comienza a mostrar los lugares (siempre en un principio 0)
-				//el index de la categoría de la ventana y la base de datos para volver de ahí
-				VentanaLugares ventanaAtrac = new VentanaLugares( "atraccion", sistema, 0);
-				ventanaAtrac.setVisible(true);
+				//el index de la categorï¿½a de la ventana y la base de datos para volver de ahï¿½
+				ventanaLugares(0);
 				
 			}
 		});
@@ -58,11 +61,10 @@ public class VentanaCategorias extends JFrame {
 		botonDormir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				//se abre una ventana con el título de "Dónde dormir", la lista de lugares, la cuenta de usuario,
+				//se abre una ventana con el tï¿½tulo de "Dï¿½nde dormir", la lista de lugares, la cuenta de usuario,
 				//el index de inicio donde comienza a mostrar los lugares (siempre en un principio 0)
-				//el index de la categoría de la ventana y la base de datos para volver de ahí
-				VentanaLugares ventanaHot = new VentanaLugares("domir", sistema, 0);
-				ventanaHot.setVisible(true);
+				//el index de la categorï¿½a de la ventana y la base de datos para volver de ahï¿½
+				ventanaLugares(1);
 				
 			}
 		});
@@ -73,8 +75,8 @@ public class VentanaCategorias extends JFrame {
 		botonComida.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaLugares ventanaRest = new VentanaLugares("comida", sistema, 0);
-				ventanaRest.setVisible(true);
+				ventanaLugares(2);
+				
 				
 			}
 		});
@@ -84,8 +86,7 @@ public class VentanaCategorias extends JFrame {
 		botonVidaNoc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaLugares ventanaNoc = new VentanaLugares("vida_nocturna", sistema, 0);
-				ventanaNoc.setVisible(true);
+				ventanaLugares(3);
 				
 			}
 		});		
@@ -94,18 +95,18 @@ public class VentanaCategorias extends JFrame {
 		
 		
 		//Busca las imagenes respectivas para las categorias
-		ImageIcon imagen = new ImageIcon(VentanaUsuario.class.getResource("/Imagenes/Atracciones.png"));
-		ImageIcon imagen2 = new ImageIcon(VentanaUsuario.class.getResource("/Imagenes/Hoteles.png"));
-		ImageIcon imagen3 = new ImageIcon(VentanaUsuario.class.getResource("/Imagenes/Restaurantes.png"));
-		ImageIcon imagen4 = new ImageIcon(VentanaUsuario.class.getResource("/Imagenes/Vida_Nocturna.png"));
+		ImageIcon imagen = new ImageIcon(VentanaCategorias.class.getResource("/Imagenes/Atracciones.png"));
+		ImageIcon imagen2 = new ImageIcon(VentanaCategorias.class.getResource("/Imagenes/Hoteles.png"));
+		ImageIcon imagen3 = new ImageIcon(VentanaCategorias.class.getResource("/Imagenes/Restaurantes.png"));
+		ImageIcon imagen4 = new ImageIcon(VentanaCategorias.class.getResource("/Imagenes/Vida_Nocturna.png"));
 		
-		//Setea las imagenes en las dimesiones del botón
+		//Setea las imagenes en las dimesiones del botï¿½n
 		Icon icon1 = new ImageIcon(imagen.getImage().getScaledInstance(botonAtracciones.getWidth(), botonAtracciones.getHeight(), Image.SCALE_DEFAULT));
 		Icon icon2 = new ImageIcon(imagen2.getImage().getScaledInstance(botonDormir.getWidth(), botonDormir.getHeight(), Image.SCALE_DEFAULT));
 		Icon icon3 = new ImageIcon(imagen3.getImage().getScaledInstance(botonComida.getWidth(), botonComida.getHeight(), Image.SCALE_DEFAULT));
 		Icon icon4 = new ImageIcon(imagen4.getImage().getScaledInstance(botonVidaNoc.getWidth(), botonVidaNoc.getHeight(), Image.SCALE_DEFAULT));
 		
-		//Setea un icono al botón
+		//Setea un icono al botï¿½n
 		botonAtracciones.setIcon(icon1);
 		botonDormir.setIcon(icon2);
 		botonComida.setIcon(icon3);
@@ -113,7 +114,7 @@ public class VentanaCategorias extends JFrame {
 		
 		JLabel lblPregunta = new JLabel(" \u00BFQu\u00E9 deseas hacer hoy?");
 		lblPregunta.setForeground(new Color(255, 0, 255));
-		lblPregunta.setBounds(50, 42, 320, 31);
+		lblPregunta.setBounds(160, 11, 320, 31);
 		lblPregunta.setFont(new Font("Comic Sans MS", Font.BOLD, 25));
 		
 		JLabel lblAtracciones = new JLabel("Atracciones");
@@ -139,7 +140,7 @@ public class VentanaCategorias extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				VentanaUsuario ventanaUsr = new VentanaUsuario(sistema);
+				VentanaInicioSesion ventanaUsr = new VentanaInicioSesion(sistema);
 				setVisible(false);
 				ventanaUsr.setVisible(true);
 			}
@@ -153,7 +154,7 @@ public class VentanaCategorias extends JFrame {
 	    //se crea el mensaje de bienvenida al usuario
 		JLabel lblBienvenida = new JLabel(sistema.getNombreUsuario() + ",");
 		lblBienvenida.setForeground(new Color(255, 0, 255));
-		lblBienvenida.setBounds(10, 11, 360, 31);
+		lblBienvenida.setBounds(12, 11, 360, 31);
 		lblBienvenida.setFont(new Font("Comic Sans MS", Font.BOLD, 25));
 		
 		
@@ -165,7 +166,7 @@ public class VentanaCategorias extends JFrame {
 		contentPane.add(lblRestaurantes);
 		contentPane.add(lblPregunta);
 		
-		//se setea un layout vacío
+		//se setea un layout vacï¿½o
 		contentPane.setLayout(null);
 		
 		//se agregan los botones
@@ -174,13 +175,46 @@ public class VentanaCategorias extends JFrame {
 		contentPane.add(botonComida);
 	    contentPane.add(botonVidaNoc);
 		
+		comboBox = new JComboBox<String>();
+		try {
+			comboBox.addItem("zona");
+			for( String s : (new DbHandler()).zonas()) {
+				comboBox.addItem(s);
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		comboBox.setBounds(67, 54, 274, 26);
+		getContentPane().add(comboBox);
+		
 		//se crea y agrega el fondo 
 		JLabel lblFondo = new JLabel("");
-		lblFondo.setIcon(new ImageIcon(VentanaUsuario.class.getResource("/Imagenes/fondo1.png")));
+		lblFondo.setIcon(new ImageIcon(VentanaCategorias.class.getResource("/Imagenes/fondo1.png")));
 		lblFondo.setBounds(0, 0, 505, 245);
 		getContentPane().add(lblFondo);
 		
 		
+		
+	}
+
+	
+	private void ventanaLugares(int categoria) {
+		VentanaLugares ventanaRest = new VentanaLugares(cat[categoria], (String)comboBox.getSelectedItem(), sistema);
+		ventanaRest.setVisible(true);
+	}
+
+	@Override
+	public boolean verificarCampos() {
+		int i = comboBox.getSelectedIndex();
+		return (i != 0);
+	}
+
+
+
+	@Override
+	public void limpiarCampos() {
+		comboBox.setSelectedIndex(0);
 		
 	}
 }

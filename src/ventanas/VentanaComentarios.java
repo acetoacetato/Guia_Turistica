@@ -31,7 +31,7 @@ public class VentanaComentarios extends JFrame {
 
 	private Lugar lugar;
 	
-	//en caso de que existan al menos un comentario para hacer la página sgte, existeNext es true
+	//en caso de que existan al menos un comentario para hacer la pï¿½gina sgte, existeNext es true
 	private boolean existeNext;
 	private int act;
 	private int coment;
@@ -54,12 +54,14 @@ public class VentanaComentarios extends JFrame {
 		comUsr = usrC;
 		listaComentarios = comentarios;
 		cargarVentana();
+		setResizable(false);
 		
 
 	}
 
 	public VentanaComentarios(String titulo, Lugar l, SistemaMapa sis ) {
 		t = titulo;
+		setResizable(false);
 		existeNext = true;
 		sistema = sis;
 		act = 0;
@@ -87,7 +89,8 @@ public class VentanaComentarios extends JFrame {
 private void cargarVentana() {
 	
 	
-	setBounds(100, 100, 800, 601);
+	setBounds(100, 100, 450, 300);
+
 	setTitle(t);
 	
 	
@@ -137,7 +140,7 @@ private void cargarVentana() {
 		btnNext.setBounds(650, 490, 150, 20);
 		
 		btnNext.addActionListener(new ActionListener() {
-			//al presionarse, se crea un ventanaLugares con los parámetros actuales
+			//al presionarse, se crea un ventanaLugares con los parï¿½metros actuales
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				VentanaComentarios vtnCom = new VentanaComentarios(t, lugar, sistema, act, comUsr, listaComentarios);
@@ -148,7 +151,7 @@ private void cargarVentana() {
 		contentPane.add(btnNext);
 	}
 	
-	//botón para volver al menú de categorías
+	//botï¿½n para volver al menï¿½ de categorï¿½as
 	JButton btnVolverLugar = new JButton("Volver");
 	btnVolverLugar.setBounds(300, 480, 100, 40);
 	contentPane.add(btnVolverLugar);
@@ -162,14 +165,14 @@ private void cargarVentana() {
 		
 	});
 	
-//si el actual es mayor a 5, entonces se puede volver una página atrás
+//si el actual es mayor a 5, entonces se puede volver una pï¿½gina atrï¿½s
 	if(act>3) {
 
-		//se crea el botón atrás y se lo agrega al panel
-		JButton btnBack = new JButton("Atrás");
+		//se crea el botï¿½n atrï¿½s y se lo agrega al panel
+		JButton btnBack = new JButton("Atrï¿½s");
 		btnBack.setBounds(19, 490, 150, 20);
 		int nuevoAct = act - (i+1) - (act - (i+1)) %3;
-		//al presionarse el botón, se crea una ventanaComentarios con actual-6, que sería el actual de la página anterior
+		//al presionarse el botï¿½n, se crea una ventanaComentarios con actual-6, que serï¿½a el actual de la pï¿½gina anterior
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);

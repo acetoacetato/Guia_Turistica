@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 public class VentanaAdmin extends JFrame {
 
 	private JPanel contentPane;
-	private DbHandler db;
 	private CuentaUsuario usr;
 	private SistemaMapa sistema;
 
@@ -34,7 +33,8 @@ public class VentanaAdmin extends JFrame {
 	public VentanaAdmin(SistemaMapa sis) {
 		setTitle("Admin");
 		sistema = sis;
-		
+		setResizable(false);
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -65,7 +65,7 @@ public class VentanaAdmin extends JFrame {
 				
 				usr = null;
 				setVisible(false);
-				VentanaInicioSesion ventanaInicio = new VentanaInicioSesion();
+				VentanaInicioSesion ventanaInicio = new VentanaInicioSesion(sistema);
 				ventanaInicio.setVisible(true);
 				
 				

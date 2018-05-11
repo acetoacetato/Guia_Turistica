@@ -1,20 +1,16 @@
 package ventanas;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import main.java.CuentaUsuario;
-import main.java.DbHandler;
+import main.java.Busqueda;
 import main.java.ItemLugar;
 import main.java.Lugar;
 import main.java.SistemaMapa;
@@ -29,38 +25,56 @@ public class VentanaLugares extends JFrame {
 	//el arrayList de lugares a mostrar
 	private ArrayList<Lugar> lugarcitos;
 	
-	//en caso que exista al menos un lugar para hacer la página sgte, existeNext es true
+	//en caso que exista al menos un lugar para hacer la pï¿½gina sgte, existeNext es true
 	private boolean existeNext;
 	private int act;	
 	private int i;
 	private String categoria;
 	private SistemaMapa sistema;
+	private String zona;
 	
-	
-	public VentanaLugares(String cat, SistemaMapa sis) {
+	public VentanaLugares(String cat, String zona, SistemaMapa sis) {
 		sistema = sis;
 		categoria = cat;
+		this.zona = zona;
 		act = 0;
+		lugarcitos = sis.obtenerLugares(cat,  zona);
+		
+		ventanita();
+		
 	}
 	
 	
-	public VentanaLugares(String cat, SistemaMapa sis, int actual) {
+	/**
+	 * @wbp.parser.constructor
+	 */
+	public VentanaLugares(String cat, SistemaMapa sis, int actual, ArrayList<Lugar> lugarcitos, String zona) {
 		
-		
+		this.zona = zona;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 320);
+		
 		setTitle(cat);
 		
 		//se guardan las referencias necesarias
-		existeNext = true;
+		
 		sistema = sis;
 		act = actual;
 		categoria = cat;
-		lugarcitos = sis.obtenerLugares(cat);
+		this.lugarcitos = lugarcitos;
+		
+		ventanita();
+		
+	}
+	
+	
+	private void ventanita() {
+		existeNext = true;
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setResizable(false);
+		setBounds(100, 100, 405, 300);
 		itememes = new ItemLugar[5];
 		int  x = 40, y = 20, z = 0;
 		i=0;
@@ -69,14 +83,14 @@ public class VentanaLugares extends JFrame {
 		//se crean 5 items y se agregan al panel
 		for(i = 0 ; i < 5 ; i++) {
 			if(lugarcitos==null || lugarcitos.isEmpty()) {
-				JLabel lblVacio = new JLabel("no hay lugares en esta categoría. :c");
+				JLabel lblVacio = new JLabel("no hay lugares en esta categorï¿½a. :c");
 				lblVacio.setBounds(80, 40, 500, 100);
 				contentPane.add(lblVacio);
 				volverMenu();
 				return;
 				
 			}
-			//se verifica que quede un lugar o más, si no es así se avisa que no existe sgte página y se dejan de crear items
+			//se verifica que quede un lugar o mï¿½s, si no es asï¿½ se avisa que no existe sgte pï¿½gina y se dejan de crear items
 			if(act == lugarcitos.size()) {
 				existeNext = false;
 				act--;
@@ -96,7 +110,7 @@ public class VentanaLugares extends JFrame {
 			contentPane.add(itememes[i].getBtnLugar());
 			contentPane.add(itememes[i].getFondo());
 			
-			//se aumenta el índice del lugar actual al generar
+			//se aumenta el ï¿½ndice del lugar actual al generar
 			act++;
 			
 			
@@ -108,8 +122,11 @@ public class VentanaLugares extends JFrame {
 		btnReporte.addActionListener(new ActionListener() {
 		
 				public void actionPerformed(ActionEvent e) {
-					VentanaReporte ventanitaR = new VentanaReporte(lugarcitos, sistema);
-					ventanitaR.setVisible(true);
+					//String[] s = {zona, categoria};
+					String[] s = {zona};
+					sistema.generarReporte(new Busqueda("Zonas", s) );
+					//VentanaReporte ventanitaR = new VentanaReporte(lugarcitos, sistema);
+					//ventanitaR.setVisible(true);
 					
 				}
 			
@@ -119,16 +136,16 @@ public class VentanaLugares extends JFrame {
 		
 		contentPane.add(btnReporte);
 		
-		//si existe al menos un lugar más a mostrar, se crea un botón para la sgte página y se adhiere al panel
+		//si existe al menos un lugar mï¿½s a mostrar, se crea un botï¿½n para la sgte pï¿½gina y se adhiere al panel
 		if(existeNext) {
 			JButton btnNext = new JButton("siguiente");
 			btnNext.setBounds(330, 240, 90, 20);
 			
 			btnNext.addActionListener(new ActionListener() {
-				//al presionarse, se crea un ventanaLugares con los parámetros actuales
+				//al presionarse, se crea un ventanaLugares con los parï¿½metros actuales
 				public void actionPerformed(ActionEvent e) {
 					setVisible(false);
-					VentanaLugares vtnLugar = new VentanaLugares(categoria, sistema, act);
+					VentanaLugares vtnLugar = new VentanaLugares(categoria, sistema, act, lugarcitos, zona);
 					vtnLugar.setVisible(true);
 				}
 			});
@@ -138,21 +155,21 @@ public class VentanaLugares extends JFrame {
 		volverMenu();
 		
 		
-		//si el actual es mayor a 9, entonces se puede volver una página atrás
+		//si el actual es mayor a 9, entonces se puede volver una pï¿½gina atrï¿½s
 		if(act>5) {
 			
-			//se crea el botón atrás y se lo agrega al panel
-			JButton btnBack = new JButton("atrás");
+			//se crea el botï¿½n atrï¿½s y se lo agrega al panel
+			JButton btnBack = new JButton("atrï¿½s");
 			btnBack.setBounds(19, 240, 70, 20);
 			
-			//al presionarse el botón, se crea una ventanaLugares con actual-10, que sería el actual de la página anterior
+			//al presionarse el botï¿½n, se crea una ventanaLugares con actual-10, que serï¿½a el actual de la pï¿½gina anterior
 			btnBack.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 
 					setVisible(false);
 					
 					int nuevoAct = act - (i+1) - (act - (i+1)) %5;
-					VentanaLugares vtnLugar = new VentanaLugares(categoria, sistema, nuevoAct);
+					VentanaLugares vtnLugar = new VentanaLugares(categoria, sistema, nuevoAct, lugarcitos, zona);
 					vtnLugar.setVisible(true);
 					
 				}
@@ -160,14 +177,10 @@ public class VentanaLugares extends JFrame {
 			
 			contentPane.add(btnBack);
 		}
-		
-		//
-		
 	}
 	
-	
 	private void volverMenu() {
-		//botón para volver al menú de categorías
+		//botï¿½n para volver al menï¿½ de categorï¿½as
 				JButton btnVolverMenu = new JButton("Volver a categorias");
 				btnVolverMenu.setBounds(100, 260, 180, 15);
 				contentPane.add(btnVolverMenu);

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 
+import javax.swing.JFrame;
+
 import com.google.maps.errors.ApiException;
 
 import excepciones.PlaceAlreadyTakenException;
@@ -13,26 +15,51 @@ import excepciones.PlaceException;
 import excepciones.UserCheckException;
 import excepciones.UserRegisterFailureException;
 import excepciones.WithoutNextException;
+import ventanas.VentanaAdmin;
+import ventanas.VentanaCategorias;
 
 public class SistemaMapa {
-	private Hashtable<String, ArrayList<Lugar>> mapaCatLugares;
 	private DbHandler db;
 	private CuentaUsuario usuario;
 	private boolean admin;
-	private MapaComentarios comentarios;
+	private MapaZona lugares;
+	private MapaUsuarios usuarios;
 	
 	
 	public SistemaMapa() throws SQLException {
-		mapaCatLugares = new Hashtable<String, ArrayList<Lugar>>();
-		db = new DbHandler();
-		
+		lugares = new MapaZona();
+		usuarios = new MapaUsuarios();
+		db = new DbHandler();		
 	}
 	
-	public void iniciarSesion(String usr, String pass) throws UserCheckException, SQLException{
+	public void iniciarSesion(String usr, String pass)  throws UserCheckException, SQLException{
 
 		usuario = db.iniciarSesion(usr, pass);
 		admin = usuario.tipoCuenta().equals("Administrador");
+		
+		JFrame ventana;
+		System.setProperty("usr.nombre", usuario.getNombreUsuario());
+		if(admin) 
+			ventana = new VentanaAdmin(this);
+		else
+			ventana = new VentanaCategorias(this);
+		
+		ventana.setVisible(true);
+		
 	}
+	
+	public void generarReporte(Busqueda b) {
+		switch(b.getTipo()) {
+		
+			case "Usuarios":
+				//TODO: reporte mapa usuarios
+			case "Comentarios":
+				//TODO: reporte mapa comentarios
+			default:
+				lugares.reporte(b);
+		}
+	}
+	
 	
 	public void registrar(String usr, String pass) throws UserRegisterFailureException {
 		db.registrarUsuario(usr, pass);
@@ -42,12 +69,10 @@ public class SistemaMapa {
 		db.ingresarLugar(l);
 	}
 	
-	public void cargarLugares(String cat) throws SQLException {
-		mapaCatLugares = db.cargaLugares(cat);
-	}
 	
-	public ArrayList<Lugar> obtenerLugares(String cat){
-		return mapaCatLugares.get(cat);
+	
+	public ArrayList<Lugar> obtenerLugares(String cat, String zona){
+		return lugares.obtenerLugares(cat, zona);
 	}
 	
 	

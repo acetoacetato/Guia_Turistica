@@ -16,13 +16,14 @@ public class Comentario {
 	public Comentario(SistemaMapa sis) {
 		userId = sis.getNombreUsuario();
 		id = -20;
-		comentario = "Aún no comentas este lugar";
+		comentario = "Aï¿½n no comentas este lugar";
 		puntuacion = 0.0f;
 	}
 	
-	public Comentario(int idCom, String usr, String com, float pt) {
+	public Comentario(int idCom, String idLugar, String usr, String com, float pt) {
 		id = idCom;
 		userId = usr;
+		placeId = idLugar;
 		comentario = com;
 		puntuacion = pt;
 	}
@@ -65,7 +66,13 @@ public class Comentario {
 		puntuacion = pt;
 	}
 	
+	public String getPlaceId() {
+		return placeId;
+	}
 	
+	public void setPlaceId(String p) {
+		placeId = p;
+	}
 	
 	
 	

@@ -34,7 +34,7 @@ import java.awt.event.ActionEvent;
 /*
  * 		OJO: NO SE PUEDE CONECTAR A LA BASE DE DATOS DESDE PUCV-PRO porque puertos bloqueados
  * 
- * 		Cuentas básicas
+ * 		Cuentas bï¿½sicas
  * 	
  * 	Admin : user: acetoacetato
  * 			pass: cBc5536652
@@ -55,40 +55,19 @@ public class VentanaInicioSesion extends JFrame implements VentanaCampos {
 	private JTextField campoUsuario;
 	private DbHandler db;
 	private SistemaMapa sistema;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaInicioSesion frame = new VentanaInicioSesion();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private JFrame estaVentana;
 
 
 	
-	//constructor que se llama al inicio de la aplicación
-	public VentanaInicioSesion() {
-		try {
-			sistema = new SistemaMapa();
-			//establecemos conexión con la base de datos
+	//constructor que se llama al inicio de la aplicaciï¿½n
+	public VentanaInicioSesion(SistemaMapa sis) {
+		
+			sistema = sis;
+			estaVentana = this;
 			db = new DbHandler();
-		} catch (SQLException e1) {
-			
-			//si no se puede conectar, entonces no se puede iniciar la aplicación
-			JOptionPane.showMessageDialog(null, "Error al conectarse a la base de datos. Verifique que tiene una conexión a internet distinta y que el puerto 3306 esté abierto", 
-					"No se pudo ingresar a la base de datos",
-                    JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-			
-		}
-		ventanita();
+			setResizable(false);
+
+			ventanita();
 	}
 
 	
@@ -119,7 +98,7 @@ public class VentanaInicioSesion extends JFrame implements VentanaCampos {
 		
 		contentPane.add(button);
 		/*
-		 * Botón para iniciar sesión
+		 * Botï¿½n para iniciar sesiï¿½n
 		 * */
 		JButton button_1 = new JButton("Ingresar");
 		button_1.addActionListener(new ActionListener() {
@@ -129,12 +108,12 @@ public class VentanaInicioSesion extends JFrame implements VentanaCampos {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				if(!verificarCampos()) {
-					JOptionPane.showMessageDialog(null, "Nombre de usuario y/o contraseña vacíos o contienen carácteres \' o \"", 
+					JOptionPane.showMessageDialog(null, "Nombre de usuario y/o contraseï¿½a vacï¿½os o contienen carï¿½cteres \' o \"", 
 							"Error en inicio",
                             JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				//se obtienen los datos de los campos de texto y contraseña
+				//se obtienen los datos de los campos de texto y contraseï¿½a
 				String usr = campoUsuario.getText().trim();
 				String pass = campoPass.getText().trim();
 				
@@ -145,36 +124,20 @@ public class VentanaInicioSesion extends JFrame implements VentanaCampos {
 					//CuentaUsuario cta = crearUsuario(usr, pass, rs.getBoolean("admin"));
 					
 					sistema.iniciarSesion(usr, pass);
-					
-					//si es admin, entonces se carga la ventana principal de admin
-					if(sistema.getAdmin()){
-						setVisible(false);
-						limpiarCampos();
-						VentanaAdmin ventanaAdm = new VentanaAdmin(sistema);
-						ventanaAdm.setVisible(true);
-						return;
-						
-						//en caso contrario, se carga la del usuario
-					}else {
-						setVisible(false);
-						limpiarCampos();
-						VentanaUsuario ventanaUsr = new VentanaUsuario(sistema);
-						ventanaUsr.setVisible(true);
-						return;
-						
-					}
-						
+					setVisible(false);
 				}catch (UserCheckException e) {
 					// TODO Auto-generated catch block
 						JOptionPane.showMessageDialog(null, e.getMessage(), 
 								"Error en inicio",
 	                            JOptionPane.ERROR_MESSAGE);
+						return;
 			
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, e.getMessage(), 
 							"Error en inicio",
                             JOptionPane.ERROR_MESSAGE);
+					return;
 				}
 				
 			}
@@ -205,7 +168,7 @@ public class VentanaInicioSesion extends JFrame implements VentanaCampos {
 	
 	
 	 
-	 //verifica que los campos no contienen ' ni " ni están vacios
+	 //verifica que los campos no contienen ' ni " ni estï¿½n vacios
 	 public boolean verificarCampos() {
 		 String usr = campoUsuario.getText().trim();
 		 @SuppressWarnings("deprecation")

@@ -1,4 +1,8 @@
 package main.java;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public abstract class CuentaUsuario {
 	private String nombreUsuario;
 	private String contrasena;
@@ -8,7 +12,12 @@ public abstract class CuentaUsuario {
 		this.setContrasena( contrasena );
 	}
 
-  public abstract String tipoCuenta();
+  public CuentaUsuario(ResultSet rs) throws SQLException {
+	  setNombreUsuario(rs.getString("nombre"));
+	  setContrasena(rs.getString("contrasena"));
+  }
+
+public abstract String tipoCuenta();
 
   public String getNombreUsuario() {
 		return nombreUsuario;

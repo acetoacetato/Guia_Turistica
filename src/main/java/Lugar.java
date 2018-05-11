@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
 
 
 
-public class Lugar {
+public class Lugar implements Reportable {
 
 	private String id;
 	private String nombreLocal;
@@ -126,7 +126,7 @@ public class Lugar {
 	
 	
 	/*
-	 * Sobrecarga para crear un lugar a partir de un ResulSet, asume que está en posición
+	 * Sobrecarga para crear un lugar a partir de un ResulSet, asume que estï¿½ en posiciï¿½n
 	 * */
 	public Lugar(ResultSet rs) throws SQLException {
 		
@@ -154,13 +154,9 @@ public class Lugar {
 			rs = db.buscarComentarios(id);
 			Comentario com;
 			while(rs.next()) {
-				com = new Comentario( rs.getInt("id"),
-									  rs.getString("id_usuario"),
-									  rs.getString("comentario"),
-									  rs.getFloat("puntuacion")
-									  );
+				com = new Comentario( rs  );
 				if(comentariosMap == null)
-					System.out.println("tu papá es hombre");
+					System.out.println("tu papï¿½ es hombre");
 				comentariosMap.put(com.getUsr(), com);
 			}
 		} catch (SQLException e) {
@@ -172,9 +168,22 @@ public class Lugar {
 	}
 	
 	
-	public void destroy() {
-		
+	public String[] arreglo() {
+		String[] s = new String[10];
+		s[0] = this.getId();
+		s[1] = this.getNombreLocal();
+		s[2] = this.getDireccionPpal();
+		s[3] = this.getComuna();
+		s[4] = this.getRegion();
+		s[5] = this.getPais();
+		s[6] = String.valueOf(this.getLat());
+		s[7] = String.valueOf(this.getLng());
+		s[8] = this.getCategoria();
+		s[9] = this.getDescripcion();
+		return s;
 	}
+	
+	
 	
 	
 	/*
@@ -212,6 +221,8 @@ public class Lugar {
 	public String getCategoria() {
 		return categoria;
 	}
+	
+	
 	
 	public ArrayList<Comentario> getListaComentarios(){
 		return new ArrayList<Comentario>(comentariosMap.values());
@@ -255,6 +266,27 @@ public class Lugar {
 	
 	public void setCategoria(String cat) {
 		this.categoria = cat;
+	}
+
+
+	@Override
+	public void generarReporte(String path) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public String reportePantalla() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void reporte(Busqueda b) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

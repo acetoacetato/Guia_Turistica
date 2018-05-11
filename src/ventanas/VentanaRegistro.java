@@ -35,7 +35,8 @@ public class VentanaRegistro extends JFrame implements VentanaCampos {
 		
 		sistema = sis;
 		//se guarda la referencia al DbHandler
-		
+		setResizable(false);
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -61,15 +62,15 @@ public class VentanaRegistro extends JFrame implements VentanaCampos {
 		campoPass.setBounds(115, 72, 146, 26);
 		contentPane.add(campoPass);
 		
-		//botón para ingresar al nuevo usuario a la base de datos
+		//botï¿½n para ingresar al nuevo usuario a la base de datos
 		JButton btnRegistrarse = new JButton("Registrarse");
 		btnRegistrarse.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				
-				//si los campos contienen ' o ", o bien están vacíos, se manda error 
+				//si los campos contienen ' o ", o bien estï¿½n vacï¿½os, se manda error 
 				if(!verificarCampos()) {
-					JOptionPane.showMessageDialog(null, "Porfavor, ingrese usuario y contraseña, no pueden contener \" ni \'", 
+					JOptionPane.showMessageDialog(null, "Porfavor, ingrese usuario y contraseï¿½a, no pueden contener \" ni \'", 
 							"Error al registrar",
                             JOptionPane.OK_OPTION);
 					return;
@@ -81,14 +82,14 @@ public class VentanaRegistro extends JFrame implements VentanaCampos {
 				try {
 					
 					sistema.registrar(usr, pass);
-					// se verifica que el usuario no está registrado
+					// se verifica que el usuario no estï¿½ registrado
 					JOptionPane.showMessageDialog (null, "Se ha registrado al nuevo usuario.", 
 							"Registro completo",
                             JOptionPane.OK_OPTION);
 					
-					//retornar a la pantalla de inicio de sesión
+					//retornar a la pantalla de inicio de sesiï¿½n
 					setVisible(false);
-					VentanaInicioSesion ventanaInicio = new VentanaInicioSesion();
+					VentanaInicioSesion ventanaInicio = new VentanaInicioSesion(sistema);
 					ventanaInicio.setVisible(true);
 					return;
 					
