@@ -138,19 +138,12 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 			public void actionPerformed(ActionEvent arg0) {
 				Lugar l;
 				try {
-					l = obtenerCampos();
+					agregar();
 				}catch(FieldCheckException e) {
 					JOptionPane.showMessageDialog(null, e.getMessage(), 
 							"No se pudo ingresar a la base de datos",
                             JOptionPane.ERROR_MESSAGE);
 					return;
-				}
-				
-				
-				
-				try {
-					sistema.registrar(l);
-					limpiarCampos();
 				} catch (SQLException  e) {
 					JOptionPane.showMessageDialog(null, e.getMessage(), 
 							"No se pudo ingresar a la base de datos",
@@ -205,30 +198,12 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 			public void actionPerformed(ActionEvent arg0) {
 				Lugar l;
 				
-				try {
-					l = obtenerCampos();
-					if( sistema.buscar(l) == null) {
-						JOptionPane.showMessageDialog(null, "No existe el lugar en la base de datos", 
-								"No se pudo eliminar de la base de datos",
-	                            JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-					sistema.eliminar(l);
-					limpiarCampos();
-					JOptionPane.showMessageDialog(null,"Se ha eliminado correctamente el lugar.", 
-							"Eliminado correctamente",
-                            JOptionPane.ERROR_MESSAGE);
-					return;
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (FieldCheckException e) {
-					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null, e.toString(), 
-							"No se pudo eliminar de la base de datos",
-                            JOptionPane.ERROR_MESSAGE);
-					return;
-				}
+				eliminar();
+				limpiarCampos();
+				JOptionPane.showMessageDialog(null,"Se ha eliminado correctamente el lugar.", 
+						"Eliminado correctamente",
+				        JOptionPane.ERROR_MESSAGE);
+				return;
 				
 				
 				
@@ -341,8 +316,8 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 				
 				
 					try {
-						sistema.modificar(obtenerCampos());
-					} catch (SQLException | PlaceException | FieldCheckException e) {
+						modificar();
+					} catch (SQLException | PlaceException | FieldCheckException  e) {
 						JOptionPane.showMessageDialog(null,e.getMessage(), 
 								"Fallo al actualizar.",
 		                        JOptionPane.ERROR_MESSAGE);
@@ -362,7 +337,7 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 	}
 	
 	
-	private Lugar obtenerCampos() throws FieldCheckException{
+	private void agregar() throws FieldCheckException, SQLException, PlaceAlreadyTakenException{
 		
 		if(!verificarCampos()) 
 			throw new FieldCheckException("No se han llenado todos los campos, presione bot�n autocompletar.");
@@ -382,11 +357,40 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 		float lng = Float.parseFloat(txtLatitud.getText());
 		
 		
-		
-		return new Lugar(id,nombre, dir, cat, lat, lng, desc);
+		sistema.agregar( id, nombre, dir, cat, lat, lng, desc );
 		
 	}
 	
+private void modificar() throws FieldCheckException, PlaceException, SQLException{
+		
+		if(!verificarCampos()) 
+			throw new FieldCheckException("No se han llenado todos los campos, presione bot�n autocompletar.");
+		
+		String[] dir = new String[4];
+		dir[0] = txtDireccion.getText().trim().toLowerCase();
+		dir[1] = txtComuna.getText().trim().toLowerCase();
+		dir[2] = txtRegion.getText().trim().toLowerCase();
+		dir[3] = txtPais.getText().trim().toLowerCase();
+		
+		String nombre = txtNombre.getText();
+		String cat = (String) catComboBox.getSelectedItem();
+		String desc = txtpnDescripcion.getText();
+		String id = txtId.getText();
+		
+		float lat = Float.parseFloat(txtLatitud.getText());
+		float lng = Float.parseFloat(txtLatitud.getText());
+		
+		
+		sistema.modificar( id, nombre, dir, cat, lat, lng, desc );
+		
+	}
+	
+	public void eliminar() {
+		String id = txtId.getText();;
+		
+		sistema.eliminarLugar(id);
+	}
+
 	public void limpiarCampos() {
 		txtDireccion.setText("");
 		txtNombre.setText("");

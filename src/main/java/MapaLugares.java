@@ -17,13 +17,18 @@ public class MapaLugares implements Reportable {
 	}
 	
 	
-	public void agregar(Object o) {
+	public void agregar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc) {
 		
-		Lugar l = (Lugar) o;
-		if(l == null)
-			return;
-		mapaLugares.putIfAbsent(l.getId(), l);
+		Lugar l = new Lugar(id, nombre, dir, cat, lat, lng, desc);
+		mapaLugares.putIfAbsent(id, l);
 		
+	}
+	
+	public void modificar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc) {
+		if(mapaLugares.get(id) != null) {
+			mapaLugares.put(id, new Lugar(id, nombre, dir, cat, lat, lng, desc));
+		}
+		return;
 	}
 
 	public void quitar(Object o) {
@@ -34,14 +39,12 @@ public class MapaLugares implements Reportable {
 
 	}
 
-	public void modificar(Object o) {
-		if(o == null)
-			return;
-		Lugar l = (Lugar) o;
-		
-		mapaLugares.replace(l.getId(), l);
-		
-
+	public boolean eliminarLugar(String id) {
+		Lugar l = mapaLugares.get(id);
+		if(l == null)		
+			return false;
+		mapaLugares.remove(id);
+		return true;
 	}
 	
 	public ArrayList<Lugar> obtenerLugares(){

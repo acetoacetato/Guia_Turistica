@@ -14,6 +14,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import excepciones.UserRegisterFailureException;
 import ventanas.VentanaReporte;
 
 public class MapaUsuarios implements Reportable {
@@ -26,6 +27,29 @@ public class MapaUsuarios implements Reportable {
 	}
 	
 
+	
+	public void agregar(String usr, String pass) throws UserRegisterFailureException {
+		CuentaUsuario cta = new Usuario(usr, pass);
+		if(mapaUser.putIfAbsent(cta.getNombreUsuario(), cta) != null)
+			throw new UserRegisterFailureException("El usuario ya se encuentra registrado.");
+	}
+	
+	public void agregar(String usr, String pass, boolean adm) throws UserRegisterFailureException {
+		CuentaUsuario cta = (adm)? new Administrador(usr, pass) : new Usuario(usr, pass);
+		if(mapaUser.putIfAbsent(cta.getNombreUsuario(), cta) != null)
+			throw new UserRegisterFailureException("El usuario ya se encuentra registrado.");
+	}
+	
+	public void quitar(String usr) {
+		mapaUser.remove(usr);
+	}
+
+	public void modificar(String usr, String pass, boolean adm) {
+		CuentaUsuario cta = (adm)? new Administrador(usr, pass) : new Usuario(usr, pass);
+		mapaUser.put(usr, cta);
+	}
+	
+	
 	@Override
 	public void generarReporte(String path) {
 		Document pdf = new Document();
@@ -66,6 +90,9 @@ public class MapaUsuarios implements Reportable {
 		}
 		
 	}
+	
+	
+	
 
 	@Override
 	public String reportePantalla() {

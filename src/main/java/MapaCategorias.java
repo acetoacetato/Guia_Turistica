@@ -16,10 +16,39 @@ public class MapaCategorias implements Reportable {
 		importar(zona);
 	}
 	
-	public void agregar(Object o) {
-		// TODO Auto-generated method stub
-		return;
+	public void agregar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc ) throws SQLException {
+		
+		MapaLugares m = mapaCat.get(cat);
+		if(m != null) {
+			m.agregar(id, nombre, dir, cat, lat, lng, desc);
+			return;
+		}
+		m = new MapaLugares(cat, dir[1]);
+		mapaCat.putIfAbsent(cat, m);
+		m.agregar(id, nombre, dir, cat, lat, lng, desc);
+		
+	}
+	
+	public void modificar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc ) {
+		MapaLugares m = mapaCat.get(cat);
+		if(m == null) 
+			return;
 
+		m.modificar(id, nombre, dir, cat, lat, lng, desc);
+		
+		
+		
+	}
+	
+	public boolean eliminarLugar(String id) {
+ArrayList<MapaLugares> l = new ArrayList<MapaLugares>(mapaCat.values());
+		
+		for(MapaLugares m : l) {
+			if(m.eliminarLugar(id))
+				return true;
+		}
+		
+		return false;
 	}
 
 	public void quitar(Object o) {

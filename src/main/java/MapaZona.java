@@ -26,10 +26,50 @@ public class MapaZona implements Reportable {
 		importar();
 	}
 	
+	/**
+	 * Agrega un Lugar a la colección
+	 * @param a
+	 * @param bs
+	 * @throws SQLException 
+	 */
+	public void agregar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc ) throws SQLException {
+		String zona = dir[1];
+		
+		MapaCategorias m = mapita.get(zona);
+		if(m != null) {
+			m.agregar(id, nombre, dir, cat, lat, lng, desc);
+			return;
+		}
+		m = new MapaCategorias(zona);
+		
+		mapita.put(zona, m);
+		m.agregar(id, nombre, dir, cat, lat, lng, desc);
+		
+	}
 	
-	public void agregar(Object o) {
-		// TODO Auto-generated method stub
-
+	public void modificar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc) {
+		
+		String zona = dir[1];
+		MapaCategorias m = mapita.get(zona);
+		if(m == null) 
+			return;
+		
+		m.modificar(id, nombre, dir, cat, lat, lng, desc);
+	}
+	
+	public boolean eliminarLugar(String id) {
+		ArrayList<MapaCategorias> l = new ArrayList<MapaCategorias>(mapita.values());
+		
+		for(MapaCategorias m : l) {
+			if(m.eliminarLugar(id))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	public void agregar(String a) {
+		
 	}
 
 	public void quitar(Object o) {

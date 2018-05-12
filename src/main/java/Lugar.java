@@ -110,7 +110,7 @@ public class Lugar implements Reportable {
 	 * Sobrecarga para agregar a la DB, la usa VentanaAgregar
 	 * 
 	 * */
-	public Lugar(String id, String name, String[] dir, String categoria, double lat, double lng, String desc) {
+	public Lugar(String id, String name, String[] dir, String categoria, float lat, float lng, String desc) {
 		this.id = id;
 		this.dir = new Direccion(dir);
 		this.lat = lat;

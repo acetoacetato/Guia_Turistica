@@ -61,15 +61,22 @@ public class SistemaMapa {
 	}
 	
 	
-	public void registrar(String usr, String pass) throws UserRegisterFailureException {
+	public void agregar(String usr, String pass) throws UserRegisterFailureException {
+		usuarios.agregar(usr, pass);
 		db.registrarUsuario(usr, pass);
 	}
 	
-	public void registrar(Lugar l) throws SQLException, PlaceAlreadyTakenException {
-		db.ingresarLugar(l);
+	public void agregar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc ) throws SQLException, PlaceAlreadyTakenException {
+		lugares.agregar(id, nombre, dir, cat, lat, lng, desc );
 	}
 	
+	public void modificar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc) {
+		lugares.modificar(id, nombre, dir, cat, lat, lng, desc);
+	}
 	
+	public void eliminarLugar(String id) {
+		lugares.eliminarLugar(id);
+	}
 	
 	public ArrayList<Lugar> obtenerLugares(String cat, String zona){
 		return lugares.obtenerLugares(cat, zona);
@@ -78,23 +85,15 @@ public class SistemaMapa {
 	
 	
 	
-	public Lugar buscar(Lugar l) throws SQLException {
-		return db.buscar(l);
-	}
 	
-	public void eliminar(Lugar l) throws SQLException {
-		db.eliminar(l);
-	}
 	
-	public void modificar(Lugar l) throws SQLException, PlaceException {
-		db.actualizarLugar(l);
-	}
 	
-	public void modificar(String coment, Comentario c, Lugar l, String p) throws SQLException {
-		db.modificarComentario(coment, c, l, p);
-	}
 	
+	
+	
+	//TODO: re hacer esto
 	public Lugar obtenerLugar(String lugar) throws SQLException, ApiException, InterruptedException, IOException {
+		
 		return db.autoCompletaLugar(lugar);
 	}
 	
