@@ -7,13 +7,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import Interfaces.VentanaCampos;
 import excepciones.UserCheckException;
 import main.java.Administrador;
 import main.java.CuentaUsuario;
 import main.java.DbHandler;
 import main.java.SistemaMapa;
 import main.java.Usuario;
-import main.java.VentanaCampos;
 
 import javax.swing.JButton;
 import java.awt.Color;

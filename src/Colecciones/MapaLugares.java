@@ -1,10 +1,14 @@
-package main.java;
+package Colecciones;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import Interfaces.Reportable;
+import main.java.Busqueda;
+import main.java.DbHandler;
+import main.java.Lugar;
 import ventanas.VentanaReporte;
 
 public class MapaLugares implements Reportable {
@@ -24,12 +28,22 @@ public class MapaLugares implements Reportable {
 		
 	}
 	
+	public void agregar(Lugar l) {
+		mapaLugares.put(l.getId(), l);
+		
+	}
+	
 	public void modificar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc) {
 		if(mapaLugares.get(id) != null) {
 			mapaLugares.put(id, new Lugar(id, nombre, dir, cat, lat, lng, desc));
 		}
 		return;
 	}
+	
+	public void mofificar(String id, String nombre, String desc) {
+		
+	}
+	
 
 	public void quitar(Object o) {
 		if(o == null)
@@ -46,6 +60,11 @@ public class MapaLugares implements Reportable {
 		mapaLugares.remove(id);
 		return true;
 	}
+	
+	public Lugar buscarLugar(String idLugar) {
+		return mapaLugares.get(idLugar);
+	}
+	
 	
 	public ArrayList<Lugar> obtenerLugares(){
 		return new ArrayList<Lugar>(mapaLugares.values());

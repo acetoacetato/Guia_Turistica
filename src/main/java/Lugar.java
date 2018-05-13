@@ -10,6 +10,8 @@ import java.util.Map.Entry;
 
 import javax.swing.ImageIcon;
 
+import Interfaces.Reportable;
+
 
 
 public class Lugar implements Reportable {
@@ -17,8 +19,8 @@ public class Lugar implements Reportable {
 	private String id;
 	private String nombreLocal;
 	private Direccion dir;
-	private double lat;
-	private double lng;
+	private float lat;
+	private float lng;
 	private ImageIcon local;
 	private ImageIcon mapa;
 	private int puntuacion;
@@ -28,44 +30,7 @@ public class Lugar implements Reportable {
 	private Hashtable<String, Comentario> comentariosMap;
 	
 	
-	public String getNombreLocal() {
-		return nombreLocal;
-	}
-
-
-	public void setNombreLocal(String nombreLocal) {
-		this.nombreLocal = nombreLocal;
-	}
-
-
-	public int getPuntuacion() {
-		return puntuacion;
-	}
-
-
-	public void setPuntuacion(int puntuacion) {
-		this.puntuacion = puntuacion;
-	}
-
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-
-	public Hashtable<String, Comentario> getComentarios() {
-		return comentariosMap;
-	}
-
-
-	public void setComentarios(ArrayList<Comentario> comentarios) {
-		this.comentarios = comentarios;
-	}
+	
 
 	//lista de comentarios al lugar
 	private ArrayList<Comentario> comentarios;
@@ -73,8 +38,8 @@ public class Lugar implements Reportable {
 	public Lugar() {
 		id = "96747421";
 		dir = new Direccion();
-		lat = -33.5641197;
-		lng = -70.5575697;
+		lat = -33.5641197f;
+		lng = -70.5575697f;
 		comentariosMap = new Hashtable<String, Comentario>();
 		categoria = "default";
 	}
@@ -89,8 +54,8 @@ public class Lugar implements Reportable {
 				 String comuna,
 				 String region,
 				 String pais,
-				 double lat,
-				 double lng,
+				 float lat,
+				 float lng,
 				 String nombre,
 				 String descripcion,
 				 String categoria) {
@@ -131,6 +96,11 @@ public class Lugar implements Reportable {
 	public Lugar(ResultSet rs) throws SQLException {
 		
 		this.id = rs.getString("id");
+		System.out.println( rs.getString("casa") + 
+								 rs.getString("comuna") +
+								 rs.getString("region") +
+								 rs.getString("pais") ) ;
+		
 		this.dir = new Direccion(rs.getString("casa"),
 								 rs.getString("comuna"),
 								 rs.getString("region"),
@@ -190,9 +160,53 @@ public class Lugar implements Reportable {
 	 * Getters
 	 * */
 	
+	public String getNombreLocal() {
+		return nombreLocal;
+	}
+
+
+	public void setNombreLocal(String nombreLocal) {
+		this.nombreLocal = nombreLocal;
+	}
+
+
+	public int getPuntuacion() {
+		return puntuacion;
+	}
+
+
+	public void setPuntuacion(int puntuacion) {
+		this.puntuacion = puntuacion;
+	}
+
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+
+	public Hashtable<String, Comentario> getComentarios() {
+		return comentariosMap;
+	}
+
+
+	public void setComentarios(ArrayList<Comentario> comentarios) {
+		this.comentarios = comentarios;
+	}
+	
 	public String getId() {
 		return id;
 	}
+	
+	public String[] getDir() {
+		return dir.getDirArray();
+	}
+	
 	
 	public String getDireccionPpal() {
 		return dir.getParticular();
@@ -210,11 +224,11 @@ public class Lugar implements Reportable {
 		return dir.getPais();
 	}
 	
-	public double getLat() {
+	public float getLat() {
 		return lat;
 	}
 	
-	public double getLng() {
+	public float getLng() {
 		return lng;
 	}
 	
@@ -256,11 +270,11 @@ public class Lugar implements Reportable {
 		this.dir.setDir(dir);
 	}
 	
-	public void setLat(double lat) {
+	public void setLat(float lat) {
 		this.lat = lat;
 	}
 	
-	public void setLng(double lng) {
+	public void setLng(float lng) {
 		this.lng = lng;
 	}
 	
@@ -287,6 +301,13 @@ public class Lugar implements Reportable {
 	public void reporte(Busqueda b) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	public void actualizar(String nombre, String cat, String desc) {
+		setNombreLocal(nombre);
+		setCategoria(cat);
+		setDescripcion(desc);		
 	}
 	
 	

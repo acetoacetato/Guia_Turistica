@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 
+import Interfaces.VentanaCampos;
 import main.java.CuentaUsuario;
 import main.java.DbHandler;
 import main.java.Lugar;
 import main.java.SistemaMapa;
-import main.java.VentanaCampos;
 
 
 public class VentanaCategorias extends JFrame implements VentanaCampos{
@@ -176,14 +176,9 @@ public class VentanaCategorias extends JFrame implements VentanaCampos{
 	    contentPane.add(botonVidaNoc);
 		
 		comboBox = new JComboBox<String>();
-		try {
-			comboBox.addItem("zona");
-			for( String s : (new DbHandler()).zonas()) {
-				comboBox.addItem(s);
-			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		comboBox.addItem("zona");
+		for( String s : sistema.zonas() ) {
+			comboBox.addItem(s);
 		}
 		comboBox.setBounds(67, 54, 274, 26);
 		getContentPane().add(comboBox);

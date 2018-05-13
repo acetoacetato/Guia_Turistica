@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 
 import com.google.maps.errors.ApiException;
 
+import Colecciones.MapaUsuarios;
+import Colecciones.MapaZona;
 import excepciones.PlaceAlreadyTakenException;
 import excepciones.PlaceException;
 import excepciones.UserCheckException;
@@ -24,12 +26,13 @@ public class SistemaMapa {
 	private boolean admin;
 	private MapaZona lugares;
 	private MapaUsuarios usuarios;
-	
+	private MapApi api;
 	
 	public SistemaMapa() throws SQLException {
 		lugares = new MapaZona();
 		usuarios = new MapaUsuarios();
-		db = new DbHandler();		
+		db = new DbHandler();	
+		api = new MapApi();
 	}
 	
 	public void iniciarSesion(String usr, String pass)  throws UserCheckException, SQLException{
@@ -60,18 +63,53 @@ public class SistemaMapa {
 		}
 	}
 	
-	
-	public void agregar(String usr, String pass) throws UserRegisterFailureException {
-		usuarios.agregar(usr, pass);
-		db.registrarUsuario(usr, pass);
+	public String[] zonas() {
+		return lugares.zonas();
 	}
 	
+	/**
+	 * Agrega un nuevo usuario al sistema, el usuario agregado es un usuario común
+	 * @param usr : id del usuario a agregar
+	 * @param pass : contraseña del usuario a agregar
+	 * @throws UserRegisterFailureException 
+	 */
+	public void agregar(String usr, String pass) throws UserRegisterFailureException {
+		usuarios.agregar(usr, pass);
+	}
+	
+	/**
+	 * Agrega un nuevo lugar al sistema.
+	 * @param id : el id del lugar a agregar.
+	 * @param nombre : el nombre del local a agregar.
+	 * @param dir : dirección del local.
+	 * @param cat : categoría del local.
+	 * @param lat : latitud de ubicación del local.
+	 * @param lng : longitud de ubicación del local.
+	 * @param desc : descripción del local.
+	 * @throws SQLException
+	 * @throws PlaceAlreadyTakenException
+	 */
 	public void agregar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc ) throws SQLException, PlaceAlreadyTakenException {
 		lugares.agregar(id, nombre, dir, cat, lat, lng, desc );
 	}
 	
-	public void modificar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc) {
-		lugares.modificar(id, nombre, dir, cat, lat, lng, desc);
+	/**
+	 * Actualiza la información de un lugar
+	 * @param id : el id del lugar a modificar.
+	 * @param nombre : el nuevo nombre del local.
+	 * @param cat : nueva categoría del local.
+	 * @param desc : nueva descripción del local.
+	 */
+	public void modificar(String id, String nombre, String cat, String desc) throws PlaceException {
+		
+		Lugar l = lugares.buscarLugar(id);
+		if(l == null)
+			throw new PlaceException("No existe el lugar");
+		l.actualizar(nombre, cat, desc);
+		lugares.eliminarLugar(id);
+		
+		
+		
 	}
 	
 	public void eliminarLugar(String id) {
@@ -93,8 +131,16 @@ public class SistemaMapa {
 	
 	//TODO: re hacer esto
 	public Lugar obtenerLugar(String lugar) throws SQLException, ApiException, InterruptedException, IOException {
+		String id = api.idLugar(lugar);
 		
-		return db.autoCompletaLugar(lugar);
+		Lugar l = lugares.buscarLugar(lugar);
+		
+		if(l !=  null) {
+			System.out.println("aaaaaaaaaa: " + l.getNombreLocal());
+			return l;
+		}
+		
+		return api.buscaLugar(lugar);
 	}
 	
 	public boolean getAdmin() {

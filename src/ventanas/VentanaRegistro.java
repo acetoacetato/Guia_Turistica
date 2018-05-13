@@ -7,10 +7,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import Interfaces.VentanaCampos;
 import excepciones.UserRegisterFailureException;
 import main.java.DbHandler;
 import main.java.SistemaMapa;
-import main.java.VentanaCampos;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -81,7 +81,7 @@ public class VentanaRegistro extends JFrame implements VentanaCampos {
 
 				try {
 					
-					sistema.registrar(usr, pass);
+					sistema.agregar(usr, pass);    
 					// se verifica que el usuario no est� registrado
 					JOptionPane.showMessageDialog (null, "Se ha registrado al nuevo usuario.", 
 							"Registro completo",

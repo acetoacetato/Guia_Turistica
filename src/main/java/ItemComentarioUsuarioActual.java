@@ -41,15 +41,9 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 			public void actionPerformed(ActionEvent e) {
 				String comentAct= comentarios.getText();
 				String points= puntuacion.getText();
-				try {
-					
-					if(sistema == null)
-						return;
-					sistema.modificar(comentAct, com, lugar, points);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				if(sistema == null)
+					return;
+				//sistema.modificar(comentAct, com.getId(), lugar.getId(), points);
 				
 			
 			}

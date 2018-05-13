@@ -1,4 +1,4 @@
-package main.java;
+package Colecciones;
 
 
 import java.io.*;
@@ -15,6 +15,11 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import Interfaces.Reportable;
+import excepciones.PlaceException;
+import main.java.Busqueda;
+import main.java.DbHandler;
+import main.java.Lugar;
 import ventanas.VentanaReporte;
 
 public class MapaZona implements Reportable {
@@ -40,21 +45,39 @@ public class MapaZona implements Reportable {
 			m.agregar(id, nombre, dir, cat, lat, lng, desc);
 			return;
 		}
-		m = new MapaCategorias(zona);
 		
+		m = new MapaCategorias(zona);
 		mapita.put(zona, m);
 		m.agregar(id, nombre, dir, cat, lat, lng, desc);
 		
+		Set<String> set = mapita.keySet();
+		for(String i : set)
+			System.out.println(i);
+		
 	}
 	
-	public void modificar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc) {
+	public void modificar(String id, String nombre,  String cat, String desc) throws PlaceException, SQLException{
 		
-		String zona = dir[1];
+		String zona = obtenerZona(id);
+		if(zona == null)
+			throw new PlaceException("El lugar no existe en el sistema.");
 		MapaCategorias m = mapita.get(zona);
 		if(m == null) 
-			return;
+			throw new PlaceException("Fallo al encontrar la zona del lugar.");
 		
-		m.modificar(id, nombre, dir, cat, lat, lng, desc);
+		m.modificar(id, nombre, cat, zona,  desc);
+	}
+	
+	public String obtenerZona(String id){
+		ArrayList<MapaCategorias> l = new ArrayList<MapaCategorias>(mapita.values());
+		
+		for(MapaCategorias m : l) {
+			Lugar lugar = m.buscarLugar(id);
+			if(lugar != null)
+				return lugar.getComuna();
+		}
+		
+		return null;
 	}
 	
 	public boolean eliminarLugar(String id) {
@@ -66,6 +89,18 @@ public class MapaZona implements Reportable {
 		}
 		
 		return false;
+	}
+	
+	public Lugar buscarLugar(String idLugar) {
+		ArrayList<MapaCategorias> l = new ArrayList<MapaCategorias>(mapita.values());
+		
+		for(MapaCategorias m : l) {
+			Lugar lugar = m.buscarLugar(idLugar);
+			if(lugar!=null)
+				return lugar;
+		}
+		
+		return null;
 	}
 	
 	public void agregar(String a) {
@@ -166,7 +201,14 @@ public class MapaZona implements Reportable {
 		
 	}
 	
-
+	public String[] zonas() {
+		ArrayList<String> l = new ArrayList<String>(mapita.keySet());
+		String[] s = new String[(l.size())];
+		for(int i= 0 ; i<l.size() ; i++) {
+			s[i] = l.get(i);
+		}
+		return s;
+	}
 	@Override
 	public String reportePantalla() {
 		

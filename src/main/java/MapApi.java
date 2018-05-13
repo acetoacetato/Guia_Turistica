@@ -18,7 +18,7 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 
 /*
- * Clase que maneja la api de google de geolocalización
+ * Clase que maneja la api de google de geolocalizaciï¿½n
  * 
  * 		https://developers.google.com/maps/documentation/geocoding/intro
  * 		https://github.com/googlemaps/google-maps-services-java
@@ -29,7 +29,7 @@ public class MapApi{
 	
 	//contexto para buscar los lugares
 	private GeoApiContext contexto;
-	//lugar que contiene todo la información que se retornará al usar buscaLugar() 
+	//lugar que contiene todo la informaciï¿½n que se retornarï¿½ al usar buscaLugar() 
 	private Lugar lugar;
 	
 	
@@ -43,32 +43,39 @@ public class MapApi{
 	}
 	
 	
-	//función que busca el lugar a partir de un string
+	//funciï¿½n que busca el lugar a partir de un string
 	public Lugar buscaLugar(String lugar) throws ApiException, InterruptedException, IOException {
 		
-		//se realiza la búsqueda del lugar a partir del string 'lugar' y se toma el primer resultado
+		//se realiza la bï¿½squeda del lugar a partir del string 'lugar' y se toma el primer resultado
 		GeocodingResult resultado =  GeocodingApi.geocode(contexto, lugar).await()[0];
 		
 		//se crea un Gson para manejar el resultado
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		
-		//se crea un arreglo de strings con los parámetros del formattedAdres
+		//se crea un arreglo de strings con los parï¿½metros del formattedAdres
 		//el formato es: "direccion, comuna, region, pais"
 		String[] direccion = gson.toJson(resultado.formattedAddress)
 							 .replaceAll(", ", ",")
 							 .replaceAll("\"", "")
 							 .split(",") ;
 		
-		//se cambian los valores de 'lugar' por los del resultado de búsqueda y se retorna el objeto lugar
+		//lugar = new Lugar(resultado.placeId, direccion,(float)resultado.geometry.location.lat, (float)resultado.geometry.location.lng );
+		
+		//se cambian los valores de 'lugar' por los del resultado de bï¿½squeda y se retorna el objeto lugar
 		this.lugar.setId(resultado.placeId);
 		this.lugar.setDir(direccion);
-		this.lugar.setLat( resultado.geometry.location.lat );
-		this.lugar.setLng( resultado.geometry.location.lng );
+		this.lugar.setLat( (float)resultado.geometry.location.lat );
+		this.lugar.setLng( (float)resultado.geometry.location.lng );
 		
-		
-							 
+		System.out.println("lugar : " + lugar + " aaa:" + resultado.formattedAddress);
 		return this.lugar;
 	}
+	
+	public String idLugar(String lugar) throws ApiException, InterruptedException, IOException {
+		GeocodingResult resultado = GeocodingApi.geocode(contexto, lugar).await()[0];		
+		return resultado.placeId;
+	}
+	
 	
 	
 	

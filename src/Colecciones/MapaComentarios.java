@@ -1,9 +1,14 @@
-package main.java;
+package Colecciones;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+
+import Interfaces.Reportable;
+import main.java.Busqueda;
+import main.java.Comentario;
+import main.java.DbHandler;
 
 public class MapaComentarios implements Reportable {
 	private Hashtable<Integer, Comentario> mapaComentarios;

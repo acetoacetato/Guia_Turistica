@@ -21,9 +21,9 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import Interfaces.Reportable;
 import main.java.CuentaUsuario;
 import main.java.Lugar;
-import main.java.Reportable;
 import main.java.SistemaMapa;
 
 import javax.swing.JButton;

@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.google.maps.errors.ApiException;
 
+import Interfaces.VentanaCampos;
 import excepciones.FieldCheckException;
 import excepciones.PlaceAlreadyTakenException;
 import excepciones.PlaceException;
@@ -24,7 +25,6 @@ import main.java.DbHandler;
 import main.java.Lugar;
 import main.java.MapApi;
 import main.java.SistemaMapa;
-import main.java.VentanaCampos;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -356,7 +356,6 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 		float lat = Float.parseFloat(txtLatitud.getText());
 		float lng = Float.parseFloat(txtLatitud.getText());
 		
-		
 		sistema.agregar( id, nombre, dir, cat, lat, lng, desc );
 		
 	}
@@ -381,7 +380,7 @@ private void modificar() throws FieldCheckException, PlaceException, SQLExceptio
 		float lng = Float.parseFloat(txtLatitud.getText());
 		
 		
-		sistema.modificar( id, nombre, dir, cat, lat, lng, desc );
+		sistema.modificar( id, nombre, cat, desc );
 		
 	}
 	

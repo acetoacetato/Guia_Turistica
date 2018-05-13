@@ -24,7 +24,6 @@ public class DbHandler {
 	private ResultSet rs;
 	
 	
-	
 	public DbHandler() {
 		
 		
@@ -282,7 +281,8 @@ public class DbHandler {
 		}
 		
 		//en caso contrario, se retornan los datos que existen desde la api de google
-		else
+		System.out.println( l.getComuna() + " " + l.getDireccionPpal());
+		
 			return l;
 	}
 	

@@ -1,4 +1,4 @@
-package main.java;
+package Colecciones;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -14,7 +14,13 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import Interfaces.Reportable;
 import excepciones.UserRegisterFailureException;
+import main.java.Administrador;
+import main.java.Busqueda;
+import main.java.CuentaUsuario;
+import main.java.DbHandler;
+import main.java.Usuario;
 import ventanas.VentanaReporte;
 
 public class MapaUsuarios implements Reportable {
@@ -32,6 +38,9 @@ public class MapaUsuarios implements Reportable {
 		CuentaUsuario cta = new Usuario(usr, pass);
 		if(mapaUser.putIfAbsent(cta.getNombreUsuario(), cta) != null)
 			throw new UserRegisterFailureException("El usuario ya se encuentra registrado.");
+		
+		DbHandler db = new DbHandler();
+		db.registrarUsuario(usr, pass);
 	}
 	
 	public void agregar(String usr, String pass, boolean adm) throws UserRegisterFailureException {
