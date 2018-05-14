@@ -100,6 +100,8 @@ public class VentanaRegistro extends JFrame implements VentanaCampos {
 					
 					
 					
+				}catch(Exception e1) {
+					e1.printStackTrace();
 				}
 				
 				

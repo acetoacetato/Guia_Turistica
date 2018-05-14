@@ -3,8 +3,8 @@ package main.java;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Hashtable;
 
+import Colecciones.MapaComentarios;
 import Interfaces.Reportable;
 
 
@@ -20,16 +20,16 @@ public class Lugar implements Reportable {
 	private String categoria;
 	private String descripcion;
 	
-	private Hashtable<String, Comentario> comentariosMap;
+	private MapaComentarios comentariosMap;
 	
 	
 		
-	public Lugar() {
+	public Lugar() throws SQLException {
 		id = "96747421";
 		dir = new Direccion();
 		lat = -33.5641197f;
 		lng = -70.5575697f;
-		comentariosMap = new Hashtable<String, Comentario>();
+		comentariosMap = new MapaComentarios(id);
 		categoria = "default";
 	}
 	
@@ -47,7 +47,7 @@ public class Lugar implements Reportable {
 				 float lng,
 				 String nombre,
 				 String descripcion,
-				 String categoria) {
+				 String categoria) throws SQLException {
 		this.id = id;
 		this.dir = new Direccion(dir, comuna, region, pais);
 		this.lat = lat;
@@ -57,14 +57,16 @@ public class Lugar implements Reportable {
 		this.puntuacion = 0;
 		this.categoria = categoria;
 		
-		comentariosMap = new Hashtable<String, Comentario>();
+		comentariosMap = new MapaComentarios(id);
 	}
 	
+	
+
 	/*
 	 * Sobrecarga para agregar a la DB, la usa VentanaAgregar
 	 * 
 	 * */
-	public Lugar(String id, String name, String[] dir, String categoria, float lat, float lng, String desc) {
+	public Lugar(String id, String name, String[] dir, String categoria, float lat, float lng, String desc) throws SQLException {
 		this.id = id;
 		this.dir = new Direccion(dir);
 		this.lat = lat;
@@ -73,7 +75,7 @@ public class Lugar implements Reportable {
 		this.categoria = categoria;
 		this.puntuacion = 0;
 		this.descripcion = desc;
-		comentariosMap = new Hashtable<String, Comentario>();
+		comentariosMap = new MapaComentarios(id);
 		
 		
 	}
@@ -96,31 +98,14 @@ public class Lugar implements Reportable {
 		this.nombreLocal = rs.getString("nombre");
 		this.descripcion = rs.getString("descripcion");
 		this.categoria = rs.getString("categoria");
-		comentariosMap = new Hashtable<String, Comentario>();
+		comentariosMap = new MapaComentarios(id);
 	}
 	
 
-	//carga los comentarios desde un lugar
-	public void cargarComentarios() {
-		
-		try {
-			DbHandler db = new DbHandler();
-			ResultSet rs;
-			rs = db.buscarComentarios(id);
-			Comentario com;
-			while(rs.next()) {
-				com = new Comentario( rs  );
-				if(comentariosMap == null)
-					System.out.println("tu pap� es hombre");
-				comentariosMap.put(com.getUsr(), com);
-			}
-		} catch (SQLException e) {
-			return;
-		}
+	
 		
 		
-		
-	}
+	
 	
 	
 	public String[] arreglo() {
@@ -176,7 +161,7 @@ public class Lugar implements Reportable {
 
 
 	public ArrayList<Comentario> getComentarios() {
-		return new ArrayList<Comentario>(comentariosMap.values());
+		return comentariosMap.valores();
 	}
 
 
@@ -286,6 +271,12 @@ public class Lugar implements Reportable {
 		setNombreLocal(nombre);
 		setCategoria(cat);
 		setDescripcion(desc);		
+	}
+
+
+	public void modificar(String comentAct, String points, String ussr) throws SQLException {
+		comentariosMap.modificar(comentAct,points,ussr );
+		
 	}
 	
 	

@@ -22,7 +22,7 @@ public class MapaLugares implements Reportable {
 	}
 	
 	
-	public Lugar agregar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc) throws PlaceAlreadyTakenException {
+	public Lugar agregar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc) throws PlaceAlreadyTakenException, SQLException {
 		
 		Lugar l = new Lugar(id, nombre, dir, cat, lat, lng, desc);
 		Lugar l2 = mapaLugares.putIfAbsent(id, l);
@@ -39,7 +39,7 @@ public class MapaLugares implements Reportable {
 		
 	}
 	
-	public void modificar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc) {
+	public void modificar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc) throws SQLException {
 		if(mapaLugares.get(id) != null) {
 			mapaLugares.put(id, new Lugar(id, nombre, dir, cat, lat, lng, desc));
 		}

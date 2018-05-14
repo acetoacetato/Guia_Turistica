@@ -350,6 +350,22 @@ public class DbHandler {
 		
 	}
 	
+	public void modificarComentario(String coment, Comentario c, String idLugar, String p) throws SQLException {
+		Statement stmt = conexion.createStatement();
+		String query;
+		if(buscarComentario(c.getUsr(), idLugar)) {
+			query = "Update Comentario set comentario ='" + coment + "', puntuacion=" + p + " where id_usuario='" + c.getUsr() + "' and id_lugar='" + idLugar + "';";
+			
+		}
+		else {
+			query = "Insert into Comentario (id_usuario, id_lugar, comentario, puntuacion) values( '" + c.getUsr() + "', '" +idLugar+ "', '" + coment + "', " + p+");";
+			
+		}
+		System.out.println(query);
+		stmt.executeUpdate(query);
+		
+	}
+	
 	
 	
 }

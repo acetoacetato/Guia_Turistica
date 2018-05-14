@@ -16,7 +16,8 @@ public class Administrador extends Usuario {
 	public String tipoCuenta() {
 		return "Administrador";
 	}
-
+	
+	@Override
 	public String informacionCuenta() {
 		return "Cuenta Administrador " + this.getNombreUsuario();
 	}

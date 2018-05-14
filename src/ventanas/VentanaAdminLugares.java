@@ -260,12 +260,12 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 		
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Lugar lugarcito = new Lugar();
+				Lugar lugarcito;
 				try {
+					lugarcito = new Lugar();
 					lugarcito = sistema.obtenerLugar(txtBuscar.getText());
 				} catch (ApiException e) {
 					// TODO Auto-generated catch block
-					System.out.println("Api");
 					e.printStackTrace();
 					return;
 				} catch (InterruptedException e) {

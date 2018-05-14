@@ -225,11 +225,7 @@ public class MapaZona implements Reportable {
 		
 	}
 
-	public void modificar(String comentAct, int idComentario, String idLugar, String points) {
 
-		
-		
-	}
 
 
 	

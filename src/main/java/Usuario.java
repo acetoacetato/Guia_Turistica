@@ -16,7 +16,8 @@ public class Usuario extends CuentaUsuario {
 	public String tipoCuenta() {
 		return "Usuario";
 	}
-
+	
+	@Override
 	public String informacionCuenta() {
 		return "Cuenta Usuario " + this.getNombreUsuario();
 	}

@@ -11,21 +11,32 @@ import main.java.Comentario;
 import main.java.DbHandler;
 
 public class MapaComentarios implements Reportable {
-	private Hashtable<Integer, Comentario> mapaComentarios;
+	private Hashtable<String, Comentario> mapaComentarios;
+	private String idLugar;
 	
-	
-	public MapaComentarios() throws SQLException {
-		mapaComentarios = new Hashtable<Integer, Comentario>();
-		DbHandler db = new DbHandler();
-		ResultSet rs = db.comentarios();
-		while(rs.next()) {
-			mapaComentarios.putIfAbsent(rs.getInt("id"), new Comentario(rs));
-		}
+	public MapaComentarios(String idLugar) throws SQLException {
+		this.setIdLugar(idLugar);
+		mapaComentarios = new Hashtable<String, Comentario>();
+		importar();
 	}
 	
 	
 	
 	
+	private void importar() throws SQLException {
+		DbHandler db = new DbHandler();
+		ResultSet rs = db.buscarComentarios(idLugar);
+		while(rs.next()) {
+			mapaComentarios.putIfAbsent(rs.getString("id_usuario"), new Comentario(rs));
+		}		
+	}
+
+
+	public ArrayList<Comentario> valores() {
+		return new ArrayList<Comentario>(mapaComentarios.values());
+	}
+
+
 	public Comentario getComentario(int key) {
 		Comentario c = mapaComentarios.get(key);
 		return c;
@@ -75,7 +86,7 @@ public class MapaComentarios implements Reportable {
 		if(o == null)
 			return;
 		Comentario c = (Comentario) o;
-		mapaComentarios.put(c.getId(), c);
+		mapaComentarios.put(c.getUsr(), c);
 		
 	}
 
@@ -83,17 +94,7 @@ public class MapaComentarios implements Reportable {
 		if(o == null)
 			return;
 		Comentario c = (Comentario) o;
-		mapaComentarios.remove(c.getId());
-	}
-
-	public void modificar(Object o) {
-		if(o == null)
-			return;
-		Comentario c = (Comentario) o;
-		
-		mapaComentarios.replace(c.getId(), c);
-		
-		
+		mapaComentarios.remove(c.getUsr());
 	}
 
 
@@ -122,6 +123,37 @@ public class MapaComentarios implements Reportable {
 	public void reporte(Busqueda b) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+
+
+	public String getIdLugar() {
+		return idLugar;
+	}
+
+
+
+
+	public void setIdLugar(String idLugar) {
+		this.idLugar = idLugar;
+	}
+
+
+
+
+	public void modificar(String comentAct, String points, String ussr) throws SQLException {
+		DbHandler db=new DbHandler();
+		Comentario c=getComentario(ussr,idLugar);
+		if(c==null) {
+			c=new Comentario(ussr,ussr,comentAct,Float.parseFloat(points));
+			mapaComentarios.put(ussr, c);
+		}
+		else {
+			c.setCom(comentAct);
+			c.setPt(Float.parseFloat(points));
+		}
+		db.modificarComentario(comentAct, c, idLugar, points);
 	}
 	
 }

@@ -69,10 +69,12 @@ public class SistemaMapa {
 	 * @param usr : id del usuario a agregar
 	 * @param pass : contraseña del usuario a agregar
 	 * @throws UserRegisterFailureException 
+	 * @throws SQLException 
 	 */
-	public void agregar(String usr, String pass) throws UserRegisterFailureException {
+	public void agregar(String usr, String pass) throws UserRegisterFailureException, SQLException {
 		usuarios.agregar(usr, pass);
 		db.registrarUsuario(usr, pass);
+		throw new SQLException();
 	}
 	
 	/**
@@ -157,9 +159,5 @@ public class SistemaMapa {
 		return usuario.informacionCuenta();
 	}
 
-	public void modificar(String comentAct, int idComentario, String idLugar, String points) {
 
-		//lugares.modificar(comentAct, idComentario, idLugar, points);
-		
-	}
 }

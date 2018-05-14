@@ -1,6 +1,6 @@
 package main.java;
 import java.io.IOException;
-
+import java.sql.SQLException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,7 +28,7 @@ public class MapApi{
 	
 	//constructor por defecto, inicializa el contexto con la key de la api
 	//e inicializa el lugar con sus valores por defecto
-	public MapApi() {
+	public MapApi() throws SQLException {
 		contexto = new GeoApiContext.Builder()
 				   .apiKey("AIzaSyAXUXkUsFImgP_B1pIMco8PrRhefSO1oJ8")
 				   .build();

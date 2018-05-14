@@ -24,7 +24,7 @@ public abstract String tipoCuenta();
 	}
 
   public String informacionCuenta() {
-    return "Cuenta Usuario " + getNombreUsuario();
+    return "Cuenta " + getNombreUsuario();
   }
 
   public void destroy() {

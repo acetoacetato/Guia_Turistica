@@ -64,7 +64,6 @@ public class VentanaComentarios extends JFrame {
 		sistema = sis;
 		act = 0;
 		lugar = l;
-		lugar.cargarComentarios();
 		listaComentarios = lugar.getComentarios();
 		
 		
