@@ -17,6 +17,11 @@ import main.java.SistemaMapa;
 
 public class VentanaLugares extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private JPanel contentPane;
 	
 	//los items generados 

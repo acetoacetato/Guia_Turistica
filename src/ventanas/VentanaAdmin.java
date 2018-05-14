@@ -1,29 +1,24 @@
 package ventanas;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.Image;
-import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import main.java.CuentaUsuario;
-import main.java.DbHandler;
 import main.java.SistemaMapa;
 
 import javax.swing.JLabel;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class VentanaAdmin extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private CuentaUsuario usr;
 	private SistemaMapa sistema;
 
 
@@ -63,7 +58,6 @@ public class VentanaAdmin extends JFrame {
 		btnCerrarSesin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				usr = null;
 				setVisible(false);
 				VentanaInicioSesion ventanaInicio = new VentanaInicioSesion(sistema);
 				ventanaInicio.setVisible(true);

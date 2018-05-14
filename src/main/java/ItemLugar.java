@@ -21,12 +21,11 @@ public class ItemLugar {
 	private JButton btnLugar;
 	private SistemaMapa sistema;
 	private Lugar place;
-	private CuentaUsuario usrAccnt;
 	
 	public ItemLugar (Lugar lugar, int X, int Y, int Z, SistemaMapa sis){
 		
 		sistema = sis;
-		// se crea el label del lugar con el nombre del local/lugar de interés
+		// se crea el label del lugar con el nombre del local/lugar de interï¿½s
 		nombreLocal = new JLabel(lugar.getNombreLocal());
 		
 		//se crea un label con el rating del lugar
@@ -35,7 +34,7 @@ public class ItemLugar {
 		//se guarda referencia al lugar
 		place = lugar;
 				
-		//se crea el botón para ver el lugar con más detalle
+		//se crea el botï¿½n para ver el lugar con mï¿½s detalle
 		btnLugar = new JButton ();		
 		btnLugar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -48,14 +47,14 @@ public class ItemLugar {
 		fondo = new JLabel("");
 		fondo.setIcon(new ImageIcon(ItemLugar.class.getResource("/Imagenes/fondo2.png")));
 		
-		//se le dan las coordenadas al botón y labels correspondientes
+		//se le dan las coordenadas al botï¿½n y labels correspondientes
 		btnLugar.setBounds(X+300, Y, 30, 30);
 		nombreLocal.setBounds(X, Y, 80, 30);
 		rating.setBounds(X+150, Y, 20, 30);
 		
 		fondo.setBounds(5, Z, 450, 65);
 		
-		//se le pone el icono a botón para ver lugar en detalle
+		//se le pone el icono a botï¿½n para ver lugar en detalle
 		imgn = new ImageIcon(ItemLugar.class.getResource("/Imagenes/lupa.jpg"));
 		icon1 = new ImageIcon(imgn.getImage().getScaledInstance(btnLugar.getWidth(), btnLugar.getHeight(), Image.SCALE_DEFAULT));
 		

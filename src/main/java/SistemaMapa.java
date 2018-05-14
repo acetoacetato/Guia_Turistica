@@ -3,8 +3,6 @@ package main.java;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
 
 import javax.swing.JFrame;
 
@@ -16,7 +14,6 @@ import excepciones.PlaceAlreadyTakenException;
 import excepciones.PlaceException;
 import excepciones.UserCheckException;
 import excepciones.UserRegisterFailureException;
-import excepciones.WithoutNextException;
 import ventanas.VentanaAdmin;
 import ventanas.VentanaCategorias;
 
@@ -31,7 +28,7 @@ public class SistemaMapa {
 	public SistemaMapa() throws SQLException {
 		lugares = new MapaZona();
 		usuarios = new MapaUsuarios();
-		db = new DbHandler();	
+		db = new DbHandler();
 		api = new MapApi();
 	}
 	
@@ -75,10 +72,11 @@ public class SistemaMapa {
 	 */
 	public void agregar(String usr, String pass) throws UserRegisterFailureException {
 		usuarios.agregar(usr, pass);
+		db.registrarUsuario(usr, pass);
 	}
 	
 	/**
-	 * Agrega un nuevo lugar al sistema.
+	 * Agrega un nuevo lugar al sistema y lo retorna.
 	 * @param id : el id del lugar a agregar.
 	 * @param nombre : el nombre del local a agregar.
 	 * @param dir : dirección del local.
@@ -86,11 +84,16 @@ public class SistemaMapa {
 	 * @param lat : latitud de ubicación del local.
 	 * @param lng : longitud de ubicación del local.
 	 * @param desc : descripción del local.
+	 * @return la instancia del lugar agregado en caso de que se agregue, null en caso contrario
 	 * @throws SQLException
 	 * @throws PlaceAlreadyTakenException
 	 */
-	public void agregar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc ) throws SQLException, PlaceAlreadyTakenException {
-		lugares.agregar(id, nombre, dir, cat, lat, lng, desc );
+	public Lugar agregar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc ) throws PlaceAlreadyTakenException, SQLException {
+		Lugar l = lugares.agregar(id, nombre, dir, cat, lat, lng, desc );
+		
+		System.out.println("se pasó la excepción por la raja");
+		db.ingresarLugar(l);
+		return l;
 	}
 	
 	/**
@@ -99,24 +102,25 @@ public class SistemaMapa {
 	 * @param nombre : el nuevo nombre del local.
 	 * @param cat : nueva categoría del local.
 	 * @param desc : nueva descripción del local.
+	 * @throws SQLException 
 	 */
-	public void modificar(String id, String nombre, String cat, String desc) throws PlaceException {
-		
-		Lugar l = lugares.buscarLugar(id);
-		if(l == null)
-			throw new PlaceException("No existe el lugar");
-		l.actualizar(nombre, cat, desc);
-		lugares.eliminarLugar(id);
-		
-		
-		
+	public void modificar(String id, String nombre, String cat, String desc) throws PlaceException, SQLException {
+		Lugar l = lugares.modificar(id, nombre, cat, desc);	
+		db.actualizarLugar(l);
 	}
 	
-	public void eliminarLugar(String id) {
-		lugares.eliminarLugar(id);
+	public void eliminarLugar(String id) throws SQLException {
+		Lugar l = lugares.eliminarLugar(id);
+		db.eliminar(l);
 	}
 	
-	public ArrayList<Lugar> obtenerLugares(String cat, String zona){
+	/**
+	 * Busca y retorna todos los lugares que coincidan con la categoría y zona dadas.
+	 * @param cat : La categoría a buscar.
+	 * @param zona : La zona (comuna) a buscar.
+	 * @return ArrayList<Lugar>
+	 */
+	public ArrayList<Lugar> obtenerLugares(String cat, String zona) {
 		return lugares.obtenerLugares(cat, zona);
 	}
 	
@@ -129,17 +133,14 @@ public class SistemaMapa {
 	
 	
 	
-	//TODO: re hacer esto
 	public Lugar obtenerLugar(String lugar) throws SQLException, ApiException, InterruptedException, IOException {
 		String id = api.idLugar(lugar);
 		
-		Lugar l = lugares.buscarLugar(lugar);
+		Lugar l = lugares.buscarLugar(id);
 		
 		if(l !=  null) {
-			System.out.println("aaaaaaaaaa: " + l.getNombreLocal());
 			return l;
 		}
-		
 		return api.buscaLugar(lugar);
 	}
 	
@@ -154,5 +155,11 @@ public class SistemaMapa {
 	
 	public String getInfoCuenta() {
 		return usuario.informacionCuenta();
+	}
+
+	public void modificar(String comentAct, int idComentario, String idLugar, String points) {
+
+		//lugares.modificar(comentAct, idComentario, idLugar, points);
+		
 	}
 }

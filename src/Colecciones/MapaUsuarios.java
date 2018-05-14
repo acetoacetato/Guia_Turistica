@@ -39,8 +39,6 @@ public class MapaUsuarios implements Reportable {
 		if(mapaUser.putIfAbsent(cta.getNombreUsuario(), cta) != null)
 			throw new UserRegisterFailureException("El usuario ya se encuentra registrado.");
 		
-		DbHandler db = new DbHandler();
-		db.registrarUsuario(usr, pass);
 	}
 	
 	public void agregar(String usr, String pass, boolean adm) throws UserRegisterFailureException {

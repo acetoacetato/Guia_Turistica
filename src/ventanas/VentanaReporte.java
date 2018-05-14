@@ -1,14 +1,6 @@
 package ventanas;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Set;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
@@ -16,15 +8,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-
 import Interfaces.Reportable;
-import main.java.CuentaUsuario;
-import main.java.Lugar;
-import main.java.SistemaMapa;
+
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -34,13 +19,16 @@ import java.awt.event.ActionEvent;
 
 public class VentanaReporte extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	JFrame estaVentana;
 	
 	//path por defecto, queda en la raiz del proyecto
 	private String documentPath = "texto.pdf";
 	private JTextPane textPane;
-	private SistemaMapa sistema;
 	/**
 	 * Create the frame.
 	 */

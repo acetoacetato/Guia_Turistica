@@ -3,8 +3,6 @@ package ventanas;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map.Entry;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,16 +10,18 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import main.java.Comentario;
-import main.java.CuentaUsuario;
-import main.java.DbHandler;
 import main.java.ItemComentario;
 import main.java.ItemComentarioUsuarioActual;
-import main.java.ItemLugar;
 import main.java.Lugar;
 import main.java.SistemaMapa;
 
 public class VentanaComentarios extends JFrame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private JPanel contentPane;
 	
 	//los items generados
@@ -34,8 +34,6 @@ public class VentanaComentarios extends JFrame {
 	//en caso de que existan al menos un comentario para hacer la p�gina sgte, existeNext es true
 	private boolean existeNext;
 	private int act;
-	private int coment;
-	private boolean existeComUsr;
 	private String t;
 	
 	private ItemComentarioUsuarioActual comUsr;
@@ -61,13 +59,13 @@ public class VentanaComentarios extends JFrame {
 
 	public VentanaComentarios(String titulo, Lugar l, SistemaMapa sis ) {
 		t = titulo;
-		setResizable(false);
+		//setResizable(false);
 		existeNext = true;
 		sistema = sis;
 		act = 0;
 		lugar = l;
 		lugar.cargarComentarios();
-		listaComentarios = lugar.getListaComentarios();
+		listaComentarios = lugar.getComentarios();
 		
 		
 		for (int i = 0 ; i < l.getComentarios().size() ; i++) {
@@ -89,7 +87,7 @@ public class VentanaComentarios extends JFrame {
 private void cargarVentana() {
 	
 	
-	setBounds(100, 100, 450, 300);
+	setBounds(100, 100, 800, 600);
 
 	setTitle(t);
 	

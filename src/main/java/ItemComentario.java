@@ -1,10 +1,7 @@
 package main.java;
 
-import java.awt.ScrollPane;
-
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
@@ -33,7 +30,7 @@ public class ItemComentario {
 		
 		
 		//se crea un textPane donde recibe el comentario del usuario X
-		//se le niega que el usuario que esté logueado pueda editar los comentarios de otros usuarios
+		//se le niega que el usuario que estï¿½ logueado pueda editar los comentarios de otros usuarios
 		//se le setea el scroll1 a comentarios para el tema de la barra
 		comentarios = new JTextPane();
 		//comentarios.setLineWrap(true);

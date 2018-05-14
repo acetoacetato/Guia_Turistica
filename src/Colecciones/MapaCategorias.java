@@ -1,12 +1,12 @@
 package Colecciones;
 
-import java.awt.Window;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
 import Interfaces.Reportable;
+import excepciones.PlaceAlreadyTakenException;
 import excepciones.PlaceException;
 import main.java.Busqueda;
 import main.java.DbHandler;
@@ -22,17 +22,15 @@ public class MapaCategorias implements Reportable {
 		importar(zona);
 	}
 	
-	public void agregar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc ) throws SQLException {
+	public Lugar agregar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc ) throws SQLException, PlaceAlreadyTakenException {
 		
 		MapaLugares m = mapaCat.get(cat);
 		if(m != null) {
-			m.agregar(id, nombre, dir, cat, lat, lng, desc);
-			return;
+			return m.agregar(id, nombre, dir, cat, lat, lng, desc);
 		}
-		System.out.println("se agrega categoria");
 		m = new MapaLugares(cat, dir[1]);
 		mapaCat.put(cat, m);
-		m.agregar(id, nombre, dir, cat, lat, lng, desc);
+		return m.agregar(id, nombre, dir, cat, lat, lng, desc);
 		
 	}
 	
@@ -47,17 +45,14 @@ public class MapaCategorias implements Reportable {
 	 * @throws PlaceException
 	 * @throws SQLException
 	 */
-	public void modificar(String id, String nombre, String cat, String zona, String desc ) throws PlaceException, SQLException {
+	public Lugar modificar(String id, String nombre, String cat, String desc ) throws PlaceException, SQLException {
 		
 		Lugar l = buscarLugar(id);
 		
 		if(l == null)
 			throw new PlaceException("El lugar no existe en el sistema");
 		
-		l.setNombreLocal(nombre);
-		l.setCategoria(cat);
-		l.setComuna(zona);
-		l.setDescripcion(desc);
+		l.actualizar(nombre, cat, desc);
 		
 		eliminarLugar(id);
 		
@@ -65,29 +60,27 @@ public class MapaCategorias implements Reportable {
 		if(m == null) {
 			m = new MapaLugares(l.getCategoria(), l.getComuna());
 			mapaCat.put(l.getCategoria(), m);
-			
 		}
 		
 		m.agregar(l);
+		
+		return l;
 		
 		
 
 	}
 	
-	private void agregar(Lugar lugar) throws SQLException {
-		
-		
-	}
 	
-	public boolean eliminarLugar(String id) {
+	
+	public Lugar eliminarLugar(String id) {
 		ArrayList<MapaLugares> l = new ArrayList<MapaLugares>(mapaCat.values());
-		
+		Lugar lugar;
 		for(MapaLugares m : l) {
-			if(m.eliminarLugar(id))
-				return true;
+			if( (lugar = m.eliminarLugar(id)) != null )
+				return lugar;
 		}
 		
-		return false;
+		return null;
 	}
 
 	public Lugar buscarLugar(String idLugar) {

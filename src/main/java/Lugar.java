@@ -4,11 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.swing.ImageIcon;
 
 import Interfaces.Reportable;
 
@@ -21,8 +16,6 @@ public class Lugar implements Reportable {
 	private Direccion dir;
 	private float lat;
 	private float lng;
-	private ImageIcon local;
-	private ImageIcon mapa;
 	private int puntuacion;
 	private String categoria;
 	private String descripcion;
@@ -30,11 +23,7 @@ public class Lugar implements Reportable {
 	private Hashtable<String, Comentario> comentariosMap;
 	
 	
-	
-
-	//lista de comentarios al lugar
-	private ArrayList<Comentario> comentarios;
-	
+		
 	public Lugar() {
 		id = "96747421";
 		dir = new Direccion();
@@ -96,10 +85,6 @@ public class Lugar implements Reportable {
 	public Lugar(ResultSet rs) throws SQLException {
 		
 		this.id = rs.getString("id");
-		System.out.println( rs.getString("casa") + 
-								 rs.getString("comuna") +
-								 rs.getString("region") +
-								 rs.getString("pais") ) ;
 		
 		this.dir = new Direccion(rs.getString("casa"),
 								 rs.getString("comuna"),
@@ -190,14 +175,11 @@ public class Lugar implements Reportable {
 	}
 
 
-	public Hashtable<String, Comentario> getComentarios() {
-		return comentariosMap;
+	public ArrayList<Comentario> getComentarios() {
+		return new ArrayList<Comentario>(comentariosMap.values());
 	}
 
 
-	public void setComentarios(ArrayList<Comentario> comentarios) {
-		this.comentarios = comentarios;
-	}
 	
 	public String getId() {
 		return id;
@@ -237,10 +219,6 @@ public class Lugar implements Reportable {
 	}
 	
 	
-	
-	public ArrayList<Comentario> getListaComentarios(){
-		return new ArrayList<Comentario>(comentariosMap.values());
-	}
 	/*
 	 * Setters
 	 * */

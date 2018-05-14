@@ -47,7 +47,7 @@ public class MapaComentarios implements Reportable {
 	 * @param usr : el nombre de usuario
 	 * @return ArrayList<Comentario> con los comentarios hechos por el usuario usr
 	 */
-	public ArrayList<Comentario> getComentario(String usr){
+	public ArrayList<Comentario> getComentariosUsr(String usr){
 		ArrayList<Comentario> l = new ArrayList<Comentario>(mapaComentarios.values());
 		ArrayList<Comentario> l2 = new ArrayList<Comentario>();
 		for(Comentario c : l) {
@@ -57,6 +57,18 @@ public class MapaComentarios implements Reportable {
 		
 		return l2;
 		
+	}
+	
+	public ArrayList<Comentario> getComentariosLugar(String placeId){
+		ArrayList<Comentario> l = new ArrayList<Comentario>(mapaComentarios.values());
+		ArrayList<Comentario> l2 = new ArrayList<Comentario>();
+		
+		for(Comentario c : l) {
+			if(c.getPlaceId().equals(placeId))
+				l2.add(c);
+		}
+		
+		return l2;
 	}
 
 	public void agregar(Object o) {

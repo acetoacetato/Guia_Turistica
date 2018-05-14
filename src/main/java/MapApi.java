@@ -1,10 +1,5 @@
 package main.java;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.io.*;
 
 
 import com.google.gson.Gson;
@@ -13,8 +8,6 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.GeocodingResult;
-import com.mysql.jdbc.jdbc2.optional.*;
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 
 /*
@@ -72,7 +65,7 @@ public class MapApi{
 	}
 	
 	public String idLugar(String lugar) throws ApiException, InterruptedException, IOException {
-		GeocodingResult resultado = GeocodingApi.geocode(contexto, lugar).await()[0];		
+		GeocodingResult resultado = GeocodingApi.geocode(contexto, lugar).await()[0];
 		return resultado.placeId;
 	}
 	

@@ -4,22 +4,19 @@ import java.awt.*;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
 
 import Interfaces.VentanaCampos;
-import main.java.CuentaUsuario;
-import main.java.DbHandler;
-import main.java.Lugar;
 import main.java.SistemaMapa;
 
 
 public class VentanaCategorias extends JFrame implements VentanaCampos{
 	
-	private JPanel contentPane;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private SistemaMapa sistema;
 	private JComboBox<String> comboBox;
 	

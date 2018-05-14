@@ -1,13 +1,8 @@
 package ventanas;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Hashtable;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -20,24 +15,23 @@ import Interfaces.VentanaCampos;
 import excepciones.FieldCheckException;
 import excepciones.PlaceAlreadyTakenException;
 import excepciones.PlaceException;
-import main.java.CuentaUsuario;
-import main.java.DbHandler;
 import main.java.Lugar;
-import main.java.MapApi;
 import main.java.SistemaMapa;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
 import java.awt.event.ActionEvent;
-import javax.swing.DropMode;
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 
 public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtBuscar;
 	private JTextField txtDireccion;
@@ -47,7 +41,6 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 	private JTextField txtLatitud;
 	private JTextField txtLongitud;
 	private JTextField txtId;
-	private JTextField txtCategoria;
 	private JButton btnVolver;
 	private JTextField txtNombre;
 	private JButton btnEliminarLugar;
@@ -136,23 +129,22 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 		
 		botonDb.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Lugar l;
 				try {
 					agregar();
 				}catch(FieldCheckException e) {
 					JOptionPane.showMessageDialog(null, e.getMessage(), 
-							"No se pudo ingresar a la base de datos",
+							"No se pudo ingresar a la base de datos0",
                             JOptionPane.ERROR_MESSAGE);
 					return;
 				} catch (SQLException  e) {
 					JOptionPane.showMessageDialog(null, e.getMessage(), 
-							"No se pudo ingresar a la base de datos",
+							"No se pudo ingresar a la base de datos1",
                             JOptionPane.ERROR_MESSAGE);
 					return;
 					
 				} catch(PlaceAlreadyTakenException e) {
 					JOptionPane.showMessageDialog(null, e.getMessage(), 
-							"No se pudo ingresar a la base de datos",
+							"No se pudo ingresar a la base de datos2",
                             JOptionPane.ERROR_MESSAGE);
 					return;
 				}
@@ -196,14 +188,18 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 		btnEliminarLugar = new JButton("Eliminar lugar");
 		btnEliminarLugar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Lugar l;
-				
-				eliminar();
-				limpiarCampos();
-				JOptionPane.showMessageDialog(null,"Se ha eliminado correctamente el lugar.", 
-						"Eliminado correctamente",
-				        JOptionPane.ERROR_MESSAGE);
-				return;
+				try {
+					eliminar();
+					limpiarCampos();
+					JOptionPane.showMessageDialog(null,"Se ha eliminado correctamente el lugar.", 
+							"Eliminado correctamente",
+							JOptionPane.OK_OPTION);
+					return;
+				}catch(SQLException e) {
+					JOptionPane.showMessageDialog(null,e.getMessage(), 
+							"Error al eliminar",
+							JOptionPane.ERROR_MESSAGE);
+				}
 				
 				
 				
@@ -376,15 +372,13 @@ private void modificar() throws FieldCheckException, PlaceException, SQLExceptio
 		String desc = txtpnDescripcion.getText();
 		String id = txtId.getText();
 		
-		float lat = Float.parseFloat(txtLatitud.getText());
-		float lng = Float.parseFloat(txtLatitud.getText());
 		
 		
 		sistema.modificar( id, nombre, cat, desc );
 		
 	}
 	
-	public void eliminar() {
+	public void eliminar() throws SQLException {
 		String id = txtId.getText();;
 		
 		sistema.eliminarLugar(id);

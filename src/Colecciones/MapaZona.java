@@ -2,7 +2,6 @@ package Colecciones;
 
 
 import java.io.*;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,6 +15,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import Interfaces.Reportable;
+import excepciones.PlaceAlreadyTakenException;
 import excepciones.PlaceException;
 import main.java.Busqueda;
 import main.java.DbHandler;
@@ -37,26 +37,22 @@ public class MapaZona implements Reportable {
 	 * @param bs
 	 * @throws SQLException 
 	 */
-	public void agregar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc ) throws SQLException {
+	public Lugar agregar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc ) throws SQLException, PlaceAlreadyTakenException {
 		String zona = dir[1];
 		
 		MapaCategorias m = mapita.get(zona);
 		if(m != null) {
-			m.agregar(id, nombre, dir, cat, lat, lng, desc);
-			return;
+			return m.agregar(id, nombre, dir, cat, lat, lng, desc);
 		}
-		
+				
 		m = new MapaCategorias(zona);
 		mapita.put(zona, m);
-		m.agregar(id, nombre, dir, cat, lat, lng, desc);
+		return m.agregar(id, nombre, dir, cat, lat, lng, desc);
 		
-		Set<String> set = mapita.keySet();
-		for(String i : set)
-			System.out.println(i);
 		
 	}
 	
-	public void modificar(String id, String nombre,  String cat, String desc) throws PlaceException, SQLException{
+	public Lugar modificar(String id, String nombre,  String cat, String desc) throws PlaceException, SQLException{
 		
 		String zona = obtenerZona(id);
 		if(zona == null)
@@ -65,7 +61,7 @@ public class MapaZona implements Reportable {
 		if(m == null) 
 			throw new PlaceException("Fallo al encontrar la zona del lugar.");
 		
-		m.modificar(id, nombre, cat, zona,  desc);
+		return m.modificar(id, nombre, cat,  desc);
 	}
 	
 	public String obtenerZona(String id){
@@ -80,15 +76,15 @@ public class MapaZona implements Reportable {
 		return null;
 	}
 	
-	public boolean eliminarLugar(String id) {
+	public Lugar eliminarLugar(String id) {
 		ArrayList<MapaCategorias> l = new ArrayList<MapaCategorias>(mapita.values());
-		
+		Lugar lugar;
 		for(MapaCategorias m : l) {
-			if(m.eliminarLugar(id))
-				return true;
+			if( (lugar = m.eliminarLugar(id)) != null )
+				return lugar;
 		}
 		
-		return false;
+		return null;
 	}
 	
 	public Lugar buscarLugar(String idLugar) {
@@ -226,6 +222,12 @@ public class MapaZona implements Reportable {
 			i++;
 		}
 		return s;
+		
+	}
+
+	public void modificar(String comentAct, int idComentario, String idLugar, String points) {
+
+		
 		
 	}
 

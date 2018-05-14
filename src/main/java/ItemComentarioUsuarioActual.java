@@ -2,11 +2,9 @@ package main.java;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 
 import javax.swing.JButton;
 
-import ventanas.VentanaLugar;
 
 public class ItemComentarioUsuarioActual extends ItemComentario {
 
@@ -43,7 +41,7 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 				String points= puntuacion.getText();
 				if(sistema == null)
 					return;
-				//sistema.modificar(comentAct, com.getId(), lugar.getId(), points);
+				sistema.modificar(comentAct, com.getId(), lugar.getId(), points);
 				
 			
 			}

@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.sql.*;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 import com.google.maps.errors.ApiException;
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import excepciones.PlaceAlreadyTakenException;
 import excepciones.PlaceException;
@@ -21,7 +19,6 @@ public class DbHandler {
 	//variables necesarias para realizar querys a la db
 	private static Connection conexion = null;
 	private Statement stmt;
-	private ResultSet rs;
 	
 	
 	public DbHandler() {
@@ -86,11 +83,6 @@ public class DbHandler {
 	
 	//ingresamos un nuevo lugar a la DB, mySQL verifica si ya se ha ingresado
 	public boolean ingresarLugar(Lugar l) throws SQLException, PlaceAlreadyTakenException{
-		Statement stmt = conexion.createStatement();
-		//se ejecuta la consulta
-		ResultSet rs = stmt.executeQuery("select * from Lugar where id = '" +
-							l.getId() + "' or casa = '" +
-							l.getDireccionPpal() + "';");
 		CallableStatement cs = conexion.prepareCall("{CALL agregarLugar(?,?,?,?,?,?,?,?,?,?)}");
 		String[] lugar = l.arreglo();
 		
@@ -99,29 +91,6 @@ public class DbHandler {
 		}
 		
 		return cs.execute();
-		/*
-		//el ResultSet comienza en -1, por lo que si existe next es porque hab�a al menos un resultado coincidente
-		//por lo que el lugar ya est� ingresado y se lanza la excepci�n
-		if(rs.next()) throw new PlaceAlreadyTakenException();
-		
-		//en caso contrario, se ejecuta la inserci�n del lugar en la base de datos
-		rs = null;		
-		stmt.executeUpdate("Insert into Lugar (id, nombre, casa, comuna, region, pais, latitud, longitud, categoria, descripcion)"
-				+ "values ('"
-				+ l.getId() + "','"
-				+ l.getNombreLocal() + "','"
-				+ l.getDireccionPpal() + "','"
-				+ l.getComuna() + "','"
-				+ l.getRegion() + "','"
-				+ l.getPais() + "',"
-				+ String.valueOf( l.getLat() ) + ", "
-				+ String.valueOf( l.getLng() ) + ", '"
-				+ l.getCategoria() + "','"
-				+ l.getDescripcion() + "');"
-				);
-		
-		return true;
-		*/
 		
 	}
 	
@@ -242,7 +211,7 @@ public class DbHandler {
 		Statement stmt = conexion.createStatement();
 		String query = "SELECT * FROM Lugar WHERE categoria = '"
 				 + cat + "' AND comuna = '" + ubic + "';";
-		return rs = stmt.executeQuery( query );
+		return stmt.executeQuery( query );
 		/*ArrayList <Lugar> li = new ArrayList<Lugar>();
 		
 		//recorre todos los resultados y va construyendo los lugares, adem�s de agreg�ndolos a la lista
@@ -281,7 +250,6 @@ public class DbHandler {
 		}
 		
 		//en caso contrario, se retornan los datos que existen desde la api de google
-		System.out.println( l.getComuna() + " " + l.getDireccionPpal());
 		
 			return l;
 	}

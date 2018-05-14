@@ -1,7 +1,5 @@
 package ventanas;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,11 +7,7 @@ import javax.swing.border.EmptyBorder;
 
 import Interfaces.VentanaCampos;
 import excepciones.UserCheckException;
-import main.java.Administrador;
-import main.java.CuentaUsuario;
-import main.java.DbHandler;
 import main.java.SistemaMapa;
-import main.java.Usuario;
 
 import javax.swing.JButton;
 import java.awt.Color;
@@ -24,49 +18,46 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 
 
 
-/*
- * 		OJO: NO SE PUEDE CONECTAR A LA BASE DE DATOS DESDE PUCV-PRO porque puertos bloqueados
+/***
  * 
- * 		Cuentas b�sicas
- * 	
- * 	Admin : user: acetoacetato
- * 			pass: cBc5536652
+ * @author acetoacetato
  * 
- * 	Usuario mortal:
- * 			user: marcelo
- * 			pass: marcelo1
+ * Cuentas para iniciar sesión:
  * 
+ * 	administrador:
+ * 		nombre: admin
+ * 		contraseña: toor
  * 
- * 
- * */
+ * 	cuenta normal:
+ * 		nombre: alen
+ * 		contraseña: alen1
+ *
+ */
 
 
 public class VentanaInicioSesion extends JFrame implements VentanaCampos {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JPasswordField campoPass;
 	private JTextField campoUsuario;
-	private DbHandler db;
 	private SistemaMapa sistema;
-	private JFrame estaVentana;
 
 
 	
 	//constructor que se llama al inicio de la aplicaci�n
 	public VentanaInicioSesion(SistemaMapa sis) {
-		
 			sistema = sis;
-			estaVentana = this;
-			db = new DbHandler();
 			setResizable(false);
-
 			ventanita();
 	}
 
@@ -126,14 +117,12 @@ public class VentanaInicioSesion extends JFrame implements VentanaCampos {
 					sistema.iniciarSesion(usr, pass);
 					setVisible(false);
 				}catch (UserCheckException e) {
-					// TODO Auto-generated catch block
 						JOptionPane.showMessageDialog(null, e.getMessage(), 
 								"Error en inicio",
 	                            JOptionPane.ERROR_MESSAGE);
 						return;
 			
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, e.getMessage(), 
 							"Error en inicio",
                             JOptionPane.ERROR_MESSAGE);

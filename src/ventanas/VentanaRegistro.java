@@ -1,7 +1,5 @@
 package ventanas;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,7 +7,6 @@ import javax.swing.border.EmptyBorder;
 
 import Interfaces.VentanaCampos;
 import excepciones.UserRegisterFailureException;
-import main.java.DbHandler;
 import main.java.SistemaMapa;
 
 import javax.swing.JLabel;
@@ -18,12 +15,14 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class VentanaRegistro extends JFrame implements VentanaCampos {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField campoUsr;
 	private JPasswordField campoPass;
@@ -113,7 +112,7 @@ public class VentanaRegistro extends JFrame implements VentanaCampos {
 		contentPane.add(btnRegistrarse);
 	}
 	
-	
+	@SuppressWarnings("deprecation")
 	public boolean verificarCampos() {
 		String usr = campoUsr.getText();
 		String pass = campoPass.getText();

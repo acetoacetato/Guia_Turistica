@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import Interfaces.Reportable;
+import excepciones.PlaceAlreadyTakenException;
 import main.java.Busqueda;
 import main.java.DbHandler;
 import main.java.Lugar;
@@ -21,11 +22,16 @@ public class MapaLugares implements Reportable {
 	}
 	
 	
-	public void agregar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc) {
+	public Lugar agregar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc) throws PlaceAlreadyTakenException {
 		
 		Lugar l = new Lugar(id, nombre, dir, cat, lat, lng, desc);
-		mapaLugares.putIfAbsent(id, l);
+		Lugar l2 = mapaLugares.putIfAbsent(id, l);
 		
+		if(l2 != null)
+			throw new PlaceAlreadyTakenException();
+		
+		return l;
+	
 	}
 	
 	public void agregar(Lugar l) {
@@ -53,12 +59,12 @@ public class MapaLugares implements Reportable {
 
 	}
 
-	public boolean eliminarLugar(String id) {
+	public Lugar eliminarLugar(String id) {
 		Lugar l = mapaLugares.get(id);
 		if(l == null)		
-			return false;
+			return null;
 		mapaLugares.remove(id);
-		return true;
+		return l;
 	}
 	
 	public Lugar buscarLugar(String idLugar) {
