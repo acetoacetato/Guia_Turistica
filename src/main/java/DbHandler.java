@@ -361,7 +361,6 @@ public class DbHandler {
 			query = "Insert into Comentario (id_usuario, id_lugar, comentario, puntuacion) values( '" + c.getUsr() + "', '" +idLugar+ "', '" + coment + "', " + p+");";
 			
 		}
-		System.out.println(query);
 		stmt.executeUpdate(query);
 		
 	}

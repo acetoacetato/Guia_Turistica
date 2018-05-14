@@ -37,9 +37,8 @@ public class MapaComentarios implements Reportable {
 	}
 
 
-	public Comentario getComentario(int key) {
-		Comentario c = mapaComentarios.get(key);
-		return c;
+	public Comentario getComentario(String key) {
+		return mapaComentarios.get(key);
 	}
 	
 	public Comentario getComentario(String usr, String placeId) {
