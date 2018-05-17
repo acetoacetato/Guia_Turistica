@@ -303,6 +303,11 @@ public class DbHandler {
 		return stmt.executeQuery("select * from Comentario where id_lugar = '" +  id + "';");
 	}
 	
+	public ResultSet buscarComentariosUsuario(String idLugar) throws SQLException {
+		Statement stmt = conexion.createStatement();
+		return stmt.executeQuery("select * from Comentario where id_usuario = '" +  idLugar + "';");
+	}
+	
 	public boolean buscarComentario(String idUsr, String idLugar) throws SQLException{
 		Statement stmt = conexion.createStatement();
 		ResultSet rs = stmt.executeQuery("Select * from Comentario where id_lugar = '" + idLugar + "' and id_usuario ='" + idUsr + "';");

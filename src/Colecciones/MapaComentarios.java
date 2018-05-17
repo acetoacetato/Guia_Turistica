@@ -11,11 +11,14 @@ import main.java.Comentario;
 import main.java.DbHandler;
 
 public class MapaComentarios implements Reportable {
-	private Hashtable<String, Comentario> mapaComentarios;
-	private String idLugar;
+	protected Hashtable<String, Comentario> mapaComentarios;
+	protected String id;
+	public MapaComentarios() {
+		mapaComentarios = new Hashtable<String, Comentario>();
+	}
 	
-	public MapaComentarios(String idLugar) throws SQLException {
-		this.setIdLugar(idLugar);
+	public MapaComentarios(String id) throws SQLException {
+		this.setIdLugar(id);
 		mapaComentarios = new Hashtable<String, Comentario>();
 		importar();
 	}
@@ -25,7 +28,7 @@ public class MapaComentarios implements Reportable {
 	
 	private void importar() throws SQLException {
 		DbHandler db = new DbHandler();
-		ResultSet rs = db.buscarComentarios(idLugar);
+		ResultSet rs = db.buscarComentarios(id);
 		while(rs.next()) {
 			mapaComentarios.putIfAbsent(rs.getString("id_usuario"), new Comentario(rs));
 		}		
@@ -128,31 +131,31 @@ public class MapaComentarios implements Reportable {
 
 
 	public String getIdLugar() {
-		return idLugar;
+		return id;
 	}
 
 
 
 
 	public void setIdLugar(String idLugar) {
-		this.idLugar = idLugar;
+		this.id = idLugar;
 	}
 
 
 
 
-	public void modificar(String comentAct, String points, String ussr) throws SQLException {
+	public void modificar(String comentAct, String points, String ids) throws SQLException {
 		DbHandler db=new DbHandler();
-		Comentario c=getComentario(ussr,idLugar);
+		Comentario c=getComentario(ids,id);
 		if(c==null) {
-			c=new Comentario(ussr,ussr,comentAct,Float.parseFloat(points));
-			mapaComentarios.put(ussr, c);
+			c=new Comentario(ids,ids,comentAct,Float.parseFloat(points));
+			mapaComentarios.put(ids, c);
 		}
 		else {
 			c.setCom(comentAct);
 			c.setPt(Float.parseFloat(points));
 		}
-		db.modificarComentario(comentAct, c, idLugar, points);
+		db.modificarComentario(comentAct, c, id, points);
 	}
 	
 }

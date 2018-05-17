@@ -14,7 +14,6 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 	private JButton bttonComentDown;
 	private SistemaMapa sistema;
 	private Lugar lugar;
-	private Comentario com;
 	
 	public ItemComentarioUsuarioActual(SistemaMapa sis, int X, int Y, Lugar l) {
 		super(new Comentario(sis), X, Y);
@@ -25,12 +24,11 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 	
 	public ItemComentarioUsuarioActual(Comentario comentario, int X, int Y,SistemaMapa sis, Lugar l) {
 		super(comentario, X, Y);
-		com = comentario;
 		lugar = l;
 		sistema = sis;
 		item();
-		
 	}
+	
 	
 	private void item() {
 		
@@ -44,6 +42,7 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 					return;
 				try {
 					lugar.modificar(comentAct, points,sistema.getNombreUsuario());
+					sistema.modificar(comentAct, points, lugar.getId());
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

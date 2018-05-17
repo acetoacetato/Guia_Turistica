@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 public class Administrador extends Usuario {
 
-	public Administrador ( String usuario, String password ) {
+	public Administrador ( String usuario, String password ) throws SQLException {
 		super ( usuario, password );
 	}
  

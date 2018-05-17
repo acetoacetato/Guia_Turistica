@@ -159,5 +159,14 @@ public class SistemaMapa {
 		return usuario.informacionCuenta();
 	}
 
+	public void modificar(String comentAct, String points, String id) throws SQLException {
+		admin = usuario.tipoCuenta().equals("Administrador");
+		if(!admin) {
+			Usuario usr = (Usuario) usuario;
+			usr.modificar(comentAct, points, id);
+		}
+		
+	}
+
 
 }

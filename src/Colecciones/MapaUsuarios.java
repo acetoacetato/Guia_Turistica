@@ -34,14 +34,14 @@ public class MapaUsuarios implements Reportable {
 	
 
 	
-	public void agregar(String usr, String pass) throws UserRegisterFailureException {
+	public void agregar(String usr, String pass) throws UserRegisterFailureException, SQLException {
 		CuentaUsuario cta = new Usuario(usr, pass);
 		if(mapaUser.putIfAbsent(cta.getNombreUsuario(), cta) != null)
 			throw new UserRegisterFailureException("El usuario ya se encuentra registrado.");
 		
 	}
 	
-	public void agregar(String usr, String pass, boolean adm) throws UserRegisterFailureException {
+	public void agregar(String usr, String pass, boolean adm) throws UserRegisterFailureException, SQLException {
 		CuentaUsuario cta = (adm)? new Administrador(usr, pass) : new Usuario(usr, pass);
 		if(mapaUser.putIfAbsent(cta.getNombreUsuario(), cta) != null)
 			throw new UserRegisterFailureException("El usuario ya se encuentra registrado.");
@@ -51,7 +51,7 @@ public class MapaUsuarios implements Reportable {
 		mapaUser.remove(usr);
 	}
 
-	public void modificar(String usr, String pass, boolean adm) {
+	public void modificar(String usr, String pass, boolean adm) throws SQLException {
 		CuentaUsuario cta = (adm)? new Administrador(usr, pass) : new Usuario(usr, pass);
 		mapaUser.put(usr, cta);
 	}

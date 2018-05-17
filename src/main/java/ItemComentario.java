@@ -33,8 +33,6 @@ public class ItemComentario {
 		//se le niega que el usuario que est� logueado pueda editar los comentarios de otros usuarios
 		//se le setea el scroll1 a comentarios para el tema de la barra
 		comentarios = new JTextPane();
-		//comentarios.setLineWrap(true);
-		//comentarios.setWrapStyleWord(true);
 		comentarios.setEditable(false);
 		
 		
@@ -42,8 +40,6 @@ public class ItemComentario {
 		puntuacion.setEditable(false);
 		
 		scroll1.setViewportView(comentarios);
-		//scroll1.add(comentarios);
-		//lo mismo que el scroll1
 		scroll2 = new JScrollPane();
 		scroll2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
@@ -54,10 +50,7 @@ public class ItemComentario {
 		//se le dan las coordenadas a los labels, y los textpane correspondientes
 		user.setBounds(X+25, Y, 250, 30);
 		puntuacion.setBounds(X, Y, 30, 30);
-		//comentarios.setBounds(X,Y+50, 250,100);
-		//tuComen.setBounds(X+200, Y, 100, 100);
 		scroll1.setBounds(X, Y+50, 250, 100);
-		//scroll2.setBounds(X+300, Y, 250, 100);
 	}
 	
 

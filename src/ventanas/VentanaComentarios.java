@@ -180,7 +180,7 @@ private void cargarVentana() {
 				});
 				
 				contentPane.add(btnBack);
-			}		
+			}
 }
 
 }
