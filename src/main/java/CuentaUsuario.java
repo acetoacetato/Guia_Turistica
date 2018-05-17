@@ -2,11 +2,16 @@ package main.java;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
+import Colecciones.MapaComentariosUsuario;
 
 public abstract class CuentaUsuario {
 	private String nombreUsuario;
 	private String contrasena;
 
+	protected MapaComentariosUsuario comentariosMap;
+	
 	public CuentaUsuario( String usuario, String contrasena ) {
 		this.setNombreUsuario( usuario );
 		this.setContrasena( contrasena );
@@ -42,6 +47,14 @@ public abstract String tipoCuenta();
 
   public void setContrasena( String contrasena ) {
 		this.contrasena = contrasena;
+	}
+  
+  public void modificar(String comentAct, String points, String lug) throws SQLException {
+		comentariosMap.modificar(comentAct,points,lug );
+		
+	}
+  public ArrayList<Comentario> getComentarios() {
+		return comentariosMap.valores();
 	}
 
 }

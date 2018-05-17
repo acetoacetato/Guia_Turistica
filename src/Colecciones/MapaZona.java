@@ -180,8 +180,8 @@ public class MapaZona implements Reportable {
 		}
 		
 	}
-
-	public void reporte(Busqueda b) {
+	
+	public void reporte(Busqueda b) throws PlaceException {
 		if( b.getTipo().equals("Zonas")) {
 			VentanaReporte v = new VentanaReporte(this);
 			v.setVisible(true);
@@ -189,6 +189,8 @@ public class MapaZona implements Reportable {
 		}else {
 			String zona = b.getParametro();
 			MapaCategorias m = mapita.get(zona);
+			if(m == null)
+				throw new PlaceException("La zona seleccionada es incorrecta.");
 			m.reporte(b);
 			return;
 		}

@@ -48,7 +48,7 @@ public class SistemaMapa {
 		
 	}
 	
-	public void generarReporte(Busqueda b) {
+	public void generarReporte(Busqueda b) throws PlaceException {
 		switch(b.getTipo()) {
 		
 			case "Usuarios":
@@ -74,7 +74,6 @@ public class SistemaMapa {
 	public void agregar(String usr, String pass) throws UserRegisterFailureException, SQLException {
 		usuarios.agregar(usr, pass);
 		db.registrarUsuario(usr, pass);
-		throw new SQLException();
 	}
 	
 	/**
@@ -102,7 +101,7 @@ public class SistemaMapa {
 	 * Actualiza la información de un lugar
 	 * @param id : el id del lugar a modificar.
 	 * @param nombre : el nuevo nombre del local.
-	 * @param cat : nueva categoría del local.
+	 * @param cat : nueva tegoría del local.
 	 * @param desc : nueva descripción del local.
 	 * @throws SQLException 
 	 */
@@ -159,12 +158,10 @@ public class SistemaMapa {
 		return usuario.informacionCuenta();
 	}
 
-	public void modificar(String comentAct, String points, String id) throws SQLException {
-		admin = usuario.tipoCuenta().equals("Administrador");
-		if(!admin) {
-			Usuario usr = (Usuario) usuario;
-			usr.modificar(comentAct, points, id);
-		}
+	public void modificar(Lugar l, String comentAct, String points) throws SQLException {
+
+			l.modificar(comentAct, points, usuario.getNombreUsuario());
+			usuario.modificar(comentAct, points, l.getId());
 		
 	}
 

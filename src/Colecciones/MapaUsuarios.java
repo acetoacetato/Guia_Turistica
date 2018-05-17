@@ -107,7 +107,6 @@ public class MapaUsuarios implements Reportable {
 		return null;
 	}
 
-	@Override
 	public void reporte(Busqueda b) {
 		
 		VentanaReporte v = new VentanaReporte(this);

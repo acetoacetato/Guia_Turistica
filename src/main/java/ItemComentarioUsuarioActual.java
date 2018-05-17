@@ -41,8 +41,7 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 				if(sistema == null)
 					return;
 				try {
-					lugar.modificar(comentAct, points,sistema.getNombreUsuario());
-					sistema.modificar(comentAct, points, lugar.getId());
+					sistema.modificar(lugar, comentAct, points);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

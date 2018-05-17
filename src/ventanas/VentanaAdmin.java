@@ -51,7 +51,7 @@ public class VentanaAdmin extends JFrame {
 				
 			} 
 		});
-		btnAgregar.setBounds(124, 111, 186, 29);
+		btnAgregar.setBounds(118, 75, 186, 29);
 		contentPane.add(btnAgregar);
 		
 		JButton btnCerrarSesin = new JButton("Cerrar Sesi\u00F3n");
@@ -67,9 +67,14 @@ public class VentanaAdmin extends JFrame {
 		});
 		btnCerrarSesin.setBounds(145, 199, 142, 29);
 		contentPane.add(btnCerrarSesin);
+		
+		JButton btnAdministrarUsuarios = new JButton("Administrar Usuarios");
+		btnAdministrarUsuarios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		btnAdministrarUsuarios.setBounds(118, 126, 186, 27);
+		contentPane.add(btnAdministrarUsuarios);
 	}
-
-	
-
-	
 }

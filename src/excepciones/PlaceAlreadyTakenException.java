@@ -1,6 +1,6 @@
 package excepciones;
 
-public class PlaceAlreadyTakenException extends Exception {
+public class PlaceAlreadyTakenException extends PlaceException {
 
 	/**
 	 * 

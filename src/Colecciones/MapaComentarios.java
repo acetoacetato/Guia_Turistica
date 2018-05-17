@@ -72,16 +72,8 @@ public class MapaComentarios implements Reportable {
 		
 	}
 	
-	public ArrayList<Comentario> getComentariosLugar(String placeId){
-		ArrayList<Comentario> l = new ArrayList<Comentario>(mapaComentarios.values());
-		ArrayList<Comentario> l2 = new ArrayList<Comentario>();
-		
-		for(Comentario c : l) {
-			if(c.getPlaceId().equals(placeId))
-				l2.add(c);
-		}
-		
-		return l2;
+	public ArrayList<Comentario> getComentarios(){
+		return new ArrayList<Comentario> (mapaComentarios.values());
 	}
 
 	public void agregar(Object o) {
@@ -121,7 +113,6 @@ public class MapaComentarios implements Reportable {
 
 
 
-	@Override
 	public void reporte(Busqueda b) {
 		// TODO Auto-generated method stub
 		
@@ -142,6 +133,17 @@ public class MapaComentarios implements Reportable {
 	}
 
 
+	public int rating() {
+		ArrayList<Comentario> l = getComentarios();
+		
+		int ptje = 0;
+		
+		for(Comentario c : l) {
+			ptje += c.getPt();
+		}
+		
+		return ptje;
+	}
 
 
 	public void modificar(String comentAct, String points, String ids) throws SQLException {

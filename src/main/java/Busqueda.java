@@ -5,6 +5,12 @@ public class Busqueda {
 	String tipoBusqueda;
 	String[] parametrosBusqueda;
 	
+	public Busqueda(String tipo) {
+		tipoBusqueda = tipo;
+		parametrosBusqueda = new String[0];
+
+	}
+	
 	public Busqueda(String tipo, String[] param) {
 		tipoBusqueda = tipo;
 		parametrosBusqueda = param;

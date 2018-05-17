@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import excepciones.PlaceException;
 import main.java.Busqueda;
 import main.java.ItemLugar;
 import main.java.Lugar;
@@ -129,7 +131,14 @@ public class VentanaLugares extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					//String[] s = {zona, categoria};
 					String[] s = {zona};
-					sistema.generarReporte(new Busqueda("Zonas", s) );
+					
+					try {
+						sistema.generarReporte(new Busqueda("Zonas", s) );
+					} catch (PlaceException e1) {
+						JOptionPane.showMessageDialog(null, e1.getMessage(), 
+								"Error",
+		                        JOptionPane.ERROR_MESSAGE);
+					}
 					//VentanaReporte ventanitaR = new VentanaReporte(lugarcitos, sistema);
 					//ventanitaR.setVisible(true);
 					

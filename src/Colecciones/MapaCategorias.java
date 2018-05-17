@@ -134,10 +134,10 @@ public class MapaCategorias implements Reportable {
 	@Override
 	public String reportePantalla() {
 		// TODO Auto-generated method stub
-		return null;
+		return "the game";
 	}
 
-	@Override
+	
 	public void reporte(Busqueda b) {
 		
 		if(b.getTipo().equals("Categorias")) {

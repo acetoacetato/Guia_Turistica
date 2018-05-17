@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import Interfaces.VentanaCampos;
+import excepciones.PlaceException;
+import main.java.Busqueda;
 import main.java.SistemaMapa;
 
 
@@ -179,6 +181,38 @@ public class VentanaCategorias extends JFrame implements VentanaCampos{
 		}
 		comboBox.setBounds(67, 54, 274, 26);
 		getContentPane().add(comboBox);
+		
+		JButton btnReporteZonas = new JButton("Reporte zonas");
+		btnReporteZonas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				try {
+					sistema.generarReporte(new Busqueda("Zonas"));
+				} catch (PlaceException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnReporteZonas.setBounds(31, 206, 131, 27);
+		getContentPane().add(btnReporteZonas);
+		
+		JButton btnReporteCategorias = new JButton("Reporte categorias");
+		btnReporteCategorias.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					sistema.generarReporte(new Busqueda("Categorias", (String)comboBox.getSelectedItem()));
+				} catch (PlaceException e1) {
+					
+					JOptionPane.showMessageDialog(null, e1.getMessage(), 
+							"ERROR",
+	                        JOptionPane.ERROR_MESSAGE);
+				}
+
+			}
+		});
+		btnReporteCategorias.setBounds(188, 208, 167, 25);
+		getContentPane().add(btnReporteCategorias);
 		
 		//se crea y agrega el fondo 
 		JLabel lblFondo = new JLabel("");

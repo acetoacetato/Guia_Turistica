@@ -3,7 +3,6 @@ package Interfaces;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Font;
 
-import main.java.Busqueda;
 
 public interface Reportable {
 	public static final Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 18,
@@ -17,6 +16,6 @@ public interface Reportable {
 
 	public void generarReporte(String path);
 	public String reportePantalla();
-	public void reporte(Busqueda b);
+	//public void reporte(Busqueda b);
 	
 }

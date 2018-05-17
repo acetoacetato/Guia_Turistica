@@ -141,7 +141,7 @@ public class Lugar implements Reportable {
 
 
 	public int getPuntuacion() {
-		return puntuacion;
+		return comentariosMap.rating();
 	}
 
 
@@ -260,7 +260,7 @@ public class Lugar implements Reportable {
 	}
 
 
-	@Override
+	
 	public void reporte(Busqueda b) {
 		// TODO Auto-generated method stub
 		

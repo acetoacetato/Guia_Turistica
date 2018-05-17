@@ -102,7 +102,7 @@ public class MapaLugares implements Reportable {
 	}
 
 
-	@Override
+	
 	public void reporte(Busqueda b) {
 		
 		if(b.getTipo().equals("Lugares")) {
