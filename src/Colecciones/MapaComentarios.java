@@ -96,7 +96,6 @@ public class MapaComentarios implements Reportable {
 
 	@Override
 	public void generarReporte(String path) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -106,7 +105,6 @@ public class MapaComentarios implements Reportable {
 
 	@Override
 	public String reportePantalla() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -114,7 +112,6 @@ public class MapaComentarios implements Reportable {
 
 
 	public void reporte(Busqueda b) {
-		// TODO Auto-generated method stub
 		
 	}
 

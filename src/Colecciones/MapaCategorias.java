@@ -96,13 +96,11 @@ public class MapaCategorias implements Reportable {
 	}
 	
 	public void quitar(Object o) {
-		// TODO Auto-generated method stub
 		return;   
 
 	}
 
 	public void modificar(Object o) {
-		// TODO Auto-generated method stub
 
 	}
 	

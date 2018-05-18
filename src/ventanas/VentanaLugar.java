@@ -150,7 +150,6 @@ public class VentanaLugar extends JFrame implements Runnable {
 			//se manda a re pintar el JFrame
 			repaint();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

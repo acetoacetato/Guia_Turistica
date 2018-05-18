@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
 public class VentanaAdmin extends JFrame {
 
@@ -26,9 +27,9 @@ public class VentanaAdmin extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaAdmin(SistemaMapa sis) {
+		setResizable(false);
 		setTitle("Admin");
 		sistema = sis;
-		setResizable(false);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -42,6 +43,7 @@ public class VentanaAdmin extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		JButton btnAgregar = new JButton("Administrar Lugares");
+		btnAgregar.setSize(btnAgregar.getPreferredSize());
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				

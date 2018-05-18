@@ -16,6 +16,5 @@ public interface Reportable {
 
 	public void generarReporte(String path);
 	public String reportePantalla();
-	//public void reporte(Busqueda b);
 	
 }

@@ -111,7 +111,6 @@ public class VentanaInicioSesion extends JFrame {
 					//ResultSet rs = db.iniciarSesion(usr, pass);
 					//creamos la cuenta de usuario con usr, pass y el booleano de si es usuario o administrador
 					
-					//CuentaUsuario cta = crearUsuario(usr, pass, rs.getBoolean("admin"));
 					
 					sistema.iniciarSesion(usr, pass);
 					setVisible(false);

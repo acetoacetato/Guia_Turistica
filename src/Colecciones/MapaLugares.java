@@ -95,7 +95,6 @@ public class MapaLugares implements Reportable {
 
 	@Override
 	public void generarReporte(String path) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -104,7 +103,6 @@ public class MapaLugares implements Reportable {
 
 	@Override
 	public String reportePantalla() {
-		// TODO Auto-generated method stub
 		return "prueba";
 	}
 

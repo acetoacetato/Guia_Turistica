@@ -44,7 +44,6 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 				try {
 					sistema.modificar(lugar, comentAct, points);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				

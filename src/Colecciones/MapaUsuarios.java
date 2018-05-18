@@ -105,7 +105,6 @@ public class MapaUsuarios implements Reportable {
 
 	@Override
 	public String reportePantalla() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -52,8 +52,7 @@ public class MapApi{
 							 .replaceAll("\"", "")
 							 .split(",") ;
 		
-		//lugar = new Lugar(resultado.placeId, direccion,(float)resultado.geometry.location.lat, (float)resultado.geometry.location.lng );
-		
+	
 		//se cambian los valores de 'lugar' por los del resultado de b�squeda y se retorna el objeto lugar
 		this.lugar.setId(resultado.placeId);
 		this.lugar.setDir(direccion);

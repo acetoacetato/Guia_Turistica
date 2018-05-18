@@ -176,23 +176,6 @@ public class DbHandler {
 				+ "WHERE id = '" + l.getId() + "'");
 	}
 	
-
-	
-	
-	
-	//se busca un lugar por su id
-	/*public Lugar buscarLugar(String id) throws SQLException {
-		Statement stmt = conexion.createStatement();
-		String query = "select * from Lugar where id = '" + id + "';";
-		System.out.println(query);
-		ResultSet rs = stmt.executeQuery("select * from Lugar where id = '" + id + "';");
-		if(rs.next())
-			return new Lugar(rs);
-		
-		else return null;
-
-	}*/
-	
 	//Se busca un lugar por el nombre del local
 	public Lugar buscarLugar(String name) throws SQLException{
 		Statement stmt = conexion.createStatement();
@@ -206,28 +189,13 @@ public class DbHandler {
 	}
 	
 	//busca lugares que coincidan con una categor�a y ubicaci�n especificada por par�metro
-	//retorna una lista con todas las coincidencias
+	//retorna un ResultSet con todas las coincidencias
 	public ResultSet buscarLugar(String cat, String ubic) throws SQLException {
 		Statement stmt = conexion.createStatement();
 		String query = "SELECT * FROM Lugar WHERE categoria = '"
 				 + cat + "' AND comuna = '" + ubic + "';";
 		return stmt.executeQuery( query );
-		/*ArrayList <Lugar> li = new ArrayList<Lugar>();
 		
-		//recorre todos los resultados y va construyendo los lugares, adem�s de agreg�ndolos a la lista
-		while(rs.next()) {
-			Lugar l = new Lugar(rs);
-			
-			//obtiene la puntuaci�n del lugar
-			int pt = obtenerPuntuacion(l.getId());
-			
-			//setea la puntuaci�n al lugar
-			l.setPuntuacion( pt );
-			
-			//adhiere el lugar a la lista
-			li.add( l );
-		}
-		return li;*/
 	}
 	
 	
@@ -255,20 +223,7 @@ public class DbHandler {
 	}
 	
 	
-	/*
 	
-	//Crea y retorna un arrayList con los lugares de una ubicaci�n, pasada por par�metro, separados por categor�a
-	public Hashtable<String, ArrayList <Lugar>> cargaLugares(String ubicacion) throws SQLException {
-		Hashtable<String, ArrayList<Lugar>> mapita = new Hashtable<String, ArrayList<Lugar>>();
-		String[] categorias = { "atraccion", "dormir", "comida", "vida_nocturna" };
-		
-		//por cada elemento de categor�as, se crea una lista del lugar con la categor�a y la ubicaci�n y se agrega a la lista
-		for(String i : categorias) {
-			mapita.put(i, buscarLugar(i, ubicacion));
-		}
-		return mapita;
-	}
-	*/
 	//busca un lugar en la base de datos
 	public Lugar buscar(Lugar l) throws SQLException {
 		Statement stmt = conexion.createStatement();

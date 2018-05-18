@@ -58,7 +58,6 @@ public class VentanaReporte extends JFrame {
 			document.insertString(document.getLength(), r.reportePantalla(), null);
 			
 		} catch (BadLocationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

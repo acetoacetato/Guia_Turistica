@@ -16,7 +16,6 @@ public class Lugar implements Reportable {
 	private Direccion dir;
 	private float lat;
 	private float lng;
-	private int puntuacion;
 	private String categoria;
 	private String descripcion;
 	
@@ -54,7 +53,6 @@ public class Lugar implements Reportable {
 		this.lng = lng;
 		this.nombreLocal = nombre;
 		this.descripcion = descripcion;
-		this.puntuacion = 0;
 		this.categoria = categoria;
 		
 		comentariosMap = new MapaComentarios(id);
@@ -73,7 +71,6 @@ public class Lugar implements Reportable {
 		this.lng = lng;		
 		this.nombreLocal = name;
 		this.categoria = categoria;
-		this.puntuacion = 0;
 		this.descripcion = desc;
 		comentariosMap = new MapaComentarios(id);
 		
@@ -145,9 +142,6 @@ public class Lugar implements Reportable {
 	}
 
 
-	public void setPuntuacion(int puntuacion) {
-		this.puntuacion = puntuacion;
-	}
 
 
 	public String getDescripcion() {
@@ -248,21 +242,18 @@ public class Lugar implements Reportable {
 
 	@Override
 	public void generarReporte(String path) {
-		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
 	public String reportePantalla() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 	
 	public void reporte(Busqueda b) {
-		// TODO Auto-generated method stub
 		
 	}
 

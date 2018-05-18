@@ -1,26 +1,27 @@
 package ventanas;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import excepciones.UserFindException;
 import main.java.CuentaUsuario;
 import main.java.SistemaMapa;
 
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.awt.event.ActionEvent;
-
 public class VentanaAdminUsuarios extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtBusqueda;
 	private JTextField txtId;

@@ -129,7 +129,6 @@ public class VentanaLugares extends JFrame {
 		btnReporte.addActionListener(new ActionListener() {
 		
 				public void actionPerformed(ActionEvent e) {
-					//String[] s = {zona, categoria};
 					String[] s = {zona};
 					
 					try {
@@ -139,8 +138,6 @@ public class VentanaLugares extends JFrame {
 								"Error",
 		                        JOptionPane.ERROR_MESSAGE);
 					}
-					//VentanaReporte ventanitaR = new VentanaReporte(lugarcitos, sistema);
-					//ventanitaR.setVisible(true);
 					
 				}
 			
