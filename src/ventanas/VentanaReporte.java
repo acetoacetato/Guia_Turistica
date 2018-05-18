@@ -87,7 +87,7 @@ public class VentanaReporte extends JFrame {
 	    			
 	    	}
 	    });
-	    btnGuardarReporte.setBounds(406, 440, 129, 23);
+	    btnGuardarReporte.setBounds(379, 440, 156, 23);
 	    contentPane.add(btnGuardarReporte);
 	}
 	

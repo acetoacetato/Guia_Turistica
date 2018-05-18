@@ -12,7 +12,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import excepciones.PlaceException;
 import excepciones.UserFindException;
+import main.java.Busqueda;
 import main.java.CuentaUsuario;
 import main.java.SistemaMapa;
 
@@ -155,6 +157,21 @@ public class VentanaAdminUsuarios extends JFrame {
 		});
 		btnVolver.setBounds(176, 234, 72, 21);
 		contentPane.add(btnVolver);
+		
+		JButton btnReporte = new JButton("Reporte");
+		btnReporte.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					sistema.generarReporte(new Busqueda("Usuarios"));
+				} catch (PlaceException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
+		btnReporte.setBounds(349, 234, 81, 24);
+		contentPane.add(btnReporte);
 	}
 	
 	private boolean verificarCampos() {

@@ -31,7 +31,7 @@ public class VentanaCategorias extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
-		setBounds(100, 100, 505, 265);
+		setBounds(100, 100, 505, 272);
 		
 		Container contentPane = getContentPane();
 		this.setVisible(true);
@@ -110,10 +110,7 @@ public class VentanaCategorias extends JFrame {
 		botonComida.setIcon(icon3);
 		botonVidaNoc.setIcon(icon4);
 		
-		JLabel lblPregunta = new JLabel(" \u00BFQu\u00E9 deseas hacer hoy?");
-		lblPregunta.setForeground(new Color(255, 0, 255));
-		lblPregunta.setBounds(160, 11, 320, 31);
-		lblPregunta.setFont(new Font("Comic Sans MS", Font.BOLD, 25));
+		
 		
 		JLabel lblAtracciones = new JLabel("Atracciones");
 		lblAtracciones.setForeground(new Color(153, 51, 153));
@@ -150,9 +147,9 @@ public class VentanaCategorias extends JFrame {
 		
 		
 	    //se crea el mensaje de bienvenida al usuario
-		JLabel lblBienvenida = new JLabel(sistema.getNombreUsuario() + ",");
+		JLabel lblBienvenida = new JLabel(sistema.getNombreUsuario() + ", ¿qué deseas hacer hoy?");
 		lblBienvenida.setForeground(new Color(255, 0, 255));
-		lblBienvenida.setBounds(12, 11, 360, 31);
+		lblBienvenida.setBounds(12, 11, 456, 31);
 		lblBienvenida.setFont(new Font("Comic Sans MS", Font.BOLD, 25));
 		
 		
@@ -162,7 +159,6 @@ public class VentanaCategorias extends JFrame {
 		contentPane.add(lblHoteles);
 		contentPane.add(lblVidaNocturna);
 		contentPane.add(lblRestaurantes);
-		contentPane.add(lblPregunta);
 		
 		//se setea un layout vac�o
 		contentPane.setLayout(null);

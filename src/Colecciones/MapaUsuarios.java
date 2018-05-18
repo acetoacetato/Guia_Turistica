@@ -90,8 +90,10 @@ public class MapaUsuarios implements Reportable {
 			for(String s : usuarios) {
 				parrafo.add(new Paragraph(" "));
 				parrafo.add(new Chunk(i + ") " + s , smallBold));
-				parrafo.add(new Chunk("(" + mapaUser.get(s).tipoCuenta() + ").\n", redFont));
+				parrafo.add(new Chunk(" (" + mapaUser.get(s).tipoCuenta() + ").\n", redFont));
+				i++;
 			}
+			pdf.add(parrafo);
 			pdf.close();
 			
 		}catch(DocumentException | FileNotFoundException e) {
@@ -105,7 +107,21 @@ public class MapaUsuarios implements Reportable {
 
 	@Override
 	public String reportePantalla() {
-		return null;
+		
+		String s =  "Reporte de usuarios actuales.\n"
+				+ "Reporte generado por : " + System.getProperty("usr.nombre") + ", " + new Date() + "\n"
+				+ "\n\n"
+				+ "Lista de usuarios en la base de datos :\n\n";
+	
+		Set<String> zonas = mapaUser.keySet();
+		int i = 1;
+	
+		for(String s2 : zonas) {
+			s = s.concat(i + ") " + s2 + " (" + mapaUser.get(s2).tipoCuenta() + ").\n");
+			i++;
+		}
+		return s;
+		
 	}
 
 	public void reporte(Busqueda b) {

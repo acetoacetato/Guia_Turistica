@@ -53,11 +53,11 @@ public class SistemaMapa {
 		switch(b.getTipo()) {
 		
 			case "Usuarios":
-				//TODO: reporte mapa usuarios
-			case "Comentarios":
-				//TODO: reporte mapa comentarios
+				usuarios.reporte(b);
+				break;
 			default:
 				lugares.reporte(b);
+				break;
 		}
 	}
 	
@@ -126,14 +126,7 @@ public class SistemaMapa {
 		return lugares.obtenerLugares(cat, zona);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	public Lugar obtenerLugarPorDireccion(String lugar) throws SQLException, ApiException, InterruptedException, IOException{
 		

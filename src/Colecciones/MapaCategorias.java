@@ -1,9 +1,19 @@
 package Colecciones;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
+import java.util.Set;
+
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import Interfaces.Reportable;
 import excepciones.PlaceAlreadyTakenException;
@@ -16,8 +26,9 @@ import ventanas.VentanaReporte;
 public class MapaCategorias implements Reportable {
 
 	private Hashtable<String, MapaLugares> mapaCat;
-	
+	private String zonita;
 	public MapaCategorias(String zona) throws SQLException {
+		zonita = zona;
 		mapaCat = new Hashtable<String, MapaLugares>();
 		importar(zona);
 	}
@@ -125,14 +136,66 @@ public class MapaCategorias implements Reportable {
 
 	@Override
 	public void generarReporte(String path) {
-		// TODO Auto-generated method stub
+		Document pdf = new Document();
 		
+		FileOutputStream archivo;
+		try {
+			archivo = new FileOutputStream(path);
+		
+			PdfWriter.getInstance(pdf, archivo);
+		
+			pdf.open();
+		
+			pdf.addAuthor("Aplicación guía turística.");
+			pdf.addCreationDate();
+			
+			Paragraph parrafo = new Paragraph();
+			
+			parrafo.add(new Paragraph(" "));
+			parrafo.add(new Paragraph("Reporte de categorías actuales.", catFont));
+			parrafo.add(new Paragraph(" "));
+			parrafo.add(new Paragraph("Reporte generado por : " + System.getProperty("usr.nombre") + ", " + new Date(), smallBold));
+			parrafo.add(new Paragraph(" "));
+			
+			parrafo.add(new Paragraph(" "));
+			parrafo.add(new Paragraph(" "));
+			parrafo.add(new Paragraph("Lista de categorías donde residen los lugares de la base de datos en la zona de " + zonita + ": ", smallBold));
+			
+			
+			Set<String> zonas = mapaCat.keySet();
+			int i = 1;
+			
+			for(String s : zonas) {
+				parrafo.add(new Paragraph(" "));
+				parrafo.add(new Chunk(i + ") " , redFont));
+				parrafo.add(new Chunk(s + ".\n", smallBold));
+				i++;
+			}
+			
+			pdf.add(parrafo);
+			pdf.close();
+			
+		
+		}catch(DocumentException | FileNotFoundException e) {
+			e.printStackTrace();
+		}		
 	}
 
 	@Override
 	public String reportePantalla() {
-		// TODO Auto-generated method stub
-		return "the game";
+		String s =  "Reporte de categorías actuales\n"
+				+ "Reporte generado por : " + System.getProperty("usr.nombre") + ", " + new Date() + "\n"
+				+ "\n\n"
+				+ "Lista de categorías donde residen los lugares de la base de datos en la zona de " + zonita + ":\n\n";
+	
+		Set<String> zonas = mapaCat.keySet();
+		int i = 1;
+	
+		for(String s2 : zonas) {
+			s = s.concat(i + ") " + s2 + ".\n");
+			i++;
+		}
+		return s;
 	}
 
 	

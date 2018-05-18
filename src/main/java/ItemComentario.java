@@ -35,8 +35,9 @@ public class ItemComentario {
 	public ItemComentario(Comentario comentario,  int X, int Y, SistemaMapa sis, Lugar l, JFrame jf) {
 		
 		item(comentario, X, Y);
-		btnEliminar = new JButton("X");
-		btnEliminar.setBounds( X + user.getText().length() + 50, Y, 30, 30 );
+		btnEliminar = new JButton();
+		btnEliminar.setBounds( X + user.getText().length() + 90, Y, 42, 20 );
+		btnEliminar.setText("X");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {

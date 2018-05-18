@@ -81,7 +81,7 @@ public class VentanaLugares extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setResizable(false);
-		setBounds(100, 100, 405, 300);
+		setBounds(100, 100, 405, 320);
 		itememes = new ItemLugar[5];
 		int  x = 40, y = 20, z = 0;
 		i=0;

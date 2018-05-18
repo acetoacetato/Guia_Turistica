@@ -11,7 +11,6 @@ import javax.swing.border.EmptyBorder;
 
 import com.google.maps.errors.ApiException;
 
-import excepciones.FieldCheckException;
 import excepciones.PlaceAlreadyTakenException;
 import excepciones.PlaceException;
 import main.java.Lugar;
@@ -130,11 +129,6 @@ public class VentanaAdminLugares extends JFrame{
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					agregar();
-				}catch(FieldCheckException e) {
-					JOptionPane.showMessageDialog(null, e.getMessage(), 
-							"No se pudo ingresar a la base de datos0",
-                            JOptionPane.ERROR_MESSAGE);
-					return;
 				} catch (SQLException  e) {
 					JOptionPane.showMessageDialog(null, e.getMessage(), 
 							"No se pudo ingresar a la base de datos1",
@@ -147,7 +141,9 @@ public class VentanaAdminLugares extends JFrame{
                             JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				
+				limpiarCampos();
+				btnVerLugar.setEnabled(false);
+
 				JOptionPane.showMessageDialog(null, "Se ha registrado el lugar.", 
 						"Registro completo",
                         JOptionPane.OK_OPTION);
@@ -167,11 +163,9 @@ public class VentanaAdminLugares extends JFrame{
 		btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				setVisible(false);
-				VentanaInicioSesion ventanaInicio = new VentanaInicioSesion(sistema);
-				ventanaInicio.setVisible(true);
-				
+				VentanaAdmin ventanaAdm = new VentanaAdmin(sistema);
+				ventanaAdm.setVisible(true);
 			}
 		});
 		btnVolver.setBounds(864, 555, 115, 29);
@@ -190,6 +184,7 @@ public class VentanaAdminLugares extends JFrame{
 				try {
 					eliminar();
 					limpiarCampos();
+					btnVerLugar.setEnabled(false);
 					JOptionPane.showMessageDialog(null,"Se ha eliminado correctamente el lugar.", 
 							"Eliminado correctamente",
 							JOptionPane.OK_OPTION);
@@ -282,8 +277,11 @@ public class VentanaAdminLugares extends JFrame{
 				} 
 				if( lugarcito.getNombreLocal() != null && !( lugarcito.getNombreLocal().equals("") ) ) {
 					txtDB.setText("si");
-				}else
+					btnVerLugar.setEnabled(true);
+				}else {
 					txtDB.setText("no");
+					btnVerLugar.setEnabled(false);
+				}
 			
 				catComboBox.setSelectedItem(lugarcito.getCategoria());
 				txtNombre.setText(lugarcito.getNombreLocal());
@@ -295,6 +293,7 @@ public class VentanaAdminLugares extends JFrame{
 				txtPais.setText(lugarcito.getPais());
 				txtLatitud.setText(  String.valueOf(lugarcito.getLat()) );
 				txtLongitud.setText( String.valueOf(lugarcito.getLng()) );
+				
 				
 				
 				
@@ -311,7 +310,7 @@ public class VentanaAdminLugares extends JFrame{
 				
 					try {
 						modificar();
-					} catch (SQLException | PlaceException | FieldCheckException  e) {
+					} catch (SQLException | PlaceException  e) {
 						JOptionPane.showMessageDialog(null,e.getMessage(), 
 								"Fallo al actualizar.",
 		                        JOptionPane.ERROR_MESSAGE);
@@ -327,6 +326,7 @@ public class VentanaAdminLugares extends JFrame{
 		contentPane.add(btnAplicarModificacion);
 		
 		btnVerLugar = new JButton("Ver lugar");
+		btnVerLugar.setEnabled(false);
 		btnVerLugar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!verificarCampos()) {
@@ -357,11 +357,14 @@ public class VentanaAdminLugares extends JFrame{
 	}
 	
 	
-	private void agregar() throws FieldCheckException, SQLException, PlaceAlreadyTakenException{
+	private void agregar() throws SQLException, PlaceAlreadyTakenException{
 		
-		if(!verificarCampos()) 
-			throw new FieldCheckException("No se han llenado todos los campos, presione bot�n autocompletar.");
-		
+		if(!verificarCampos()) {
+			JOptionPane.showMessageDialog(null, "Los campos no están llenados correctamente.", 
+					"No se pudo ingresar a la base de datos0",
+                    JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		String[] dir = new String[4];
 		dir[0] = txtDireccion.getText().trim().toLowerCase();
 		dir[1] = txtComuna.getText().trim().toLowerCase();
@@ -380,11 +383,14 @@ public class VentanaAdminLugares extends JFrame{
 		
 	}
 	
-private void modificar() throws FieldCheckException, PlaceException, SQLException{
+private void modificar() throws PlaceException, SQLException{
 		
-		if(!verificarCampos()) 
-			throw new FieldCheckException("No se han llenado todos los campos, presione bot�n autocompletar.");
-		
+	if(!verificarCampos()) {
+		JOptionPane.showMessageDialog(null, "Los campos no están llenados correctamente.", 
+				"No se pudo ingresar a la base de datos0",
+                JOptionPane.ERROR_MESSAGE);
+		return;
+	}
 		String[] dir = new String[4];
 		dir[0] = txtDireccion.getText().trim().toLowerCase();
 		dir[1] = txtComuna.getText().trim().toLowerCase();
