@@ -18,7 +18,6 @@ public class MapaComentariosUsuario extends MapaComentarios {
 		ResultSet rs = db.buscarComentariosUsuario(id);
 		while(rs.next()) {
 			mapaComentarios.putIfAbsent(rs.getString("id_lugar"), new Comentario(rs));
-			//System.out.println(rs.getString("id_usuario")+" "+rs.getString("id_lugar")+" "+rs.getString("comentario")+" "+rs.getInt("puntuacion"));
 		}
 	}
 

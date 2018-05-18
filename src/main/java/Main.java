@@ -7,12 +7,11 @@ import javax.swing.JOptionPane;
 import ventanas.VentanaInicioSesion;
 
 public class Main {
-
+	private  static SistemaMapa sistema;
 	public static void main(String[] args) {
 		try {
 			new Db();
-			SistemaMapa sistema = new SistemaMapa();
-
+			sistema = new SistemaMapa();
 			VentanaInicioSesion ventana = new VentanaInicioSesion(sistema);
 			ventana.setVisible(true);
 		}catch(ClassNotFoundException | SQLException e) {

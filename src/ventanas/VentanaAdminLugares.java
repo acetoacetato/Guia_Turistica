@@ -11,7 +11,6 @@ import javax.swing.border.EmptyBorder;
 
 import com.google.maps.errors.ApiException;
 
-import Interfaces.VentanaCampos;
 import excepciones.FieldCheckException;
 import excepciones.PlaceAlreadyTakenException;
 import excepciones.PlaceException;
@@ -26,7 +25,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 
-public class VentanaAdminLugares extends JFrame implements VentanaCampos {
+public class VentanaAdminLugares extends JFrame{
 
 	/**
 	 * 
@@ -51,8 +50,7 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 	
 	private SistemaMapa sistema;
 	private JButton btnVerLugar;
-	//private DbHandler db;
-	//private CuentaUsuario usr;
+
 	
 	
 	

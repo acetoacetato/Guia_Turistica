@@ -7,13 +7,12 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import Interfaces.VentanaCampos;
 import excepciones.PlaceException;
 import main.java.Busqueda;
 import main.java.SistemaMapa;
 
 
-public class VentanaCategorias extends JFrame implements VentanaCampos{
+public class VentanaCategorias extends JFrame {
 	
 	/**
 	 * 
@@ -230,7 +229,6 @@ public class VentanaCategorias extends JFrame implements VentanaCampos{
 		ventanaRest.setVisible(true);
 	}
 
-	@Override
 	public boolean verificarCampos() {
 		int i = comboBox.getSelectedIndex();
 		return (i != 0);
@@ -238,7 +236,6 @@ public class VentanaCategorias extends JFrame implements VentanaCampos{
 
 
 
-	@Override
 	public void limpiarCampos() {
 		comboBox.setSelectedIndex(0);
 		
