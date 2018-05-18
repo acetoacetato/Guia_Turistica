@@ -71,7 +71,9 @@ public class VentanaAdmin extends JFrame {
 		JButton btnAdministrarUsuarios = new JButton("Administrar Usuarios");
 		btnAdministrarUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				VentanaAdminUsuarios vUsr = new VentanaAdminUsuarios(sistema);
+				setVisible(false);
+				vUsr.setVisible(true);
 			}
 		});
 		btnAdministrarUsuarios.setBounds(118, 126, 186, 27);

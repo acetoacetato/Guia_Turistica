@@ -12,9 +12,10 @@ public abstract class CuentaUsuario {
 
 	protected MapaComentariosUsuario comentariosMap;
 	
-	public CuentaUsuario( String usuario, String contrasena ) {
+	public CuentaUsuario( String usuario, String contrasena ) throws SQLException {
 		this.setNombreUsuario( usuario );
 		this.setContrasena( contrasena );
+		comentariosMap = new MapaComentariosUsuario(usuario);
 	}
 
   public CuentaUsuario(ResultSet rs) throws SQLException {
@@ -56,6 +57,13 @@ public abstract String tipoCuenta();
   public ArrayList<Comentario> getComentarios() {
 		return comentariosMap.valores();
 	}
+
+public void eliminarComentario(Comentario comentario) {
+	
+
+	comentariosMap.eliminar(comentario.getPlaceId());
+	
+}
 
 }
 	

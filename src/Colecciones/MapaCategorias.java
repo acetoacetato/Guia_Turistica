@@ -83,7 +83,7 @@ public class MapaCategorias implements Reportable {
 		return null;
 	}
 
-	public Lugar buscarLugar(String idLugar) {
+	public Lugar buscarLugar(String idLugar) throws PlaceException {
 		ArrayList<MapaLugares> l = new ArrayList<MapaLugares>(mapaCat.values());
 		
 		for(MapaLugares m : l) {
@@ -92,7 +92,7 @@ public class MapaCategorias implements Reportable {
 				return lugar;
 		}
 		
-		return null;
+		throw new PlaceException("La categoría del lugar no se encuentra en el sistema.");
 	}
 	
 	public void quitar(Object o) {
@@ -156,6 +156,14 @@ public class MapaCategorias implements Reportable {
 		
 		
 		
+	}
+
+	public void eliminarComentario(String usr) throws SQLException {
+		ArrayList<MapaLugares> l = new ArrayList<MapaLugares>(mapaCat.values());
+		
+		for(MapaLugares m : l) {
+			m.eliminarComentario(usr);
+		}
 	}
 
 }

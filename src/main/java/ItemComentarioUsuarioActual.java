@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
+import javax.swing.JPanel;
 
 
 public class ItemComentarioUsuarioActual extends ItemComentario {
@@ -75,6 +76,18 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 		bttonComentDown.setText("v");
 	
 	}
+	
+	@Override
+	public void agregarEnPanel(JPanel p) {
+		p.add(getUser());
+		p.add(getScroll1());
+		p.add(getPuntuacion());
+		p.add(getBttonActualizar());
+		p.add(getBttonComentUp());
+		p.add(getBttonComentDown());
+
+	}
+	
 	public JButton getBttonActualizar() {
 		return bttonActualizar;
 	}

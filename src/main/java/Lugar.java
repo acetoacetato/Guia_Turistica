@@ -278,6 +278,18 @@ public class Lugar implements Reportable {
 		comentariosMap.modificar(comentAct,points,ussr );
 		
 	}
+
+
+	public void eliminarComentario(Comentario comentario) {
+		comentariosMap.eliminar(comentario.getUsr());
+		
+	}
+
+
+	public void eliminarComentario(String usr) {
+		comentariosMap.eliminar(usr);
+		
+	}
 	
 	
 	

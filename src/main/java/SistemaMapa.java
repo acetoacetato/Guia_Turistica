@@ -13,6 +13,7 @@ import Colecciones.MapaZona;
 import excepciones.PlaceAlreadyTakenException;
 import excepciones.PlaceException;
 import excepciones.UserCheckException;
+import excepciones.UserFindException;
 import excepciones.UserRegisterFailureException;
 import ventanas.VentanaAdmin;
 import ventanas.VentanaCategorias;
@@ -134,15 +135,17 @@ public class SistemaMapa {
 	
 	
 	
-	public Lugar obtenerLugar(String lugar) throws SQLException, ApiException, InterruptedException, IOException {
-		String id = api.idLugar(lugar);
+	public Lugar obtenerLugarPorDireccion(String lugar) throws SQLException, ApiException, InterruptedException, IOException{
 		
-		Lugar l = lugares.buscarLugar(id);
+			try {
+				String id = api.idLugar(lugar);
+				Lugar l = lugares.buscarLugar(id);
+				return l;
+			}catch(PlaceException e) {
+				return api.buscaLugar(lugar);
+			}
 		
-		if(l !=  null) {
-			return l;
-		}
-		return api.buscaLugar(lugar);
+		
 	}
 	
 	public boolean getAdmin() {
@@ -163,6 +166,38 @@ public class SistemaMapa {
 			l.modificar(comentAct, points, usuario.getNombreUsuario());
 			usuario.modificar(comentAct, points, l.getId());
 		
+	}
+
+	public Lugar obtenerLugarPorId(String id) throws PlaceException{
+		return lugares.buscarLugar(id);
+		
+ 	}
+
+	public void eliminarComentario(Comentario comentario) throws PlaceException {
+		
+		usuarios.eliminarComentario(comentario);
+		lugares.eliminarComentario(comentario);
+		db.eliminar(comentario);
+		
+		
+		
+	}
+
+	public CuentaUsuario buscarUsuario(String usr) throws UserFindException {
+		return usuarios.buscar(usr);
+	}
+
+	public void eliminarUsuario(String usr) throws SQLException {
+		
+		usuarios.eliminar(usr);
+		lugares.eliminarComentario(usr);
+		db.eliminarUsuario(usr);
+		
+	}
+
+	public void modificarUsuario(String id, String passwd, boolean adm) throws SQLException {
+		usuarios.modificar(id, passwd, adm);
+		db.modificarUsuario(id, passwd, adm);
 	}
 
 

@@ -369,6 +369,43 @@ public class DbHandler {
 		stmt.executeUpdate(query);
 		
 	}
+
+	public void eliminar(Comentario comentario) {
+		String query = "DELETE FROM Comentario WHERE id_usuario = '" + comentario.getUsr() + "' AND id_lugar = '" + comentario.getPlaceId() + "';";
+		Statement stmt;
+		try {
+			stmt = conexion.createStatement();
+			stmt.executeUpdate(query);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void eliminarComentario(String id, String usr) throws SQLException {
+
+		
+		String query = "DELETE FROM Comentario WHERE id_usuario = '" + usr + "' AND id_lugar = '" + id + "';" ;
+		Statement stmt = conexion.createStatement();
+		stmt.executeUpdate(query);
+		
+	}
+
+	public void modificarUsuario(String id, String passwd, boolean adm) throws SQLException {
+
+		String query = "UPDATE Usuario set pass = '" + passwd + "', admin = " + adm + " where id = '" + id + "';";
+		Statement stmt = conexion.createStatement();
+		stmt.executeUpdate(query);
+		
+	}
+
+	public void eliminarUsuario(String usr) throws SQLException {
+		String query = "DELETE FROM Usuario WHERE id = '" + usr + "';" ;
+		Statement stmt = conexion.createStatement();
+		stmt.executeUpdate(query);		
+	}
 	
 	
 	

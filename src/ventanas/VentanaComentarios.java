@@ -35,36 +35,64 @@ public class VentanaComentarios extends JFrame {
 	private boolean existeNext;
 	private int act;
 	private String t;
-	
+	private int i = 0;
 	private ItemComentarioUsuarioActual comUsr;
 	private ArrayList<Comentario> listaComentarios;
 	private SistemaMapa sistema;
+	private JFrame estaVentana;
 	
 	
 	
-	public VentanaComentarios( String titulo, Lugar l, SistemaMapa sis, int actual, ItemComentarioUsuarioActual usrC, ArrayList<Comentario> comentarios) {
+	public VentanaComentarios( Lugar l, SistemaMapa sis, int actual, ItemComentarioUsuarioActual usrC, ArrayList<Comentario> comentarios) {
+		estaVentana = this;
 		
-		t = titulo;
+		
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		t = "Comentarios";
 		existeNext = true;
 		sistema = sis;
 		act = actual;
 		lugar = l;
 		comUsr = usrC;
 		listaComentarios = comentarios;
+		
+		if(!sistema.getAdmin()) {
+			contentPane.add(comUsr.getUser());
+			contentPane.add(comUsr.getScroll1());
+			contentPane.add(comUsr.getPuntuacion());
+			contentPane.add(comUsr.getBttonActualizar());
+			contentPane.add(comUsr.getBttonComentDown());
+			contentPane.add(comUsr.getBttonComentUp());
+		}
 		cargarVentana();
 		setResizable(false);
 		
 
 	}
 
-	public VentanaComentarios(String titulo, Lugar l, SistemaMapa sis ) {
-		t = titulo;
-		//setResizable(false);
+	public VentanaComentarios(Lugar l, SistemaMapa sis ) {
+		estaVentana = this;
+
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		t = "Comentarios";
 		existeNext = true;
 		sistema = sis;
 		act = 0;
 		lugar = l;
 		listaComentarios = lugar.getComentarios();
+		if(sistema.getAdmin()) {
+			comUsr = null;
+			cargarVentana();
+			return;
+		}
 		
 		
 		for (int i = 0 ; i < l.getComentarios().size() ; i++) {
@@ -73,12 +101,14 @@ public class VentanaComentarios extends JFrame {
 			if(c.getUsr().equals(sistema.getNombreUsuario())) {
 				comUsr = new ItemComentarioUsuarioActual(c, 500, 150, sistema, lugar);
 				listaComentarios.remove(i);
+				comUsr.agregarEnPanel(contentPane);
 				cargarVentana();
 				return;
 			}
 			
 		}
 		comUsr =new ItemComentarioUsuarioActual(sistema, 500, 150, lugar);
+		comUsr.agregarEnPanel(contentPane);
 		cargarVentana();
 		
 	}
@@ -90,46 +120,8 @@ private void cargarVentana() {
 
 	setTitle(t);
 	
+	insertarComentarios();
 	
-	contentPane = new JPanel();
-	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-	setContentPane(contentPane);
-	contentPane.setLayout(null);
-	itemCom = new ItemComentario[3];
-	int  x = 40, y = 20;
-	contentPane.add(comUsr.getUser());
-	contentPane.add(comUsr.getScroll1());
-	contentPane.add(comUsr.getPuntuacion());
-	contentPane.add(comUsr.getBttonActualizar());
-	contentPane.add(comUsr.getBttonComentDown());
-	contentPane.add(comUsr.getBttonComentUp());
-	int i=0;
-	
-	for (i = 0 ; i < 3 ; i++) {
-		
-		if(act == listaComentarios.size()) {
-			existeNext = false;
-			
-			break;
-		}
-		Comentario com = listaComentarios.get(act);
-		if(com.getUsr().equals(sistema.getNombreUsuario())) {
-			act++;
-			i--;
-			continue;
-		}
-		
-		
-		itemCom[i] = new ItemComentario( com , x, y);
-		y+=150;
-		contentPane.add(itemCom[i].getUser());
-		contentPane.add(itemCom[i].getScroll1());
-		//contentPane.add(itemCom[i].getComentarios());
-		//contentPane.add(itemCom[i].getScroll2());
-		//contentPane.add(itemCom[i].getTuComen());
-		contentPane.add(itemCom[i].getPuntuacion());
-		act++;
-	}
 	
 	
 	if(existeNext && act < listaComentarios.size()) {
@@ -140,7 +132,7 @@ private void cargarVentana() {
 			//al presionarse, se crea un ventanaLugares con los par�metros actuales
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaComentarios vtnCom = new VentanaComentarios(t, lugar, sistema, act, comUsr, listaComentarios);
+				VentanaComentarios vtnCom = new VentanaComentarios(lugar, sistema, act, comUsr, listaComentarios);
 				vtnCom.setVisible(true);
 			}
 		});
@@ -173,7 +165,7 @@ private void cargarVentana() {
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				VentanaComentarios vtnComentario = new VentanaComentarios(t, lugar, sistema, nuevoAct, comUsr, listaComentarios);
+				VentanaComentarios vtnComentario = new VentanaComentarios(lugar, sistema, nuevoAct, comUsr, listaComentarios);
 				vtnComentario.setVisible(true);
 						
 					}
@@ -182,5 +174,34 @@ private void cargarVentana() {
 				contentPane.add(btnBack);
 			}
 }
+
+protected void insertarComentarios() {
+	itemCom = new ItemComentario[3];
+	int  x = 40, y = 20;
+	
+	int i=0;
+	
+	for (i = 0 ; i < 3 ; i++) {
+		
+		if(act == listaComentarios.size()) {
+			existeNext = false;
+			
+			break;
+		}
+		Comentario com = listaComentarios.get(act);
+		if(com.getUsr().equals(sistema.getNombreUsuario())) {
+			act++;
+			i--;
+			continue;
+		}
+		
+		
+		itemCom[i] = (comUsr != null)? new ItemComentario( com , x, y) : new ItemComentario(com, x, y, sistema, lugar, estaVentana );
+		y+=150;
+		itemCom[i].agregarEnPanel(contentPane);
+		act++;
+	}
+}
+
 
 }

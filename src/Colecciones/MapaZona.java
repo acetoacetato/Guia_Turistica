@@ -18,6 +18,7 @@ import Interfaces.Reportable;
 import excepciones.PlaceAlreadyTakenException;
 import excepciones.PlaceException;
 import main.java.Busqueda;
+import main.java.Comentario;
 import main.java.DbHandler;
 import main.java.Lugar;
 import ventanas.VentanaReporte;
@@ -64,7 +65,7 @@ public class MapaZona implements Reportable {
 		return m.modificar(id, nombre, cat,  desc);
 	}
 	
-	public String obtenerZona(String id){
+	public String obtenerZona(String id)throws PlaceException{
 		ArrayList<MapaCategorias> l = new ArrayList<MapaCategorias>(mapita.values());
 		
 		for(MapaCategorias m : l) {
@@ -87,7 +88,7 @@ public class MapaZona implements Reportable {
 		return null;
 	}
 	
-	public Lugar buscarLugar(String idLugar) {
+	public Lugar buscarLugar(String idLugar) throws PlaceException{
 		ArrayList<MapaCategorias> l = new ArrayList<MapaCategorias>(mapita.values());
 		
 		for(MapaCategorias m : l) {
@@ -96,23 +97,10 @@ public class MapaZona implements Reportable {
 				return lugar;
 		}
 		
-		return null;
+		throw new PlaceException("El la zona no se encuentra en el sistema.");
 	}
 	
-	public void agregar(String a) {
-		
-	}
-
-	public void quitar(Object o) {
-		// TODO Auto-generated method stub
-
-	}
-
 	
-	public void modificar(Object o) {
-		// TODO Auto-generated method stub
-
-	}
 	
 	public ArrayList<Lugar> obtenerLugares(String cat, String zona){
 		MapaCategorias m = mapita.get(zona);
@@ -224,6 +212,27 @@ public class MapaZona implements Reportable {
 			i++;
 		}
 		return s;
+		
+	}
+
+	public void eliminarComentario(Comentario comentario) throws PlaceException {
+		
+		System.out.println(comentario.getPlaceId());
+		
+		Lugar l = buscarLugar(comentario.getPlaceId());
+		
+		l.eliminarComentario(comentario);
+		
+		
+	}
+
+	public void eliminarComentario(String usr) throws SQLException {
+		
+		ArrayList<MapaCategorias> l = new ArrayList<MapaCategorias>(mapita.values());
+		
+		for(MapaCategorias m : l) {
+			m.eliminarComentario(usr);
+		}
 		
 	}
 

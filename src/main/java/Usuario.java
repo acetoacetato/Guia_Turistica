@@ -8,9 +8,8 @@ import Colecciones.MapaComentariosUsuario;
 public class Usuario extends CuentaUsuario {
 	
 
-  public Usuario ( String usuario, String password ) throws SQLException {
+  public Usuario ( String usuario, String password ) throws SQLException  {
 		super ( usuario, password );
-		comentariosMap= new MapaComentariosUsuario(getNombreUsuario());
 	}
 
   	public Usuario(ResultSet rs) throws SQLException {

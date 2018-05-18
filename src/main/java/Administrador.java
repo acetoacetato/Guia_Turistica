@@ -3,9 +3,9 @@ package main.java;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Administrador extends Usuario {
+public class Administrador extends CuentaUsuario {
 
-	public Administrador ( String usuario, String password ) throws SQLException {
+	public Administrador ( String usuario, String password ) throws SQLException{
 		super ( usuario, password );
 	}
  

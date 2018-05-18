@@ -50,6 +50,7 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 	
 	
 	private SistemaMapa sistema;
+	private JButton btnVerLugar;
 	//private DbHandler db;
 	//private CuentaUsuario usr;
 	
@@ -263,7 +264,7 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 				Lugar lugarcito;
 				try {
 					lugarcito = new Lugar();
-					lugarcito = sistema.obtenerLugar(txtBuscar.getText());
+					lugarcito = sistema.obtenerLugarPorDireccion(txtBuscar.getText());
 				} catch (ApiException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -280,8 +281,7 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					return;
-				}
-				
+				} 
 				if( lugarcito.getNombreLocal() != null && !( lugarcito.getNombreLocal().equals("") ) ) {
 					txtDB.setText("si");
 				}else
@@ -327,6 +327,32 @@ public class VentanaAdminLugares extends JFrame implements VentanaCampos {
 		});
 		btnAplicarModificacion.setBounds(783, 334, 175, 29);
 		contentPane.add(btnAplicarModificacion);
+		
+		btnVerLugar = new JButton("Ver lugar");
+		btnVerLugar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!verificarCampos()) {
+					JOptionPane.showMessageDialog(null,"presione el botón \"Autocompletar\" primero.", 
+							"Fallo al ver copmentarios.",
+	                        JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				VentanaLugar v;
+				try {
+					v = new VentanaLugar(sistema.obtenerLugarPorId(txtId.getText()), sistema);
+					v.setVisible(true);
+				} catch (PlaceException e1) {
+					JOptionPane.showMessageDialog(null,e1.getMessage(), 
+							"Fallo al ver lugar",
+		                    JOptionPane.ERROR_MESSAGE);
+				}
+					
+				
+				
+			}
+		});
+		btnVerLugar.setBounds(658, 57, 115, 27);
+		contentPane.add(btnVerLugar);
 		
 		
 		

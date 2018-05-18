@@ -88,7 +88,7 @@ public class VentanaLugar extends JFrame implements Runnable {
 				setVisible(false);
 				//se abre una ventana con el t�tulo de "Comentarios", la lista de comentarios, la cuenta de usuario
 				//y la base de datos
-				VentanaComentarios ventanaCom = new VentanaComentarios("Comentarios", l, sistema);
+				VentanaComentarios ventanaCom = new VentanaComentarios(l, sistema);
 				ventanaCom.setVisible(true);
 			}
 		});

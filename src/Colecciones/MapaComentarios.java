@@ -159,5 +159,12 @@ public class MapaComentarios implements Reportable {
 		}
 		db.modificarComentario(comentAct, c, id, points);
 	}
+
+	public void eliminar(String clave) {
+			
+		mapaComentarios.remove(clave);
+			
+	}
+		
 	
 }

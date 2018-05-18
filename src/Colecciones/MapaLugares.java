@@ -7,6 +7,7 @@ import java.util.Hashtable;
 
 import Interfaces.Reportable;
 import excepciones.PlaceAlreadyTakenException;
+import excepciones.PlaceException;
 import main.java.Busqueda;
 import main.java.DbHandler;
 import main.java.Lugar;
@@ -67,8 +68,14 @@ public class MapaLugares implements Reportable {
 		return l;
 	}
 	
-	public Lugar buscarLugar(String idLugar) {
-		return mapaLugares.get(idLugar);
+	public Lugar buscarLugar(String idLugar) throws PlaceException {
+		
+		Lugar l = mapaLugares.get(idLugar);
+		
+		if(l != null)
+			return l;
+		
+		throw new PlaceException("El lugar no se encuentra en el sistema.");
 	}
 	
 	
@@ -113,6 +120,17 @@ public class MapaLugares implements Reportable {
 			String s = b.getParametro();
 			Lugar l = mapaLugares.get(s);
 			l.reporte(b);
+		}
+		
+	}
+
+
+	public void eliminarComentario(String usr) throws SQLException {
+		ArrayList<Lugar> l = new ArrayList<Lugar>(mapaLugares.values());
+		DbHandler db = new DbHandler();
+		for(Lugar lugar : l) {
+			lugar.eliminarComentario(usr);
+			db.eliminarComentario( lugar.getId(), usr );
 		}
 		
 	}

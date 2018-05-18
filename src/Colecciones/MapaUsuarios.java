@@ -15,9 +15,11 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import Interfaces.Reportable;
+import excepciones.UserFindException;
 import excepciones.UserRegisterFailureException;
 import main.java.Administrador;
 import main.java.Busqueda;
+import main.java.Comentario;
 import main.java.CuentaUsuario;
 import main.java.DbHandler;
 import main.java.Usuario;
@@ -122,6 +124,30 @@ public class MapaUsuarios implements Reportable {
 			CuentaUsuario user = (rs.getBoolean("adm"))? new Administrador(rs) : new Usuario(rs);
 			mapaUser.putIfAbsent(user.getNombreUsuario(), user);
 		}
+	}
+
+
+
+	public void eliminarComentario(Comentario comentario) {
+		CuentaUsuario usr = mapaUser.get(comentario.getUsr());
+		usr.eliminarComentario(comentario);
+	}
+
+
+
+	public CuentaUsuario buscar(String usr) throws UserFindException {
+		CuentaUsuario cta = mapaUser.get(usr);
+		if(cta == null)
+			throw new UserFindException();
+		return cta;
+	}
+
+
+
+	public void eliminar(String usr) {
+
+		mapaUser.remove(usr);
+		
 	}
 	
 	
