@@ -22,6 +22,14 @@ public class ItemLugar {
 	private SistemaMapa sistema;
 	private Lugar place;
 	
+	/**
+	 * Constructor del item, el item contiene un fondo, un label con el nombre del local, un label con el rating actual del local y un botón para poder entrar y ver detalles del lugar.
+	 * @param lugar : el lugar al que se le está creando el item.
+	 * @param X : coordenada x de donde se debe comenzar a construir el item.
+	 * @param Y : coordenada y de donde se debe comenzar a construir el item.
+	 * @param Z : coordenada de donde se debe comenzar a construir el item.
+	 * @param sis : Referencia a una instancia de SistemaMapa, se usa para poder darle funcionalidad al botón.
+	 */
 	public ItemLugar (Lugar lugar, int X, int Y, int Z, SistemaMapa sis){
 		
 		sistema = sis;

@@ -12,58 +12,93 @@ public abstract class CuentaUsuario {
 
 	protected MapaComentariosUsuario comentariosMap;
 	
+	
+	/**
+	 * 
+	 * @param usuario
+	 * @param contrasena
+	 * @throws SQLException
+	 */
 	public CuentaUsuario( String usuario, String contrasena ) throws SQLException {
 		this.setNombreUsuario( usuario );
 		this.setContrasena( contrasena );
 		comentariosMap = new MapaComentariosUsuario(usuario);
 	}
 
-  public CuentaUsuario(ResultSet rs) throws SQLException {
+	/**
+	 * Constructor de una cuenta a partir de un ResultSet
+	 * @param rs : Resultado de una consulta SQL.
+	 * @throws SQLException
+	 */
+	public CuentaUsuario(ResultSet rs) throws SQLException {
 	  setNombreUsuario(rs.getString("nombre"));
 	  setContrasena(rs.getString("contrasena"));
-  }
+	}
 
-public abstract String tipoCuenta();
+	/**
+	 * Retorna el tipo de cuenta.
+	 * @return Retorna un String, con el tipo de cuenta. 
+	 */
+  	public abstract String tipoCuenta();
 
-  public String getNombreUsuario() {
+
+  	public String getNombreUsuario() {
 		return nombreUsuario;
 	}
 
-  public String informacionCuenta() {
-    return "Cuenta " + getNombreUsuario();
-  }
+  	
+  	/**
+  	 * Obtiene cierta información de la cuenta.
+  	 * @return Un string que conecta "cuenta " + el nombre de usuario.
+  	 */
+  	public String informacionCuenta() {
+	  return "Cuenta " + getNombreUsuario();
+  	}
 
-  public void destroy() {
-	  nombreUsuario = null;
-	  contrasena = null;
-  }
-  
-  public void setNombreUsuario( String nombreUsuario ) {
-    this.nombreUsuario = nombreUsuario;
-  }
-
-  public String getContrasena() {
-    return contrasena;
-  }
-
-  public void setContrasena( String contrasena ) {
-		this.contrasena = contrasena;
-	}
-  
-  public void modificar(String comentAct, String points, String lug) throws SQLException {
+  	/**
+  	 * Modifica un comentario.
+  	 * @param comentAct : el comentario nuevo.
+  	 * @param points : el nuevo puntaje.
+  	 * @param lug : el lugar de donde se hizo el comentario.
+  	 * @throws SQLException
+  	 */
+  	public void modificar(String comentAct, String points, String lug) throws SQLException {
 		comentariosMap.modificar(comentAct,points,lug );
 		
 	}
-  public ArrayList<Comentario> getComentarios() {
-		return comentariosMap.valores();
+  	
+  	/**
+  	 * obtiene todos los comentarios hechos por el usuario.
+  	 * @return Un ArrayList<Comentario> con todos los comentarios del usuario.
+  	 */
+  	public ArrayList<Comentario> getComentarios() {
+  		return comentariosMap.valores();
 	}
 
-public void eliminarComentario(Comentario comentario) {
+  	
+  	/**
+  	 * Elimina un comentario.
+  	 * @param comentario : una instancia del comentario a eliminar.
+  	 */
+  	public void eliminarComentario(Comentario comentario) {
 	
 
-	comentariosMap.eliminar(comentario.getPlaceId());
+		comentariosMap.eliminar(comentario.getPlaceId());
 	
-}
+	}
+
+  	public void setNombreUsuario( String nombreUsuario ) {
+		this.nombreUsuario = nombreUsuario;
+	}
+
+	public String getContrasena() {
+		return contrasena;
+	}
+
+	public void setContrasena( String contrasena ) {
+		this.contrasena = contrasena;
+	}
+  
 
 }
 	

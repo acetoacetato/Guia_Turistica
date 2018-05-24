@@ -7,13 +7,13 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 
-/*
+/**
  * Clase que maneja el icono del mapa, crea la url con los par�metros necesarios y guarda la im�gen generada
  * 
  * 		Utiliza la api de mapas est�ticos de google:
  * 
  * 			https://developers.google.com/maps/documentation/static-maps/intro
- * 
+ * @author acetoacetato
  * */
 public class MapHandler {
 
@@ -35,10 +35,13 @@ public class MapHandler {
 	private ImageIcon map;
 	
 	
-	//constructor de pruebas, centrado en el ibc
+	/**
+	 * Constructor por defecto, coloca el mapa en el centro del ibc
+	 * @throws IOException
+	 */
 	public MapHandler() throws IOException {
 			dir = dirIn
-				  + "center=IBC,+valparaiso";
+				  + "center=IBC,+valparaiso,+chile";
 		URL url;
 		
 		//se crea una url con la direccion completa
@@ -49,7 +52,11 @@ public class MapHandler {
 	}
 	
 	
-	//constructor con un string de direccion determinado, se asume que es info suficiente para que se genere el mapa
+	/**
+	 * constructor con un string de direccion determinado, se asume que es info suficiente para que se genere el mapa
+	 * @param direccion : dirección del lugar donde se centrará el mapa. 
+	 * @throws IOException
+	 */
 	public MapHandler(String direccion) throws IOException {
 		
 		//se genera la url, que no puede contener espacios(se reemplazan con +)
@@ -57,12 +64,12 @@ public class MapHandler {
 		 dir = dirIn
 			   + "&center=" 
 			   + direccion.replaceAll(" ", "+")
-			   			  .replaceAll("�", "a")
-			   			  .replaceAll("�", "e")
-			   			  .replaceAll("�", "i")
-			   			  .replaceAll("�", "o")
-			   			  .replaceAll("�", "u")
-			   			  .replaceAll("�", "n");
+			   			  .replaceAll("á", "a")
+			   			  .replaceAll("é", "e")
+			   			  .replaceAll("í", "i")
+			   			  .replaceAll("ó", "o")
+			   			  .replaceAll("ú", "u")
+			   			  .replaceAll("ñ", "n");
 		URL url;
 		
 		//se genera la url con la direccion 
@@ -75,11 +82,18 @@ public class MapHandler {
 	
 	
 	
-	
+	/**
+	 * Retorna el mapa generado.
+	 * @return Un ImageIcon con el mapa dentro.
+	 */
 	public ImageIcon getMapa() {
 		return this.map;
 	}
 	
+	/**
+	 * Retorna la url del lugar.
+	 * @return String del url del mapa.
+	 */
 	public String getUrl() {
 		return this.dir;
 	}

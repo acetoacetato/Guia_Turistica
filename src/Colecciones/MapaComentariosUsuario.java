@@ -8,11 +8,19 @@ import main.java.DbHandler;
 
 public class MapaComentariosUsuario extends MapaComentarios {
 
-	
+	/**
+	 * Constructor de los mapas del usuario
+	 * @param id : id del usuario.
+	 * @throws SQLException
+	 */
 	public MapaComentariosUsuario(String id) throws SQLException {
 		importar();
 	}
 	
+	/**
+	 * importa los comentarios del ususairo desde la base de datos.
+	 * @throws SQLException
+	 */
 	private void importar() throws SQLException {
 		DbHandler db = new DbHandler();
 		ResultSet rs = db.buscarComentariosUsuario(id);

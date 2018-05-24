@@ -18,7 +18,6 @@ public class DbHandler {
 	
 	//variables necesarias para realizar querys a la db
 	private static Connection conexion = null;
-	private Statement stmt;
 	
 	
 	public DbHandler() {
@@ -39,6 +38,11 @@ public class DbHandler {
 		return conexion;
 	}
 	
+	/**
+	 * Retorna las zonas existentes en la base de datos.
+	 * @return un String[] con las zonas existentes.
+	 * @throws SQLException
+	 */
 	public String[] zonas() throws SQLException{
 		CallableStatement cs = conexion.prepareCall("{CALL getZonas()}");
 		ResultSet rs = cs.executeQuery();
@@ -57,31 +61,55 @@ public class DbHandler {
 		return s;
 	}
 	
+	/**
+	 * Retorna las categorías existentes en la base de datos.
+	 * @return un ResultSet con las categorías existentes.
+	 * @throws SQLException
+	 */
 	public ResultSet categorias() throws SQLException {
 		CallableStatement cs = conexion.prepareCall("{CALL getCategorias()}");
-		return cs.executeQuery();
-	
-		
-		
+		return cs.executeQuery();		
 	}
 	
 	
+	/**
+	 * Retorna los lugares en la base de datos.
+	 * @return un ResultSet con los lugares existentes.
+	 * @throws SQLException
+	 */
 	public ResultSet lugares() throws SQLException {
 		CallableStatement cs = conexion.prepareCall("{CALL getLugares()}");
 		return cs.executeQuery();
 	}
 	
+	/**
+	 * Retorna los comentarios en la base de datos.
+	 * @return un ResultSet con los comentarios existentes.
+	 * @throws SQLException
+	 */
 	public ResultSet comentarios() throws SQLException{
 		CallableStatement cs = conexion.prepareCall("{CALL getComentarios()}");
 		return cs.executeQuery();
 	}
 	
+	
+	/**
+	 * Retorna los usuarios en la base de datos.
+	 * @return un ResultSet con los usuarios existentes.
+	 * @throws SQLException
+	 */
 	public ResultSet usuarios() throws SQLException{
 		CallableStatement cs = conexion.prepareCall("{CALL getUsuarios()}");
 		return cs.executeQuery();
 	}
 	
-	//ingresamos un nuevo lugar a la DB, mySQL verifica si ya se ha ingresado
+	/**
+	 * ingresamos un nuevo lugar a la DB, mySQL verifica si ya se ha ingresado
+	 * @param l : lugar a ingresar.
+	 * @return true si es que el lugar se ingresa, false si es que falla.
+	 * @throws SQLException
+	 * @throws PlaceAlreadyTakenException Si el lugar ya existe en la base de datos, se lanza la excepción.
+	 */
 	public boolean ingresarLugar(Lugar l) throws SQLException, PlaceAlreadyTakenException{
 		CallableStatement cs = conexion.prepareCall("{CALL agregarLugar(?,?,?,?,?,?,?,?,?,?)}");
 		String[] lugar = l.arreglo();
@@ -98,8 +126,12 @@ public class DbHandler {
 	
 	
 	
-	//Registra el usuario en la base de datos, s�lo se pueden registrar usuarios normales.
-	//recibe el nombre de usuario y la contrase�a
+	/**
+	 * Registra el usuario en la base de datos, s�lo se pueden registrar usuarios normales. Recibe el nombre de usuario y la contrase�a
+	 * @param usr el nombre de usuario
+	 * @param pass la contraseña
+	 * @throws UserRegisterFailureException si falla el ingreso al sistema.
+	 */
 	public void registrarUsuario(String usr, String pass) throws UserRegisterFailureException {
 		
 		Statement stmt;
@@ -122,7 +154,14 @@ public class DbHandler {
 	}
 	
 	
-	//busca la cuenta que coincida con el inicio de sesion (usuario y password)
+	/***
+	 * busca la cuenta que coincida con el inicio de sesion (usuario y password)
+	 * @param usr
+	 * @param pass
+	 * @return
+	 * @throws SQLException
+	 * @throws UserCheckException
+	 */
 	public CuentaUsuario iniciarSesion(String usr, String pass) throws SQLException, UserCheckException {
 		
 		//se crea el statement para generar la consulta
@@ -147,7 +186,13 @@ public class DbHandler {
 		
 	}
 	
-	//verifica si el usuario ya est� registrado
+	/**
+	 * verifica si el usuario ya est� registrado
+	 * @param usr el nombre de usuario.
+	 * @return el ResultSet de los usuarios coincidentes.
+	 * @throws SQLException 
+	 * @throws UserRegisterFailureException en caso de que el usuario esté en la base de datos, se retorna la excepción.
+	 */
 	public ResultSet verificarRegistro(String usr) throws SQLException, UserRegisterFailureException{
 		Statement stmt = conexion.createStatement();
 		
@@ -157,7 +202,12 @@ public class DbHandler {
 	}
 	
 	
-	//Actualiza la info del lugar
+	/**
+	 * Actualiza la info del lugar
+	 * @param l : el lugar a actualizar.
+	 * @throws SQLException
+	 * @throws PlaceException si el lugar no existe, entonces se lanza la exepción.
+	 */
 	public void actualizarLugar(Lugar l) throws SQLException, PlaceException {
 		Statement stmt = conexion.createStatement();
 		if (this.buscar(l) == null)
@@ -176,7 +226,12 @@ public class DbHandler {
 				+ "WHERE id = '" + l.getId() + "'");
 	}
 	
-	//Se busca un lugar por el nombre del local
+	/**
+	 * Se busca un lugar por el nombre del local
+	 * @param name : el nombre del lugar.
+	 * @return el resultset del lugr coincidente,
+	 * @throws SQLException
+	 */
 	public Lugar buscarLugar(String name) throws SQLException{
 		Statement stmt = conexion.createStatement();
 		ResultSet rs = stmt.executeQuery("select * from Lugar where nombre = '" + name + "';");
@@ -188,8 +243,13 @@ public class DbHandler {
 
 	}
 	
-	//busca lugares que coincidan con una categor�a y ubicaci�n especificada por par�metro
-	//retorna un ResultSet con todas las coincidencias
+	/**
+	 * busca lugares que coincidan con una categor�a y ubicaci�n especificada por par�metro.
+	 * @param cat categoría a buscar
+	 * @param ubic ubicación(comuna) a buscar.
+	 * @return  Retorna un ResultSet con todas las coincidencias
+	 * @throws SQLException
+	 */
 	public ResultSet buscarLugar(String cat, String ubic) throws SQLException {
 		Statement stmt = conexion.createStatement();
 		String query = "SELECT * FROM Lugar WHERE categoria = '"
@@ -199,7 +259,15 @@ public class DbHandler {
 	}
 	
 	
-	//Genera un lugar, primero buscandolo en la api de google, y si el lugar ya existe en la base de datos, retorna los datos que hay en esta
+	/**
+	 * Genera un lugar, primero buscandolo en la api de google, y si el lugar ya existe en la base de datos.
+	 * @param busqueda
+	 * @return retorna los datos que hay en esta o, si es que no existe, los que hay en la base de datos de google.
+	 * @throws SQLException
+	 * @throws ApiException En caso de no encontrar el lugar en la api de google, lanza la excepción.
+	 * @throws InterruptedException
+	 * @throws IOException
+	 */
 	public Lugar autoCompletaLugar(String busqueda) throws SQLException, ApiException, InterruptedException, IOException {
 		MapApi mapita = new MapApi();
 		Lugar l;
@@ -224,7 +292,12 @@ public class DbHandler {
 	
 	
 	
-	//busca un lugar en la base de datos
+	/**
+	 * busca un lugar en la base de datos
+	 * @param l : una instancia de Lugar con los parámetros a buscar.
+	 * @return el lugar buscado.
+	 * @throws SQLException
+	 */
 	public Lugar buscar(Lugar l) throws SQLException {
 		Statement stmt = conexion.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM Lugar WHERE id = '" + l.getId() + "'");
@@ -234,35 +307,38 @@ public class DbHandler {
 	}
 	
 	
-	//TODrO: agregar busqueda de usuarios y comentarios 
-	public Object buscar(Usuario usr) {
-		return null;
-	}
 	
-	
-	//elimina el lugar de la base de datos
+	/**
+	 * elimina el lugar de la base de datos
+	 * @param l : el lugar a eliminar.
+	 * @throws SQLException
+	 */
 	public void eliminar(Lugar l) throws SQLException{
 		Statement stmt = conexion.createStatement();
 		stmt.executeUpdate("DELETE FROM Lugar WHERE id = '" + l.getId() + "'");
 	}
 	
-	public ResultSet obtenerComentarios() throws SQLException {
+	
+	
+	/**
+	 * Busca los comentarios realizacons por un determinado usuario.
+	 * @param idUsr : el nombre del usuario.
+	 * @return
+	 * @throws SQLException
+	 */
+	public ResultSet buscarComentariosUsuario(String idUsr) throws SQLException {
 		Statement stmt = conexion.createStatement();
-		return stmt.executeQuery("SELECT * FROM Comentario;");
+		return stmt.executeQuery("select * from Comentario where id_usuario = '" +  idUsr + "';");
 	}
 	
 	
-	//se busca un comentario por su id
-	public ResultSet buscarComentarios(String id) throws SQLException {
-		Statement stmt = conexion.createStatement();
-		return stmt.executeQuery("select * from Comentario where id_lugar = '" +  id + "';");
-	}
-	
-	public ResultSet buscarComentariosUsuario(String idLugar) throws SQLException {
-		Statement stmt = conexion.createStatement();
-		return stmt.executeQuery("select * from Comentario where id_usuario = '" +  idLugar + "';");
-	}
-	
+	/**
+	 * verifica si un comentario de un usuario existe en un lugar determinado.
+	 * @param idUsr : el nombre del usuario a buscar. 
+	 * @param idLugar : el id del lugar donde se realizará la búsqueda.
+	 * @return Retorna true si es que el comentario existe, false si es que no.
+	 * @throws SQLException
+	 */
 	public boolean buscarComentario(String idUsr, String idLugar) throws SQLException{
 		Statement stmt = conexion.createStatement();
 		ResultSet rs = stmt.executeQuery("Select * from Comentario where id_lugar = '" + idLugar + "' and id_usuario ='" + idUsr + "';");
@@ -270,8 +346,15 @@ public class DbHandler {
 	}
 	
 	
-	public ResultSet obtenerLugares() throws SQLException {
-		return stmt.executeQuery("SELECT * FROM Lugar;");
+	/**
+	 * Busca los comentarios de un lugar determinado.
+	 * @param placeId el id del lugar a buscar.
+	 * @return un ResultSet con los cometarios del lugar buscado.
+	 * @throws SQLException
+	 */
+	public ResultSet buscarComentarios(String placeId) throws SQLException {
+		Statement stmt = conexion.createStatement();
+		return stmt.executeQuery("Select * from Comentario where id_lugar = '" + placeId + "';");
 	}
 	
 	
@@ -294,6 +377,15 @@ public class DbHandler {
 			return 0;
 	}
 	
+	
+	/**
+	 * Modifica un comentario en la base de datos.
+	 * @param coment El comentario nuevo
+	 * @param c referencia al comentario a modificar.
+	 * @param l El lugar donde pertenece el comentario.
+	 * @param p la nueva puntuación.
+	 * @throws SQLException
+	 */
 	public void modificarComentario(String coment, Comentario c, Lugar l, String p) throws SQLException {
 		Statement stmt = conexion.createStatement();
 		String query;
@@ -310,6 +402,15 @@ public class DbHandler {
 		
 	}
 	
+	
+	/**
+	 * Modifica el comntario dado, si no existe, entonces lo crea.
+	 * @param coment El comentario nuevo
+	 * @param c referencia al comentario a modificar.
+	 * @param l El lugar donde pertenece el comentario.
+	 * @param p la nueva puntuación.
+	 * @throws SQLException
+	 */
 	public void modificarComentario(String coment, Comentario c, String idLugar, String p) throws SQLException {
 		Statement stmt = conexion.createStatement();
 		String query;
@@ -325,6 +426,10 @@ public class DbHandler {
 		
 	}
 
+	/**
+	 * Elimina un comentario
+	 * @param comentario el comentario a eliminar.
+	 */
 	public void eliminar(Comentario comentario) {
 		String query = "DELETE FROM Comentario WHERE id_usuario = '" + comentario.getUsr() + "' AND id_lugar = '" + comentario.getPlaceId() + "';";
 		Statement stmt;
@@ -333,12 +438,17 @@ public class DbHandler {
 			stmt.executeUpdate(query);
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
 
+	/**
+	 * Elimina un comentario dado el id del lugar y del usuario al que pertenece dicho comentario.
+	 * @param id el id del lugar.
+	 * @param usr el nombre de usuario.
+	 * @throws SQLException
+	 */
 	public void eliminarComentario(String id, String usr) throws SQLException {
 
 		
@@ -348,6 +458,13 @@ public class DbHandler {
 		
 	}
 
+	/**
+	 * Modifica un usuario determinado, no se modifica el nombre.
+	 * @param id el nombre de usuario
+	 * @param passwd la nueva contraseña
+	 * @param adm el permiso del usuario, true es administrador, false es usuario comun.
+	 * @throws SQLException
+	 */
 	public void modificarUsuario(String id, String passwd, boolean adm) throws SQLException {
 
 		String query = "UPDATE Usuario set pass = '" + passwd + "', admin = " + adm + " where id = '" + id + "';";
@@ -356,6 +473,12 @@ public class DbHandler {
 		
 	}
 
+	
+	/**
+	 * Elimina un usuario de la base de datos.
+	 * @param usr El nombre de usuario.
+	 * @throws SQLException
+	 */
 	public void eliminarUsuario(String usr) throws SQLException {
 		String query = "DELETE FROM Usuario WHERE id = '" + usr + "';" ;
 		Statement stmt = conexion.createStatement();

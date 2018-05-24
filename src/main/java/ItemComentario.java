@@ -27,11 +27,27 @@ public class ItemComentario {
 	
 
 	
+	/**
+	 * Constructor de un comentario. Usando este constructor, el comentario no contendrá un botón para eliminarlo. 
+	 * @param comentario : el comentario base para crear el item.
+	 * @param X : coordenada x de donde se debe comenzar a construir el item.
+	 * @param Y : coordenada y de donde se debe comenzar a construir el item.
+	 */
 	public ItemComentario(Comentario comentario,  int X, int Y) {
 		
 		item(comentario, X, Y);
 	}
 	
+	
+	/**
+	 * Constructor de comentario. Usando este constructor, el comentario contendrá un botón para eliminarlo. 
+	 * @param comentario : el comentario base para crear el item.
+	 * @param X : coordenada x de donde se debe comenzar a construir el item.
+	 * @param Y : coordenada y de donde se debe comenzar a construir el item.
+	 * @param sis : referencia al SistemaMapa.
+	 * @param l : lugar al que se está haciendo el comentario.
+	 * @param jf : referencia al JFrame de la ventana que contendrá este item.
+	 */
 	public ItemComentario(Comentario comentario,  int X, int Y, SistemaMapa sis, Lugar l, JFrame jf) {
 		
 		item(comentario, X, Y);
@@ -62,6 +78,13 @@ public class ItemComentario {
 		
 	}
 	
+	/**
+	 * Construye el item
+	 * @param comentario : el comentario dado.
+	 * @param X : coordenada x de donde se debe comenzar a construir el item.
+	 * @param Y : coordenada y de donde se debe comenzar a construir el item.
+
+	 */
 	private void item(Comentario comentario,  int X, int Y) {
 		// se crea el label del comentario con el nombre del usuario.
 				user = new JLabel(comentario.getUsr() + ":");
@@ -96,7 +119,10 @@ public class ItemComentario {
 				scroll1.setBounds(X, Y+50, 250, 100);
 	}
 	
-	
+	/**
+	 * Agrega el item a un panel dado.
+	 * @param p : JPanel donde se desea agregar el item.
+	 */
 	public void agregarEnPanel(JPanel p) {
 		p.add(getUser());
 		p.add(getScroll1());

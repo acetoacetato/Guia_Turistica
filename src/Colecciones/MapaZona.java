@@ -32,11 +32,19 @@ public class MapaZona implements Reportable {
 		importar();
 	}
 	
+	
 	/**
-	 * Agrega un Lugar a la colección
-	 * @param a
-	 * @param bs
-	 * @throws SQLException 
+	 * Agrega un lugar a la colección.
+	 * @param id : id del lugar a agregar.
+	 * @param nombre : nombre del lugar a agregar.
+	 * @param dir : String[] conteniendo la dirección del lugar, se asume que es de largo 4 y contiene los valores en el orden de: nombre de calle + número, comuna, región, país.
+	 * @param cat : categoría del lugar a agregar.
+	 * @param lat : latitud del lugar.
+	 * @param lng : longitud del lugar.
+	 * @param desc : descripción del lugar.
+	 * @return Una instancia del lugar agregado.
+	 * @throws SQLException
+	 * @throws PlaceAlreadyTakenException En caso de que el lugar ya esté en el Mapa, se lanza la excepción.
 	 */
 	public Lugar agregar(String id, String nombre, String[] dir, String cat, float lat, float lng, String desc ) throws SQLException, PlaceAlreadyTakenException {
 		String zona = dir[1];
@@ -53,6 +61,17 @@ public class MapaZona implements Reportable {
 		
 	}
 	
+	
+	/**
+	 * Modifica un lugar del sistema, sólo se puede modificar el nombre del local, la categoría a la que pertenece y la descripción de este.
+	 * @param id : id del lugar a modificar.
+	 * @param nombre : nuevo nombre del lugar.
+	 * @param cat : nueva categoría del lugar.
+	 * @param desc : nueva descripción del lugar.
+	 * @return La instancia del lugar modificado.
+	 * @throws PlaceException En caso de que el lugar no exista en el Mapa, se lanza la excepción.
+	 * @throws SQLException
+	 */
 	public Lugar modificar(String id, String nombre,  String cat, String desc) throws PlaceException, SQLException{
 		
 		String zona = obtenerZona(id);
@@ -65,6 +84,13 @@ public class MapaZona implements Reportable {
 		return m.modificar(id, nombre, cat,  desc);
 	}
 	
+	
+	/**
+	 * Obtiene la zona a la que perteneze un lugar determinado.
+	 * @param id : id del lugar.
+	 * @return String de la zona(comuna) a la que pertenece el lugar.
+	 * @throws PlaceException En caso de que el lugar no se encuentre en el Mapa, se lanza la excepción.
+	 */
 	public String obtenerZona(String id)throws PlaceException{
 		ArrayList<MapaCategorias> l = new ArrayList<MapaCategorias>(mapita.values());
 		
@@ -77,6 +103,12 @@ public class MapaZona implements Reportable {
 		return null;
 	}
 	
+	
+	/**
+	 *Elimina un lugar del Mapa.
+	 * @param id : el id del lugar eliminado.
+	 * @return Una referencia al lugar eliminado.
+	 */
 	public Lugar eliminarLugar(String id) {
 		ArrayList<MapaCategorias> l = new ArrayList<MapaCategorias>(mapita.values());
 		Lugar lugar;
@@ -88,6 +120,13 @@ public class MapaZona implements Reportable {
 		return null;
 	}
 	
+	
+	/**
+	 * Busca y retorna un lugar en el mapa.
+	 * @param idLugar : el id del lugar a buscar.
+	 * @return La instancia del lugar encontrado.
+	 * @throws PlaceException En caso de que el lugar no exista en el sistema, se lanza la excepción.
+	 */
 	public Lugar buscarLugar(String idLugar) throws PlaceException{
 		ArrayList<MapaCategorias> l = new ArrayList<MapaCategorias>(mapita.values());
 		
@@ -101,7 +140,12 @@ public class MapaZona implements Reportable {
 	}
 	
 	
-	
+	/**
+	 * Obtiene todos los lugares que pertenezcan a una zona(comuna) y categoría determinada.
+	 * @param cat : categoría de los lugares a buscar.
+	 * @param zona : zona(comuna) de los lugares a buscar.
+	 * @return Un arrayList<Lugar> con los lugares coincidentes.
+	 */
 	public ArrayList<Lugar> obtenerLugares(String cat, String zona){
 		MapaCategorias m = mapita.get(zona);
 		if(m == null)
@@ -110,7 +154,10 @@ public class MapaZona implements Reportable {
 	}
 	
 	
-	
+	/**
+	 * Carga el mapa con los lugares que estén en la base de datos.
+	 * @throws SQLException
+	 */
 	private void importar() throws SQLException  {
 		DbHandler db = new DbHandler();
 		String[] zonas = db.zonas();
@@ -169,6 +216,11 @@ public class MapaZona implements Reportable {
 		
 	}
 	
+	/**
+	 * Abre una ventana de reporte de acuerdo a la búsqueda.
+	 * @param b : busqueda determinada, si es tipo "Zonas" se creará reporte de todas las zonas en el sistema, en caso contrario, debe ser de tipo "Categorias" y en parámetros una zona específica.
+	 * @throws PlaceException: si el lugar no se encuentra, se lanza la excepción.
+	 */
 	public void reporte(Busqueda b) throws PlaceException {
 		if( b.getTipo().equals("Zonas")) {
 			VentanaReporte v = new VentanaReporte(this);
@@ -187,6 +239,10 @@ public class MapaZona implements Reportable {
 		
 	}
 	
+	/**
+	 * Muestra todas las zonas en el sistema.
+	 * @return Un String[] con todas las zonas que existen en el sistema.
+	 */
 	public String[] zonas() {
 		ArrayList<String> l = new ArrayList<String>(mapita.keySet());
 		String[] s = new String[(l.size())];
@@ -195,6 +251,8 @@ public class MapaZona implements Reportable {
 		}
 		return s;
 	}
+	
+	
 	@Override
 	public String reportePantalla() {
 		
@@ -226,6 +284,11 @@ public class MapaZona implements Reportable {
 		
 	}
 
+	/**
+	 * Elimina los comentarios de un usuario determinado en todos los lugares que existan en el mapa.
+	 * @param usr : usuario dueño de los comentarios a eliminar.
+	 * @throws SQLException
+	 */
 	public void eliminarComentario(String usr) throws SQLException {
 		
 		ArrayList<MapaCategorias> l = new ArrayList<MapaCategorias>(mapita.values());

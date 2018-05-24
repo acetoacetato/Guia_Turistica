@@ -6,6 +6,11 @@ import javax.swing.JOptionPane;
 
 import ventanas.VentanaInicioSesion;
 
+/**
+ * 
+ * @author Alen
+ *
+ */
 public class Main {
 	private  static SistemaMapa sistema;
 	public static void main(String[] args) {

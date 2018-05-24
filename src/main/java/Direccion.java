@@ -8,6 +8,9 @@ public class Direccion {
 	private String pais;
 	
 	
+	/**
+	 * Constructor por defecto, centrado en una dirección arbitraria.
+	 */
 	public Direccion() {
 		particular = "camilo henriquez 4142";
 		comuna = "puente alto";
@@ -15,6 +18,11 @@ public class Direccion {
 		pais = "chile";
 	}
 	
+	
+	/**
+	 * Constructor de una dirección, recibe un String[]
+	 * @param dir : String de la dirección, debe ser de largo 4, con orden : nombre de calle + número, comuna, región, país.
+	 */
 	public Direccion(String[] dir) {
 		particular = dir[0];
 		comuna = dir[1];
@@ -22,6 +30,13 @@ public class Direccion {
 		pais = dir[3];
 	}
 	
+	/**
+	 * Constructor de una dirección, recibe los parámetros de esta.
+	 * @param par : nombre de calle + número.
+	 * @param com : comuna.
+	 * @param reg : región.
+	 * @param pa : país.
+	 */
 	public Direccion(String par, String com, String reg, String pa) {
 		particular = par;
 		comuna = com;

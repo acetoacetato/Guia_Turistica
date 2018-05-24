@@ -11,13 +11,23 @@ public class Comentario {
 	
 	
 	
-	
+	/**
+	 * Crea el comentario por defecto, asume que el usuario que creó ese comentario es el que inició sesión en la aplicación.
+	 * @param sis : instancia de SistemaMapa
+	 */
 	public Comentario(SistemaMapa sis) {
 		userId = sis.getNombreUsuario();
 		comentario = "A�n no comentas este lugar";
 		puntuacion = 0.0f;
 	}
 	
+	/**
+	 * Crea el comentario dados parámetros.
+	 * @param idLugar : id del lugar donde se crea el comentario.
+	 * @param usr : nombre del usuario que comenta.
+	 * @param com : comentario.
+	 * @param pt : puntuación del comentario.
+	 */
 	public Comentario( String idLugar, String usr, String com, float pt) {
 		userId = usr;
 		placeId = idLugar;
@@ -25,6 +35,11 @@ public class Comentario {
 		puntuacion = pt;
 	}
 	
+	/**
+	 * Crea el comentario a partir del resultado de una consulta.
+	 * @param rs : ResultSet producto de una consulta SQL.
+	 * @throws SQLException
+	 */
 	public Comentario(ResultSet rs) throws SQLException {
 		userId = rs.getString("id_usuario");
 		placeId = rs.getString("id_lugar");

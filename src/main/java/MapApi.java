@@ -10,14 +10,14 @@ import com.google.maps.errors.ApiException;
 import com.google.maps.model.GeocodingResult;
 
 
-/*
+/**
  * Clase que maneja la api de google de geolocalizaci�n
  * 
  * 		https://developers.google.com/maps/documentation/geocoding/intro
  * 		https://github.com/googlemaps/google-maps-services-java
+ * @author acetoacetato
  * 	
- * */
-
+ **/
 public class MapApi{
 	
 	//contexto para buscar los lugares
@@ -26,8 +26,10 @@ public class MapApi{
 	private Lugar lugar;
 	
 	
-	//constructor por defecto, inicializa el contexto con la key de la api
-	//e inicializa el lugar con sus valores por defecto
+	/**
+	 * Constructor por defecto, inicializa el contexto con la key de la api e inicializa el lugar con sus valores por defecto
+	 * @throws SQLException
+	 */
 	public MapApi() throws SQLException {
 		contexto = new GeoApiContext.Builder()
 				   .apiKey("AIzaSyAXUXkUsFImgP_B1pIMco8PrRhefSO1oJ8")
@@ -36,7 +38,14 @@ public class MapApi{
 	}
 	
 	
-	//funci�n que busca el lugar a partir de un string
+	/**
+	 * funci�n que busca el lugar a partir de un string
+	 * @param lugar String del lugar a buscar, se espera que sea una combinación suficiente para encontrarlo, de preferencia calle + número + comuna + país
+	 * @return Una referencia al lugar buscado.
+	 * @throws ApiException : En caso de que la api falle o no se encuentre el lugar, se lanza la excepción.
+	 * @throws InterruptedException
+	 * @throws IOException
+	 */
 	public Lugar buscaLugar(String lugar) throws ApiException, InterruptedException, IOException {
 		
 		//se realiza la b�squeda del lugar a partir del string 'lugar' y se toma el primer resultado
@@ -59,10 +68,17 @@ public class MapApi{
 		this.lugar.setLat( (float)resultado.geometry.location.lat );
 		this.lugar.setLng( (float)resultado.geometry.location.lng );
 		
-		System.out.println("lugar : " + lugar + " aaa:" + resultado.formattedAddress);
 		return this.lugar;
 	}
 	
+	/**
+	 * Retorna el id del lugar buscado,
+	 * @param lugar String del lugar a buscar, se espera que sea una combinación suficiente para encontrarlo, de preferencia calle + número + comuna + país
+	 * @return Un string del id del lugar.
+	 * @throws ApiException : En caso de que la api falle o no se encuentre el lugar, se lanza la excepción.
+	 * @throws InterruptedException
+	 * @throws IOException
+	 */
 	public String idLugar(String lugar) throws ApiException, InterruptedException, IOException {
 		GeocodingResult resultado = GeocodingApi.geocode(contexto, lugar).await()[0];
 		return resultado.placeId;

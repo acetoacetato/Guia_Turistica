@@ -16,6 +16,15 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 	private SistemaMapa sistema;
 	private Lugar lugar;
 	
+	
+	/**
+	 * Constructor por defecto del Item, el item contiene labels y paneles para representar el nombre del usuario, la puntuación del comentario y el comentario.
+	 * Se crea el comentario avisando que no hay un comentario del usuario hecho.
+	 * @param sis : Referencia a una instancia de SistemaMapa.
+	 * @param X : coordenada x de donde se debe comenzar a construir el item.
+	 * @param Y : coordenada y de donde se debe comenzar a construir el item.
+	 * @param l : lugar de donde se está haciendo el comentario.
+	 */
 	public ItemComentarioUsuarioActual(SistemaMapa sis, int X, int Y, Lugar l) {
 		super(new Comentario(sis), X, Y);
 		lugar = l;
@@ -23,6 +32,14 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 		item();
 	}
 	
+	
+	/**
+	 * Constructor de Item, el item contiene labels y paneles para representar el nombre del usuario, la puntuación del comentario y el comentario.
+	 * @param sis : Referencia a una instancia de SistemaMapa.
+	 * @param X : coordenada x de donde se debe comenzar a construir el item.
+	 * @param Y : coordenada y de donde se debe comenzar a construir el item.
+	 * @param l : lugar de donde se está haciendo el comentario.
+	 */
 	public ItemComentarioUsuarioActual(Comentario comentario, int X, int Y,SistemaMapa sis, Lugar l) {
 		super(comentario, X, Y);
 		lugar = l;
@@ -31,6 +48,9 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 	}
 	
 	
+	/**
+	 * Crea el item.
+	 */
 	private void item() {
 		
 		this.comentarios.setEditable(true);
@@ -76,6 +96,7 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 	
 	}
 	
+	
 	@Override
 	public void agregarEnPanel(JPanel p) {
 		p.add(getUser());
@@ -86,6 +107,9 @@ public class ItemComentarioUsuarioActual extends ItemComentario {
 		p.add(getBttonComentDown());
 
 	}
+	
+	
+	
 	
 	public JButton getBttonActualizar() {
 		return bttonActualizar;
